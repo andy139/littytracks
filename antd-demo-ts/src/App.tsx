@@ -2,6 +2,7 @@ import React from 'react';
 // import {Query} from 'react-apollo';
 import { useQuery } from "@apollo/react-hooks";
 import { gql } from 'apollo-boost';
+import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 
 
 import "./App.css";
@@ -19,11 +20,20 @@ const GETS_TRACK_QUERY = gql`
   }
 `;
 
+const ME_QUERY = gql `
+{
+  me {
+    id
+    username
+    email
+  }
+}`
+
 const App: React.FC = () => {
 
 
   const {loading, data, error} = useQuery(
-    GETS_TRACK_QUERY
+    ME_QUERY
 
   )
 
