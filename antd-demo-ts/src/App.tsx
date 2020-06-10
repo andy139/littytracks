@@ -45,8 +45,10 @@ const App: React.FC<any> = () => {
 
 
   const {loading, data, error} = useQuery(
-    ME_QUERY
-
+    ME_QUERY,
+    {
+      fetchPolicy:"cache-and-network"
+    }
   )
 
   if (loading) return <Loading/>
@@ -69,7 +71,7 @@ const App: React.FC<any> = () => {
           <Content className="site-layout" style={{ padding: '0 50px', marginTop: 64, minHeight: '100vh'}}>
               <Switch >
                 <Route exact path="/" component={Splash} ></Route>
-                <Route page="/profile/:id" component={Profile}></Route>
+                <Route path="/profile/:id" component={Profile}></Route>
               </Switch>
             </Content>
           </Layout>
