@@ -11,7 +11,7 @@ import Loading from "../components/Shared/Loading";
 import Error from "../components/Shared/Error";
 
 
-const GET_TRACKS_QUERY = gql`
+export const GET_TRACKS_QUERY = gql`
     query getTracksQuery {
         tracks {
             id
@@ -35,15 +35,18 @@ const Splash: React.FC<any> = ({ classes }) => {
         GET_TRACKS_QUERY
 
     )
+    const [searchResults, setSearchResults] = useState([]);
+     
 
+    if (!data) return null;
+    const tracks = searchResults.length > 0 ? searchResults : data.tracks;
     
-
     return (
         <div>
-            <SearchTrack/>
+            <SearchTrack setSearchResults={setSearchResults}/>
            
             <CreateTrack/>
-            {loading ? <Loading/> : error ? <Error/> : <TrackList tracks={data.tracks}/>}
+            {loading ? <Loading/> : error ? <Error/> : <TrackList tracks={tracks}/>}
        
         </div>
     )

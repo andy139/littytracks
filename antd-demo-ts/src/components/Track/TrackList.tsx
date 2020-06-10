@@ -9,6 +9,8 @@ import LikeTrack from "./LikeTrack";
 import DeleteTrack from "./DeleteTrack";
 import UpdateTrack from "./UpdateTrack";
 
+import './track.css';
+
 
 const { Panel } = Collapse;
 const { Option } = Select;
@@ -32,24 +34,24 @@ const TrackList: React.FC<any>= ({ classes, tracks}) => {
     
             <List>
                 <List.Item>
-                    <LikeTrack />
+                    <LikeTrack trackId={track.id} likeCount={track.likes.length} />
 
                 </List.Item>
                 <List.Item>
-                    <Card title={
+                    
                     <Link
                         to={`/profile/${track.postedBy.id}`}
                     >
                         {track.title}
-                    </Link>}>
+                    </Link>
+                    <br/>
+                    {track.postedBy.username}
 
-                        {track.postedBy.username}
-
-                    </Card>
+                  
                 
                 </List.Item>
                 <List.Item>
-                    <AudioPlayer />
+                    <AudioPlayer url={track.url}/>
 
                 </List.Item>
             </List>
@@ -60,8 +62,8 @@ const TrackList: React.FC<any>= ({ classes, tracks}) => {
 
                     <Panel header={panelHeader} key={track.id}>
                         {track.description}
-                        <UpdateTrack/>
-                        <DeleteTrack/>
+                        <UpdateTrack track={track}/>
+                        <DeleteTrack track={track}/>
                     </Panel>
 
                 </Collapse>)

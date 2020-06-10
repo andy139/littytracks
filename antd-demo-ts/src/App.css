@@ -1,4 +1,7 @@
 @import '~antd/dist/antd.css';
+/* @import '~antd/lib/style/themes/default.less';
+@import '~antd/dist/antd.less'; 
+@import 'your-theme-file.less';  */
 
 .App {
   text-align: center;

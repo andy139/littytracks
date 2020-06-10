@@ -8,13 +8,17 @@ import Splash from './pages/Splash';
 import Profile from './pages/Profile';
 import Navbar from './components/Shared/Navbar';
 import Loading from './components/Shared/Loading';
+
+
+
 import "./App.css";
 
 const { Header, Footer, Sider, Content } = Layout;
 // ctrl + space to see what type component is taking in
 
+export const UserContext =  React.createContext(null);
 
-const GETS_TRACK_QUERY = gql`
+export const GETS_TRACK_QUERY = gql`
   {
     tracks {
       id
@@ -23,16 +27,21 @@ const GETS_TRACK_QUERY = gql`
   }
 `;
 
-const ME_QUERY = gql `
+export const ME_QUERY = gql `
 {
   me {
     id
     username
     email
+    likeSet {
+      track {
+        id
+      }
+    }
   }
 }`
 
-const App: React.FC = () => {
+const App: React.FC<any> = () => {
 
 
   const {loading, data, error} = useQuery(
@@ -51,17 +60,20 @@ const App: React.FC = () => {
 
   
       <Router>
-        <Layout>
-        <Header style={{ position: 'fixed', zIndex: 1, width: '100%' }}>
-            <Navbar currentUser={currentUser}/>
-          </Header>
-        <Content className="site-layout" style={{ padding: '0 50px', marginTop: 64 }}>
-            <Switch >
-              <Route exact path="/" component={Splash} ></Route>
-              <Route page="/profile/:id" component={Profile}></Route>
-            </Switch>
-          </Content>
-        </Layout>
+        <UserContext.Provider value={currentUser}>
+
+          <Layout>
+          <Header style={{ position: 'fixed', zIndex: 1, width: '100%' }}>
+              <Navbar currentUser={currentUser}/>
+            </Header>
+          <Content className="site-layout" style={{ padding: '0 50px', marginTop: 64, minHeight: '100vh'}}>
+              <Switch >
+                <Route exact path="/" component={Splash} ></Route>
+                <Route page="/profile/:id" component={Profile}></Route>
+              </Switch>
+            </Content>
+          </Layout>
+        </UserContext.Provider>
       </Router>
 
     
