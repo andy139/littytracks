@@ -12,7 +12,7 @@ const AudioPlayer: React.FC<any> = ({url}) => {
         <span>
             <ReactPlayer url={url} height="30px" width="500px" controls={true}/>
             <div>
-                Test
+                Make tEST
             </div>
         </span>
     )
