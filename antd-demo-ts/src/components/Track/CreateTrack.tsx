@@ -9,6 +9,7 @@ import { gql } from "apollo-boost";
 import { FileAddOutlined, FileAddFilled,UploadOutlined} from '@ant-design/icons';
 import Error from '../Shared/Error';
 import './track.css';
+import {PROFILE_QUERY} from '../../pages/Profile';
 
 
 const CREATE_TRACK_MUTATION = gql`
@@ -56,8 +57,8 @@ const CreateTrack: React.FC<any> = ({classes}) => {
           const tracks = data.tracks.concat(createTrack.track);
           cache.writeQuery({query: GET_TRACKS_QUERY, data: {tracks}})
 
-        }
-
+        },
+        
       }
     );
 

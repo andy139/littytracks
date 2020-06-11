@@ -4,8 +4,9 @@ import {DeleteOutlined} from '@ant-design/icons'
 import {UserContext} from '../../App';
 import {useMutation} from "@apollo/react-hooks";
 import { Query } from "react-apollo";
-import { gql } from "apollo-boost";
+import { gql, fromPromise } from "apollo-boost";
 import {GET_TRACKS_QUERY} from "../../pages/Splash";
+import {PROFILE_QUERY} from "../../pages/Profile";
 
 const DELETE_TRACK_MUTATION = gql`
     mutation($trackId: Int!){
@@ -16,16 +17,21 @@ const DELETE_TRACK_MUTATION = gql`
 
 `
 
-const DeleteTrack:React.FC<any> = ({track}) => {
+const DeleteTrack:React.FC<any> = ({track,userId}) => {
 
     const currentUser:any = useContext(UserContext);
     const isCurrentUser = currentUser.id === track.postedBy.id;
+
+    let id = userId;
+
+    if (!id) id = 1;
+    
 
     const [deleteTrack, {loading, error}] = useMutation(
             DELETE_TRACK_MUTATION, 
             {
                 update(cache, {data: {deleteTrack}}) {
-        
+                    // UPDATE CACHE FOR TRACKS QUERY
                     const data:any = cache.readQuery({
                     query: GET_TRACKS_QUERY
                     })
@@ -37,12 +43,11 @@ const DeleteTrack:React.FC<any> = ({track}) => {
                     const tracks = [...data.tracks.slice(0, index), ...data.tracks.slice(index+1)]
 
                     cache.writeQuery({query: GET_TRACKS_QUERY, data: {tracks}})
-        
-                }
-        
-            }
-        )
-      ;
+                },
+                refetchQueries:[{query: PROFILE_QUERY, variables:{id:id}}]
+            },
+            
+        );
 
 
     if (!isCurrentUser) return null;

@@ -9,7 +9,16 @@ import Loading from '../components/Shared/Loading';
 import { create } from "domain";
 import format from "date-fns/format";
 
-const PROFILE_QUERY = gql`
+import { PageHeader, List,Avatar, Space, Divider, Empty, Button } from 'antd';
+import { MessageOutlined, LikeOutlined, StarOutlined } from '@ant-design/icons';
+import DeleteTrack from '../components/Track/DeleteTrack';
+import UpdateTrack from '../components/Track/UpdateTrack';
+import CreateTrack from '../components/Track/CreateTrack';
+import client from 'apollo-client';
+
+import './profile.css';
+
+export const PROFILE_QUERY = gql`
     query($id: Int!){
         user(id: $id) {
             id
@@ -21,6 +30,7 @@ const PROFILE_QUERY = gql`
                 id
                 title
                 url
+                description
                 likes {
                     id
                 }
@@ -34,6 +44,11 @@ const PROFILE_QUERY = gql`
                 id
                 title
                 url
+                description
+                postedBy {
+                    id
+                    username
+                }
                 likes {
                 id
                 }
@@ -45,9 +60,10 @@ const PROFILE_QUERY = gql`
 `
 
 
-const Profile: React.FC<any> = ({match}) => {
+const Profile: React.FC<any> = ({match, history, currentUser}) => {
 
-    debugger
+
+
 
     const {loading, data, error} = useQuery(
         PROFILE_QUERY,
@@ -60,13 +76,81 @@ const Profile: React.FC<any> = ({match}) => {
     if (loading) return <Loading/>
 
     if (error) return <Error error={error}/>
-    
 
-    const createdTracks = data.user.trackSet.map(track => 
-        <div>
-            Tite:{track.title} Likes:{track.likes.length}
-            <AudioPlayer url={track.url}></AudioPlayer>
-        </div>
+
+
+
+    
+    const IconText = ({ icon, text }) => (
+        <Space>
+          {React.createElement(icon)}
+          {text}
+        </Space>
+      );
+
+
+    const emptyList = (
+        <Empty
+        image="https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg"
+        imageStyle={{
+          height: 60,
+        }}
+        description={
+          <span>
+            You got no music :(
+          </span>
+        }
+      >
+            <Button type="primary">Upload some cool sounds now!</Button>
+      </Empty>
+    )
+
+
+    const createdTracks2 = (
+        <List
+
+        itemLayout="vertical"
+        size="large"
+        locale={{ emptyText: emptyList }}
+        loading={false}
+        dataSource={data.user.trackSet}
+        renderItem={(track:any) => (
+          <List.Item
+         
+          extra={
+            <img
+              width={272}
+              alt="logo"
+              src="https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png"
+            />
+          }
+          actions={[
+            // <IconText icon={LikeOutlined} text={track.likes.length} key="list-vertical-like-o" />,
+        
+            <UpdateTrack track={track}/>,
+            <DeleteTrack track={track} userId={match.params.id}/>
+          ]}
+          >
+            <List.Item.Meta
+              avatar={<Avatar src='https://avatars1.githubusercontent.com/u/8186664?s=460&v=4' />}
+              title={
+                <div>
+                    <div>
+                        {track.title}
+                    </div>
+                    <div style={{color: 'rgba(0, 0, 0, 0.45)'}}>
+                        {track.postedBy.username}
+                    </div>
+
+                </div>
+              }
+              description={<AudioPlayer url={track.url}></AudioPlayer>}
+            />
+                
+
+          </List.Item>
+        )}
+      />
     )
 
     const likedTracks = data.user.likeSet.map(({track}) => 
@@ -83,30 +167,22 @@ const Profile: React.FC<any> = ({match}) => {
     return (
         <div>
             {/* User info card */}
-            <div>
-                //AVATAR HERE {data.user.username[0]}
-                //title= {data.user.username}
-
-                //DATE = {`Joined ${format(
-                  data.user.dateJoined,
-                  "MMM Do, YYYY"
-                )}`}
-            </div>
-
-            {/* CREATE TRACKS */}
-            <div>
-                // aUDO TRACK ICON
-                CREATED trackSet
-                {createdTracks}
-            </div>
-            {/* Likes tracks */}
-            <div>
-                LIKED trackSet
-                {likedTracks}
+            <PageHeader
+                className="site-page-header"
+                onBack={() => history.goBack()}
+                title={data.user.username}
+                subTitle={`Joined ${data.user.dateJoined.substring(0, 10)}`}
+                avatar={{ src: 'https://avatars1.githubusercontent.com/u/8186664?s=460&v=4' }}
+            />
+      
+            <Divider orientation="left"><h3>Created Tracks</h3></Divider>
+            {createdTracks2}
+            <Divider orientation="left"><h3>Liked Tracks</h3></Divider>
+            {likedTracks}
 
                
 
-            </div>
+          
         </div>
     )
 

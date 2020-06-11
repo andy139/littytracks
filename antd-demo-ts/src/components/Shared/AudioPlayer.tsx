@@ -11,9 +11,6 @@ const AudioPlayer: React.FC<any> = ({url}) => {
     return (
         <span>
             <ReactPlayer url={url} height="30px" width="500px" controls={true}/>
-            <div>
-                Make tEST
-            </div>
         </span>
     )
 
@@ -22,3 +19,5 @@ const AudioPlayer: React.FC<any> = ({url}) => {
 }
 
 export default AudioPlayer;
+
+

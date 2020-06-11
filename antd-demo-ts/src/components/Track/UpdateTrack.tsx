@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect, useRef } from "react";
 import {Mutation} from 'react-apollo';
 import {useMutation} from "@apollo/react-hooks";
 import {GET_TRACKS_QUERY} from "../../pages/Splash";
@@ -56,7 +56,6 @@ const UpdateTrack: React.FC<any> = ({classes, track}) => {
 
     
 
-   
 
     const uploadAudio = async (options) => {
         setSubmitting(true);
@@ -178,9 +177,9 @@ const UpdateTrack: React.FC<any> = ({classes, track}) => {
             console.log({ data });
             setSubmitting(false);
             setModal(false);
-            setTitle("");
-            setDescription("");
-            setUrl(null);
+            setTitle(title);
+            setDescription(description);
+            setUrl(url);
             setFile([]);
         })
 
@@ -192,6 +191,8 @@ const UpdateTrack: React.FC<any> = ({classes, track}) => {
     const isCurrentUser = currentUser.id === track.postedBy.id;
     if (!isCurrentUser) return null;
 
+
+    debugger
     return (
 
       <>

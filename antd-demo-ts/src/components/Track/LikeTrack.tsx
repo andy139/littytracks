@@ -67,7 +67,7 @@ const LikeTrack:React.FC<any> = ({trackId, likeCount}) => {
                 <i className="fas fa-thumbs-up"
                         onClick={(event) => {
                             event.stopPropagation();
-                            debugger
+                      
                             createLike({variables:{trackId:parseInt(trackId)}}).then((data)=>console.log(data));
                         }
                 }/>

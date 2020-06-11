@@ -68,10 +68,12 @@ const App: React.FC<any> = () => {
           <Header style={{ position: 'fixed', zIndex: 1, width: '100%' }}>
               <Navbar currentUser={currentUser}/>
             </Header>
-          <Content className="site-layout" style={{ padding: '0 50px', marginTop: 64, minHeight: '100vh'}}>
+          <Content className="site-layout" style={{ padding: '0 50px', marginTop: 64, minHeight: '100vh', background:"#e6f7ff" }}>
               <Switch >
                 <Route exact path="/" component={Splash} ></Route>
-                <Route path="/profile/:id" component={Profile}></Route>
+                
+                {/* <Route path="/profile/:id" component={() => <Profile currentUser={currentUser}/>}></Route> */}
+                <Route path="/profile/:id" render={(props) => <Profile {...props} currentUser={currentUser} />}></Route>
               </Switch>
             </Content>
           </Layout>
