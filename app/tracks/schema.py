@@ -1,13 +1,17 @@
 import graphene
 from graphene_django import DjangoObjectType
 from graphql import GraphQLError
-from .models import Track, Like
+from .models import Track, Like, UserProfile
 from users.schema import UserType
-from django.db.models import Q ## allows usto make more complex queries
+from django.db.models import Q ## all,. ows usto make more complex queries
 
 class TrackType(DjangoObjectType):
     class Meta:
         model = Track
+
+class UserProfileType(DjangoObjectType):
+    class Meta:
+        model = UserProfile
 
 class LikeType(DjangoObjectType):
     class Meta:
@@ -39,8 +43,9 @@ class CreateTrack(graphene.Mutation):
         title = graphene.String()
         description = graphene.String()
         url = graphene.String()
+        img_url = graphene.String()
     
-    def mutate(self,info, title, description, url):
+    def mutate(self,info, title, description, url, img_url):
         user = info.context.user 
         
         if user.is_anonymous:
@@ -48,7 +53,7 @@ class CreateTrack(graphene.Mutation):
 
 
 
-        track = Track(title=title, description = description, url=url, posted_by=user)
+        track = Track(title=title, description = description, url=url, posted_by=user, img_url = img_url)
         track.save()
         return CreateTrack(track=track)
 
@@ -60,8 +65,9 @@ class UpdateTrack(graphene.Mutation):
         title = graphene.String()
         description = graphene.String()
         url = graphene.String()
+        img_url = graphene.String()
 
-    def mutate(self, info, track_id, title, url, description):
+    def mutate(self, info, track_id, title, url, description, image_url):
         user = info.context.user
         track = Track.objects.get(id=track_id)
 
@@ -71,6 +77,7 @@ class UpdateTrack(graphene.Mutation):
         track.title = title
         track.description = description
         track.url = url
+        track.image_url = image_url
 
         track.save()
 
@@ -86,8 +93,8 @@ class DeleteTrack(graphene.Mutation):
         user = info.context.user
         track = Track.objects.get(id=track_id)
 
-        # if track.posted_by != user:
-        #     raise GraphQLError('Not permitted to delete this track.')
+        if track.posted_by != user:
+            raise GraphQLError('Not permitted to delete this track.')
 
         track.delete()
 
@@ -116,8 +123,30 @@ class CreateLike(graphene.Mutation):
 
         return CreateLike(user=user, track=track)
 
+class UpdateProfile(graphene.Mutation):
+    user_profile = graphene.Field(UserProfileType)
+
+    class Arguments:
+        avatar_url = graphene.String()
+
+    def mutate(self, info, avatar_url):
+        user = info.context.user
+
+    
+        if user.is_anonymous:
+            raise GraphQLError('Cannot edit profile')
+
+        user_profile = UserProfile.objects.get(user_id=user.id)
+        user_profile.avatar_url = avatar_url
+        user_profile.save()
+
+        # import pdb; pdb.set_trace()
+
+        return UpdateProfile(user_profile=user_profile)
+
 class Mutation(graphene.ObjectType):
     create_track = CreateTrack.Field()
     update_track = UpdateTrack.Field()
     delete_track = DeleteTrack.Field()
     create_like = CreateLike.Field()
+    update_profile = UpdateProfile.Field()

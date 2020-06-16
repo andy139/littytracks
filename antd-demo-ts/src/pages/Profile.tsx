@@ -9,14 +9,16 @@ import Loading from '../components/Shared/Loading';
 import { create } from "domain";
 import format from "date-fns/format";
 
-import { PageHeader, List,Avatar, Space, Divider, Empty, Button } from 'antd';
+import { PageHeader, List,Avatar, Space, Divider, Empty, Button, Descriptions } from 'antd';
 import { MessageOutlined, LikeOutlined, StarOutlined } from '@ant-design/icons';
 import DeleteTrack from '../components/Track/DeleteTrack';
 import UpdateTrack from '../components/Track/UpdateTrack';
 import CreateTrack from '../components/Track/CreateTrack';
+import UploadAvatar from '../components/Track/UpdateAvatar';
 import client from 'apollo-client';
 
 import './profile.css';
+import UpdateAvatar from "../components/Track/UpdateAvatar";
 
 export const PROFILE_QUERY = gql`
     query($id: Int!){
@@ -24,6 +26,9 @@ export const PROFILE_QUERY = gql`
             id
             username
             dateJoined
+            userprofile{
+              avatarUrl
+            }
             likeSet {
                 id
                 track {
@@ -40,6 +45,7 @@ export const PROFILE_QUERY = gql`
                 }
                 }
             }
+        
             trackSet{
                 id
                 title
@@ -91,18 +97,36 @@ const Profile: React.FC<any> = ({match, history, currentUser}) => {
 
     const emptyList = (
         <Empty
+            image="https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg"
+            imageStyle={{
+            height: 60,
+            }}
+            description={
+            <span>
+                {currentUser.id === match.params.id ? "You got no music :(" : "This user has no music yet"}
+            </span>
+            }
+        >     
+                {/* <Button type="primary">Upload some cool sounds now!</Button> */}
+      </Empty>
+    )
+
+    const emptyLikes = (
+        <Empty
         image="https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg"
         imageStyle={{
-          height: 60,
+        height: 60,
         }}
         description={
-          <span>
-            You got no music :(
-          </span>
+        <span>
+            {currentUser.id === match.params.id ? "This user has no likes yet" : "This user has no likes yet" }
+        </span>
         }
-      >
-            <Button type="primary">Upload some cool sounds now!</Button>
-      </Empty>
+        >     
+            {/* <Button type="primary">Upload some cool sounds now!</Button> */}
+        </Empty>
+
+
     )
 
 
@@ -119,14 +143,14 @@ const Profile: React.FC<any> = ({match, history, currentUser}) => {
          
           extra={
             <img
-              width={272}
+              width={225}
               alt="logo"
-              src="https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png"
+              src={track.imgUrl ? track.imgUrl : "http://res.cloudinary.com/andytran/raw/upload/v1592239178/ksa9qczmaoicuqcgdo10" }
             />
           }
           actions={[
             // <IconText icon={LikeOutlined} text={track.likes.length} key="list-vertical-like-o" />,
-        
+            
             <UpdateTrack track={track}/>,
             <DeleteTrack track={track} userId={match.params.id}/>
           ]}
@@ -155,13 +179,63 @@ const Profile: React.FC<any> = ({match, history, currentUser}) => {
 
     const likedTracks = data.user.likeSet.map(({track}) => 
         <div>
+            
             {track.title} {track.likes.length}
             {track.postedBy.username}
             <AudioPlayer url={track.url}></AudioPlayer>
         </div>
     )
+               
+
+    const likedTracks2 = (
+        <List
+
+        itemLayout="vertical"
+        size="large"
+        locale={{ emptyText: emptyLikes }}
+        loading={false}
+        dataSource={data.user.likeSet}
+        renderItem={({track}:any) => (
+          <List.Item
+         
+          extra={
+            <img
+              width={225}
+              alt="logo"
+              src={track.imgUrl ? track.imgUrl : "http://res.cloudinary.com/andytran/raw/upload/v1592239178/ksa9qczmaoicuqcgdo10" }
+            />
+          }
+          actions={[
+            // <IconText icon={LikeOutlined} text={track.likes.length} key="list-vertical-like-o" />,
+            
+            <UpdateTrack track={track}/>,
+            <DeleteTrack track={track} userId={match.params.id}/>
+          ]}
+          >
+            <List.Item.Meta
+              avatar={<Avatar src='https://avatars1.githubusercontent.com/u/8186664?s=460&v=4' />}
+              title={
+                <div>
+                    <div>
+                        {track.title}
+                    </div>
+                    <div style={{color: 'rgba(0, 0, 0, 0.45)'}}>
+                        {track.postedBy.username}
+                    </div>
+
+                </div>
+              }
+              description={<AudioPlayer url={track.url}></AudioPlayer>}
+            />
+                
+
+          </List.Item>
+        )}
+      />
+    )
 
 
+    debugger
 
 
     return (
@@ -170,19 +244,32 @@ const Profile: React.FC<any> = ({match, history, currentUser}) => {
             <PageHeader
                 className="site-page-header"
                 onBack={() => history.goBack()}
+              
                 title={data.user.username}
                 subTitle={`Joined ${data.user.dateJoined.substring(0, 10)}`}
-                avatar={{ src: 'https://avatars1.githubusercontent.com/u/8186664?s=460&v=4' }}
-            />
+                avatar={{ src: data.user.userprofile.avatarUrl === '' ? 'https://avatars1.githubusercontent.com/u/8186664?s=460&v=4' : data.user.userprofile.avatarUrl, size:96, }}
+            >
+                <Descriptions size="small" column={3}>
+                  <Descriptions.Item>
+                    <UpdateAvatar/> 
+                  </Descriptions.Item>
+               
+            
+             
+                </Descriptions>
+    
+
+            </PageHeader>
       
             <Divider orientation="left"><h3>Created Tracks</h3></Divider>
             {createdTracks2}
             <Divider orientation="left"><h3>Liked Tracks</h3></Divider>
-            {likedTracks}
+            {likedTracks2}
+            
 
+            {match.params.id === currentUser.id ? <CreateTrack userId={match.params.id}/> : null}
+            
                
-
-          
         </div>
     )
 

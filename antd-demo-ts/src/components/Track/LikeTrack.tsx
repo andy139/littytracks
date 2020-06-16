@@ -23,10 +23,10 @@ const CREATE_LIKE_MUTATION = gql`
 `
 
 const IconText = ({ icon, text }) => (
-    <span>
-      {text}
+    <Space>
       {icon}
-    </span>
+      {text}
+    </Space>
   );
 
 const LikeTrack:React.FC<any> = ({trackId, likeCount}) => {
@@ -40,7 +40,7 @@ const LikeTrack:React.FC<any> = ({trackId, likeCount}) => {
     if (!currentUser) return null;
 
 
-    debugger
+     
 
     const disableLikes:any = () => {
         const userLikes:any = currentUser.likeSet
@@ -49,7 +49,7 @@ const LikeTrack:React.FC<any> = ({trackId, likeCount}) => {
             userLikes.findIndex(({ track }) => track.id === trackId) > -1;
 
 
-        debugger
+         
         return isTrackLiked;
     }
     
@@ -64,7 +64,7 @@ const LikeTrack:React.FC<any> = ({trackId, likeCount}) => {
                     disabled={disableLikes()}
                          
             >
-                <i className="fas fa-thumbs-up"
+                <LikeOutlined
                         onClick={(event) => {
                             event.stopPropagation();
                       

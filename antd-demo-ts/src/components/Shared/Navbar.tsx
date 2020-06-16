@@ -14,7 +14,7 @@ const Navbar:React.FC<any> = ({currentUser}) => {
 
     return (
    
-        <Menu theme="dark" mode="horizontal" style={{position:'relative', display: 'flex', justifyContent: 'center'}} selectable={false}  >
+        <Menu theme="dark" mode="horizontal" style={{position:'relative', display: 'flex', justifyContent: 'center', width:"75%"}} selectable={false}  >
             <Link to="/" style={{ position: 'absolute', top: 0, left: 0 }}>
 
                 <i className="fas fa-music fa-1x"></i>&nbsp; Better Tracks

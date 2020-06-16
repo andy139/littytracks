@@ -18,6 +18,7 @@ export const GET_TRACKS_QUERY = gql`
             title
             description
             url
+            imgUrl
             likes {
                 id
                 

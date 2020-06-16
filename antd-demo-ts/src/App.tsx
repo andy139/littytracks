@@ -11,7 +11,7 @@ import Loading from './components/Shared/Loading';
 
 
 
-import "./App.css";
+import "./App.less";
 
 const { Header, Footer, Sider, Content } = Layout;
 // ctrl + space to see what type component is taking in
@@ -64,18 +64,18 @@ const App: React.FC<any> = () => {
       <Router>
         <UserContext.Provider value={currentUser}>
 
-          <Layout>
-          <Header style={{ position: 'fixed', zIndex: 1, width: '100%' }}>
-              <Navbar currentUser={currentUser}/>
-            </Header>
-          <Content className="site-layout" style={{ padding: '0 50px', marginTop: 64, minHeight: '100vh', background:"#e6f7ff" }}>
-              <Switch >
-                <Route exact path="/" component={Splash} ></Route>
-                
-                {/* <Route path="/profile/:id" component={() => <Profile currentUser={currentUser}/>}></Route> */}
-                <Route path="/profile/:id" render={(props) => <Profile {...props} currentUser={currentUser} />}></Route>
-              </Switch>
-            </Content>
+          <Layout >
+              <Header className="header">
+                <Navbar currentUser={currentUser}  />
+              </Header>
+            <Content className="site-layout" style={{ padding: '0 50px', marginTop: 64, background: "#001934", minHeight: '100vh', width:"75%", marginLeft: "auto", marginRight: "auto" }}>
+                <Switch >
+                  <Route exact path="/" component={Splash} ></Route>
+                  
+                  {/* <Route path="/profile/:id" component={() => <Profile currentUser={currentUser}/>}></Route> */}
+                  <Route path="/profile/:id" render={(props) => <Profile {...props} currentUser={currentUser} />}></Route>
+                </Switch>
+              </Content>
           </Layout>
         </UserContext.Provider>
       </Router>

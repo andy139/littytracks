@@ -192,7 +192,7 @@ const UpdateTrack: React.FC<any> = ({classes, track}) => {
     if (!isCurrentUser) return null;
 
 
-    debugger
+     
     return (
 
       <>

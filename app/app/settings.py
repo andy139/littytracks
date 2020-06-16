@@ -51,6 +51,8 @@ GRAPHENE = {
 
 }
 
+AUTH_PROFILE_MODULE = 'app.UserProfile'
+
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -73,6 +75,8 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 ROOT_URLCONF = 'app.urls'
+
+AUTH_PROFILE_MODULE = 'app.UserProfile'
 
 TEMPLATES = [
     {
