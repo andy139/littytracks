@@ -33,6 +33,9 @@ export const ME_QUERY = gql `
     id
     username
     email
+    userprofile{
+      avatarUrl
+    }
     likeSet {
       track {
         id

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Collapse, Select, List, Card, Avatar, Space } from 'antd';
-import { MessageOutlined, LikeOutlined, StarOutlined, SettingOutlined } from '@ant-design/icons';
+import { MessageOutlined, LikeOutlined, StarOutlined, SettingOutlined, CaretRightOutlined } from '@ant-design/icons';
 import { Query } from 'react-apollo';
 import { gql } from 'apollo-boost';
 import { Link } from 'react-router-dom';
@@ -9,6 +9,7 @@ import LikeTrack from './LikeTrack';
 import DeleteTrack from './DeleteTrack';
 import UpdateTrack from './UpdateTrack';
 import CommentTrack from './CommentTrack';
+import CommentList from './CommentList';
 
 import './track.css';
 import { OmitProps } from 'antd/lib/transfer/ListBody';
@@ -24,10 +25,10 @@ const genExtra = () => (
 	/>
 );
 
-
+debugger
 
 const TrackList: React.FC<any> = ({ classes, tracks }) => {
-  debugger
+	debugger;
 	return (
 		<List
 			itemLayout="vertical"
@@ -47,7 +48,6 @@ const TrackList: React.FC<any> = ({ classes, tracks }) => {
 			renderItem={(item: any) => (
 				<List.Item
 					key={item.title}
-          actions={[<LikeTrack trackId={item.id} likeCount={item.likes.length} />, <CommentTrack track={item} commentCount={item.comments.length}/>]}
 					extra={
 						<img
 							width={225}
@@ -79,6 +79,26 @@ const TrackList: React.FC<any> = ({ classes, tracks }) => {
 						description={<Link to={`/profile/${item.postedBy.id}`}>{item.postedBy.username}</Link>}
 					/>
 					<AudioPlayer url={item.url} />
+					{/* actions={[<LikeTrack trackId={item.id} likeCount={item.likes.length} />, <CommentTrack track={item} commentCount={item.comments.length} />]} */}
+					<Collapse
+						bordered={false}
+						// expandIcon={({ isActive }) => <CaretRightOutlined rotate={isActive ? 90 : 0} />}
+						className="site-collapse-custom-collapse"
+						expandIconPosition={'right'}
+					>
+						<Panel
+							header={
+								<Space>
+									<LikeTrack trackId={item.id} likeCount={item.likes.length} />
+									<CommentTrack track={item} commentCount={item.comments.length} />
+								</Space>
+							}
+							key="1"
+							className="site-collapse-custom-panel"
+						>
+							<CommentList comments={item.comments} trackId={item.id}/>
+						</Panel>
+					</Collapse>
 				</List.Item>
 			)}
 		/>

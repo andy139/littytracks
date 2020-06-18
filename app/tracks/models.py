@@ -11,9 +11,21 @@ class Track(models.Model):
     img_url = models.URLField()
     created_at = models.DateTimeField(auto_now_add=True)
     posted_by = models.ForeignKey(get_user_model(), null=True, on_delete=models.CASCADE) ##casecade if user deleted entire track will be deleted also
-
-
+    
 ## class like
+
+class Comment(models.Model):
+    track = models.ForeignKey('tracks.Track', related_name='comments', on_delete=models.CASCADE)
+    comment = models.TextField(blank=True)
+    posted_by = models.ForeignKey(get_user_model(), null=True, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+
+class Subcomment(models.Model):
+    comment = models.OneToOneField(Comment, null=True, on_delete=models.CASCADE)
+    subcomment = models.TextField(blank=True)
+    posted_by = models.ForeignKey(get_user_model(), null=True, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
 
 class Like(models.Model):
     user = models.ForeignKey(get_user_model(), null=True, on_delete=models.CASCADE)

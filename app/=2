@@ -1,0 +1,4 @@
+Defaulting to user installation because normal site-packages is not writeable
+Requirement already satisfied: django-filter in /Users/antr900/Library/Python/2.7/lib/python/site-packages (2.0.0)
+Requirement already satisfied: Django>=1.11 in /Users/antr900/Library/Python/2.7/lib/python/site-packages (from django-filter) (1.11.29)
+Requirement already satisfied: pytz in /System/Library/Frameworks/Python.framework/Versions/2.7/Extras/lib/python (from Django>=1.11->django-filter) (2013.7)

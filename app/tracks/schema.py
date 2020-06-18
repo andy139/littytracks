@@ -1,9 +1,10 @@
 import graphene
 from graphene_django import DjangoObjectType
 from graphql import GraphQLError
-from .models import Track, Like, UserProfile
+from .models import Track, Like, UserProfile, Comment, Subcomment
 from users.schema import UserType
-from django.db.models import Q ## all,. ows usto make more complex queries
+from django.db.models import Q  ## all,. ows usto make more complex queries
+# from django_filters import FilterSet, OrderingFilter
 
 class TrackType(DjangoObjectType):
     class Meta:
@@ -17,9 +18,14 @@ class LikeType(DjangoObjectType):
     class Meta:
         model = Like
 
+class CommentType(DjangoObjectType):
+    class Meta:
+        model = Comment
+
 class Query(graphene.ObjectType):
     tracks = graphene.List(TrackType, search=graphene.String())
     likes = graphene.List(LikeType)
+    comments = graphene.List(CommentType)
 
     def resolve_tracks(self,info, search = None):
         if search:
@@ -35,6 +41,9 @@ class Query(graphene.ObjectType):
     
     def resolve_likes(self,info):
         return Like.objects.all()
+    
+    def resolve_comments(self, info):
+        return Comment.objects.all().reverse()
 
 class CreateTrack(graphene.Mutation):
     track = graphene.Field(TrackType)
@@ -123,6 +132,78 @@ class CreateLike(graphene.Mutation):
 
         return CreateLike(user=user, track=track)
 
+class DeleteLike(graphene.Mutation):
+    user = graphene.Field(UserType)
+    track = graphene.Field(TrackType)
+
+    class Arguments:
+        track_id = graphene.Int(required=True)
+
+    def mutate(self,info,track_id):
+        user = info.context.user
+        track = Track.objects.get(id=track_id)
+        # import pdb; pdb.set_trace()
+        like = Like.objects.filter(track=track, user=user)
+
+        
+
+        if user.is_anonymous:
+            raise GraphQLError('Log in to unlike this track.')
+        like.delete()
+
+        return DeleteLike(user=user, track=track)
+
+
+class CreateComment(graphene.Mutation):
+    user = graphene.Field(UserType)
+    track = graphene.Field(TrackType)
+
+    class Arguments:
+        comment = graphene.String()
+        track_id = graphene.Int(required=True)
+    
+    def mutate(self, info, comment, track_id):
+        user = info.context.user
+        # import pdb; pdb.set_trace()
+        track = Track.objects.get(id=track_id)
+
+        if user.is_anonymous:
+            raise GraphQLError('Login to comment')
+
+        # import pdb; pdb.set_trace()
+
+        Comment.objects.create(
+            comment=comment,
+            track=track,
+            posted_by=user
+        )
+
+
+        return Comment(track=track)
+
+class DeleteComment(graphene.Mutation):
+    user = graphene.Field(UserType)
+    track = graphene.Field(TrackType)
+
+    class Arguments:
+        comment_id = graphene.Int(required=True)
+
+    def mutate(self, info, comment_id):
+        user = info.context.user
+        comment = Comment.objects.get(id=comment_id)
+        
+        if user.is_anonymous:
+            raise GraphQLError('Log in to delete this comment')
+        comment.delete()
+
+        return DeleteComment(user=user, comment=comment)
+
+    
+
+
+        
+
+
 class UpdateProfile(graphene.Mutation):
     user_profile = graphene.Field(UserProfileType)
 
@@ -150,3 +231,6 @@ class Mutation(graphene.ObjectType):
     delete_track = DeleteTrack.Field()
     create_like = CreateLike.Field()
     update_profile = UpdateProfile.Field()
+    delete_like = DeleteLike.Field()
+    create_comment = CreateComment.Field()
+    delete_comment = DeleteComment.Field()

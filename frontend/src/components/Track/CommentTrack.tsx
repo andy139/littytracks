@@ -67,7 +67,7 @@ const CommentTrack: React.FC<any> = ({ track, commentCount }) => {
 
 
             </IconText>
-            <Modal
+            {/* <Modal
                 title={
                     <div>
                         <h2>{track.title}</h2>
@@ -99,7 +99,7 @@ const CommentTrack: React.FC<any> = ({ track, commentCount }) => {
                     </Col>
                 </Row>
 
-            </Modal>
+            </Modal> */}
         </>
      
 	);

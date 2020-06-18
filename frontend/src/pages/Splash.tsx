@@ -31,7 +31,9 @@ export const GET_TRACKS_QUERY = gql`
                 }
             }
             comments {
+                id
                 comment
+                createdAt
                 postedBy{
                     username
                     userprofile{
