@@ -25,10 +25,7 @@ const genExtra = () => (
 	/>
 );
 
-debugger
-
 const TrackList: React.FC<any> = ({ classes, tracks }) => {
-	debugger;
 	return (
 		<List
 			itemLayout="vertical"
@@ -42,7 +39,7 @@ const TrackList: React.FC<any> = ({ classes, tracks }) => {
 			dataSource={tracks}
 			footer={
 				<div>
-					<b>ant design</b> footer part
+					Footer
 				</div>
 			}
 			renderItem={(item: any) => (
@@ -96,7 +93,7 @@ const TrackList: React.FC<any> = ({ classes, tracks }) => {
 							key="1"
 							className="site-collapse-custom-panel"
 						>
-							<CommentList comments={item.comments} trackId={item.id}/>
+							<CommentList comments={item.comments} trackId={item.id} />
 						</Panel>
 					</Collapse>
 				</List.Item>

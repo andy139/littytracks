@@ -3,31 +3,42 @@ from graphene_django import DjangoObjectType
 from graphql import GraphQLError
 from .models import Track, Like, UserProfile, Comment, Subcomment
 from users.schema import UserType
-from django.db.models import Q  ## all,. ows usto make more complex queries
+from django.db.models import Q  # all,. ows usto make more complex queries
 # from django_filters import FilterSet, OrderingFilter
+
 
 class TrackType(DjangoObjectType):
     class Meta:
         model = Track
 
+
 class UserProfileType(DjangoObjectType):
     class Meta:
         model = UserProfile
+
 
 class LikeType(DjangoObjectType):
     class Meta:
         model = Like
 
+
 class CommentType(DjangoObjectType):
     class Meta:
         model = Comment
+
+
+class SubcommentType(DjangoObjectType):
+    class Meta:
+        model = Subcomment
+
 
 class Query(graphene.ObjectType):
     tracks = graphene.List(TrackType, search=graphene.String())
     likes = graphene.List(LikeType)
     comments = graphene.List(CommentType)
+    subcomments = graphene.List(SubcommentType)
 
-    def resolve_tracks(self,info, search = None):
+    def resolve_tracks(self, info, search=None):
         if search:
             filter = (
                 Q(title__icontains=search) |
@@ -35,15 +46,20 @@ class Query(graphene.ObjectType):
                 Q(url__icontains=search) |
                 Q(posted_by__username__icontains=search)
             )
-            return Track.objects.filter(filter) ## starts with the texts starting with the search arg
+            # starts with the texts starting with the search arg
+            return Track.objects.filter(filter)
 
         return Track.objects.all()
-    
-    def resolve_likes(self,info):
+
+    def resolve_likes(self, info):
         return Like.objects.all()
-    
+
     def resolve_comments(self, info):
         return Comment.objects.all().reverse()
+
+    def resolve_subcomments(self, info):
+        return Subcomment.objects.all().reverse()
+
 
 class CreateTrack(graphene.Mutation):
     track = graphene.Field(TrackType)
@@ -53,18 +69,18 @@ class CreateTrack(graphene.Mutation):
         description = graphene.String()
         url = graphene.String()
         img_url = graphene.String()
-    
-    def mutate(self,info, title, description, url, img_url):
-        user = info.context.user 
-        
+
+    def mutate(self, info, title, description, url, img_url):
+        user = info.context.user
+
         if user.is_anonymous:
             raise GraphQLError('Login to add a track')
 
-
-
-        track = Track(title=title, description = description, url=url, posted_by=user, img_url = img_url)
+        track = Track(title=title, description=description,
+                      url=url, posted_by=user, img_url=img_url)
         track.save()
         return CreateTrack(track=track)
+
 
 class UpdateTrack(graphene.Mutation):
     track = graphene.Field(TrackType)
@@ -92,6 +108,7 @@ class UpdateTrack(graphene.Mutation):
 
         return UpdateTrack(track=track)
 
+
 class DeleteTrack(graphene.Mutation):
     track_id = graphene.Int()
 
@@ -107,7 +124,8 @@ class DeleteTrack(graphene.Mutation):
 
         track.delete()
 
-        return DeleteTrack(track_id = track_id)
+        return DeleteTrack(track_id=track_id)
+
 
 class CreateLike(graphene.Mutation):
     user = graphene.Field(UserType)
@@ -115,8 +133,8 @@ class CreateLike(graphene.Mutation):
 
     class Arguments:
         track_id = graphene.Int(required=True)
-    
-    def mutate(self,info,track_id):
+
+    def mutate(self, info, track_id):
         user = info.context.user
         if user.is_anonymous:
             raise GraphQLError('Login to like tracks.')
@@ -132,6 +150,7 @@ class CreateLike(graphene.Mutation):
 
         return CreateLike(user=user, track=track)
 
+
 class DeleteLike(graphene.Mutation):
     user = graphene.Field(UserType)
     track = graphene.Field(TrackType)
@@ -139,13 +158,11 @@ class DeleteLike(graphene.Mutation):
     class Arguments:
         track_id = graphene.Int(required=True)
 
-    def mutate(self,info,track_id):
+    def mutate(self, info, track_id):
         user = info.context.user
         track = Track.objects.get(id=track_id)
         # import pdb; pdb.set_trace()
         like = Like.objects.filter(track=track, user=user)
-
-        
 
         if user.is_anonymous:
             raise GraphQLError('Log in to unlike this track.')
@@ -161,11 +178,14 @@ class CreateComment(graphene.Mutation):
     class Arguments:
         comment = graphene.String()
         track_id = graphene.Int(required=True)
-    
+
     def mutate(self, info, comment, track_id):
         user = info.context.user
+
+        
         # import pdb; pdb.set_trace()
         track = Track.objects.get(id=track_id)
+        
 
         if user.is_anonymous:
             raise GraphQLError('Login to comment')
@@ -178,8 +198,8 @@ class CreateComment(graphene.Mutation):
             posted_by=user
         )
 
-
         return Comment(track=track)
+
 
 class DeleteComment(graphene.Mutation):
     user = graphene.Field(UserType)
@@ -191,17 +211,60 @@ class DeleteComment(graphene.Mutation):
     def mutate(self, info, comment_id):
         user = info.context.user
         comment = Comment.objects.get(id=comment_id)
-        
-        if user.is_anonymous:
-            raise GraphQLError('Log in to delete this comment')
+
+        if comment.posted_by != user:
+            raise GraphQLError('Not permitted to delete this post')
+
         comment.delete()
 
-        return DeleteComment(user=user, comment=comment)
+        return DeleteComment(user=user)
+
+class CreateSubcomment(graphene.Mutation):
+    user = graphene.Field(UserType)
+    track = graphene.Field(TrackType)
+
+    class Arguments:
+        subcomment = graphene.String()
+        comment_id = graphene.Int(required=True)
+
+    def mutate(self, info, subcomment, comment_id):
+        user = info.context.user
+        # import pdb; pdb.set_trace()
+        comment = Comment.objects.get(id=comment_id)
+
+        if user.is_anonymous:
+            raise GraphQLError('Login to comment')
+
+       
+
+        Subcomment.objects.create(
+            subcomment=subcomment,
+            posted_by=user,
+            comment=comment
+        )
+
+
+        return Subcomment(posted_by=user, comment=comment)
+
+
+class DeleteSubcomment(graphene.Mutation):
+    user = graphene.Field(UserType)
+    track = graphene.Field(TrackType)
+
+    class Arguments:
+        subcomment_id = graphene.Int(required=True)
+
+    def mutate(self, info, subcomment_id):
+        user = info.context.user
+        subcomment = Subcomment.objects.get(id=subcomment_id)
+
+        if subcomment.posted_by != user:
+            raise GraphQLError('Not permitted to delete this subcomment')
+        subcomment.delete()
+
+        return DeleteComment(user=user)
 
     
-
-
-        
 
 
 class UpdateProfile(graphene.Mutation):
@@ -213,24 +276,25 @@ class UpdateProfile(graphene.Mutation):
     def mutate(self, info, avatar_url):
         user = info.context.user
 
-    
         if user.is_anonymous:
             raise GraphQLError('Cannot edit profile')
 
         user_profile = UserProfile.objects.get(user_id=user.id)
         user_profile.avatar_url = avatar_url
         user_profile.save()
-
         # import pdb; pdb.set_trace()
 
         return UpdateProfile(user_profile=user_profile)
 
+
 class Mutation(graphene.ObjectType):
-    create_track = CreateTrack.Field()
-    update_track = UpdateTrack.Field()
-    delete_track = DeleteTrack.Field()
-    create_like = CreateLike.Field()
-    update_profile = UpdateProfile.Field()
-    delete_like = DeleteLike.Field()
-    create_comment = CreateComment.Field()
-    delete_comment = DeleteComment.Field()
+        create_track = CreateTrack.Field()
+        update_track = UpdateTrack.Field()
+        delete_track = DeleteTrack.Field()
+        create_like = CreateLike.Field()
+        update_profile = UpdateProfile.Field()
+        delete_like = DeleteLike.Field()
+        create_comment = CreateComment.Field()
+        delete_comment = DeleteComment.Field()
+        create_subcomment = CreateSubcomment.Field()
+        delete_subcomment = DeleteSubcomment.Field()

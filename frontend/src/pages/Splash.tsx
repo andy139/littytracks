@@ -34,8 +34,21 @@ export const GET_TRACKS_QUERY = gql`
                 id
                 comment
                 createdAt
+                subcomments{
+                    subcomment
+                    id
+                    createdAt
+                    postedBy {
+                        username
+                        id
+                        userprofile{
+                            avatarUrl
+                        }
+                    }
+                }
                 postedBy{
                     username
+                    id
                     userprofile{
                         avatarUrl
                     }
@@ -61,8 +74,8 @@ const Splash: React.FC<any> = ({ classes }) => {
     
     return (
         <div>
-            <SearchTrack setSearchResults={setSearchResults}/>
-           
+            {/* <SearchTrack setSearchResults={setSearchResults}/>
+            */}
             <CreateTrack/>
             {loading ? <Loading/> : error ? <Error/> : <TrackList tracks={tracks}/>}
        

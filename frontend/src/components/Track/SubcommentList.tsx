@@ -1,15 +1,12 @@
-import React, { useState, createElement, useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import { gql } from 'apollo-boost';
 import { useMutation } from '@apollo/react-hooks';
 import { Comment, Avatar, Form, Button, List, Input, Tooltip, } from 'antd';
-import { DeleteFilled } from '@ant-design/icons';
+import {  DeleteFilled } from '@ant-design/icons';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
-
 import { UserContext } from '../../App';
-import { ME_QUERY } from '../../App';
-import SubcommentList from './SubcommentList'
-import {GET_TRACKS_QUERY } from '../../pages/Splash'
+import { GET_TRACKS_QUERY } from '../../pages/Splash'
 const { TextArea } = Input;
 
 
@@ -17,27 +14,24 @@ const { TextArea } = Input;
 const Editor = ({ onChange, handleSubmit, submitting, value }) => (
     <>
         <Form.Item>
-            <Input onChange={onChange} value={value} placeholder="Write a comment..." onPressEnter={() => handleSubmit()} />
+            <Input onChange={onChange} value={value} placeholder="Write a reply..." onPressEnter={() => handleSubmit()} />
         </Form.Item>
     </>
 );
 
-const CREATE_COMMENT_MUTATION = gql`
-	mutation($trackId: Int!, $comment: String!) {
-		createComment(trackId: $trackId, comment: $comment) {
-			track {
-				id
-				comments {
-					comment
-				}
-			}
+const CREATE_SUBCOMMENT_MUTATION = gql`
+	mutation($commentId: Int!, $subcomment: String!) {
+		createSubcomment(commentId: $commentId, subcomment: $subcomment) {
+			user{
+                username
+            }
 		}
 	}
 `;
 
-const DELETE_COMMENT_MUTATION = gql`
-    mutation($commentId: Int!){
-        deleteComment(commentId: $commentId){
+const DELETE_SUBCOMMENT_MUTATION = gql`
+    mutation($subcommentId: Int!){
+        deleteSubcomment(subcommentId: $subcommentId){
             user{
                 username
             }
@@ -48,26 +42,26 @@ const DELETE_COMMENT_MUTATION = gql`
 `;
 
 
-const CommentList: React.FC < any > = ({ comments, trackId }) => {
+const SubcommentList: React.FC<any> = ({ comments, commentId}) => {
     const currentUser: any = useContext(UserContext);
 
     const [submitting, changeSubmit] = useState(false);
     const [value, changeValue] = useState('');
-    const [createComment, { data, loading }] = useMutation(CREATE_COMMENT_MUTATION, {
-        refetchQueries: [{ query: GET_TRACKS_QUERY}]
+    const [createComment, { data, loading }] = useMutation(CREATE_SUBCOMMENT_MUTATION, {
+        refetchQueries: [{ query: GET_TRACKS_QUERY }]
     });
 
-    const [deleteComment] = useMutation(DELETE_COMMENT_MUTATION, {
+    const [deleteComment] = useMutation(DELETE_SUBCOMMENT_MUTATION, {
         refetchQueries: [{ query: GET_TRACKS_QUERY }]
     });
 
 
 
-    const handleSubmit = (trackId) => {
+    const handleSubmit = (commentId) => {
 
         changeSubmit(true);
         createComment({
-            variables:{trackId:trackId, comment: value}
+            variables: { commentId: commentId, subcomment: value }
         }).then(() => {
             changeSubmit(false)
             changeValue('')
@@ -75,67 +69,58 @@ const CommentList: React.FC < any > = ({ comments, trackId }) => {
     }
 
 
-        
+
     let reversedOrder = [...comments].reverse()
 
-      
+
 
     return (
         <>
             <List
                 itemLayout="horizontal"
                 dataSource={reversedOrder}
-                pagination={{
-                    onChange: (page) => {
-                        
-                    },
-                    pageSize: 4
-                }}
+                
                 renderItem={(comment: any) => {
 
                     // Format Date\
 
-               
+
                     const timestamp = comment.createdAt
                     const date = moment(timestamp + 'Z').fromNow()
                     const date2 = moment(comment.createdBy);
                     const formattedDate = date2.format('llll');
                     const userId = comment.postedBy.id;
                     const isUser = userId === currentUser.id
-                    const subcomments = comment.subcomments
+                    
 
-                   
+                    debugger
 
                     let deleteCommentDiv;
-                    
-               
 
                     if (isUser) {
                         deleteCommentDiv = (<span key="comment-basic-like">
-                         
 
-                                <span key="comment-basic-reply-to" onClick={() => {
-                                    deleteComment({
-                                        variables: { commentId: comment.id }
-                                    })
-                                }} >Delete</span>
-                                {/* <DeleteFilled /> */}
-                            
+
+                            <span key="comment-basic-reply-to" onClick={() => {
+                                deleteComment({
+                                    variables: { subcommentId: comment.id }
+                                })
+                            }} >Delete</span>
+                            {/* <DeleteFilled /> */}
+
                         </span>)
                     } else {
                         deleteCommentDiv = null;
                     }
 
 
-
-
-
+                    
 
                     return <Comment
                         author={
                             <Link style={{ color: "#8dcff8" }} to={`/profile/${comment.postedBy.id}`}>{comment.postedBy.username}</Link>
-                            
-                          }
+
+                        }
                         datetime={
                             <Tooltip title={formattedDate}>
                                 <span>{date}</span>
@@ -144,7 +129,6 @@ const CommentList: React.FC < any > = ({ comments, trackId }) => {
                         // actions={[<a key="list-loadmore-edit">Reply</a>, <span>Delete</span>]}
                         actions={[
                             deleteCommentDiv,
-                            <span key="comment-basic-reply-to">Reply</span>,
                         ]
                         }
                         avatar={
@@ -155,18 +139,16 @@ const CommentList: React.FC < any > = ({ comments, trackId }) => {
                         }
                         content={
                             <p>
-                                {comment.comment}
+                                {comment.subcomment}
                             </p>
                         }
                     >
-                       
-                        
-                       <SubcommentList comments={subcomments} commentId={comment.id}></SubcommentList>
-                
-    
+
+
+
                     </Comment>
                 }
-                   
+
                 }
             >
                 <Comment
@@ -179,15 +161,15 @@ const CommentList: React.FC < any > = ({ comments, trackId }) => {
                     content={
                         <Editor
                             onChange={e => changeValue(e.target.value)}
-                            handleSubmit={() => handleSubmit(trackId)}
+                            handleSubmit={() => handleSubmit(commentId)}
                             submitting={submitting}
                             value={value}
                         />
                     }
                 />
 
-           
-            </List> 
+
+            </List>
 
         </>
     )
@@ -196,4 +178,4 @@ const CommentList: React.FC < any > = ({ comments, trackId }) => {
 
 
 
-export default CommentList;
+export default SubcommentList;

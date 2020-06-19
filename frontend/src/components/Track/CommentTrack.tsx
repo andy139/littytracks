@@ -26,6 +26,8 @@ const CREATE_COMMENT_MUTATION = gql`
 	}
 `;
 
+
+
 const CommentTrack: React.FC<any> = ({ track, commentCount }) => {
 	const [ createComment, { data, loading } ] = useMutation(CREATE_COMMENT_MUTATION, {
 		refetchQueries: [ { query: ME_QUERY } ]

@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model
+from unixtimestampfield.fields import UnixTimeStampField
 
 # Create your models here.
 class Track(models.Model):
@@ -22,7 +23,9 @@ class Comment(models.Model):
 
 
 class Subcomment(models.Model):
-    comment = models.OneToOneField(Comment, null=True, on_delete=models.CASCADE)
+
+    comment = models.ForeignKey('tracks.Comment', related_name='subcomments', default="",
+                                on_delete=models.CASCADE)
     subcomment = models.TextField(blank=True)
     posted_by = models.ForeignKey(get_user_model(), null=True, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
