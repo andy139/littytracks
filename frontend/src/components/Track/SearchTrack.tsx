@@ -14,6 +14,7 @@ const SEARCH_TRACKS_QUERY = gql`
             title
             description
             url
+            imgUrl
             likes {
                 id
                 
@@ -21,6 +22,36 @@ const SEARCH_TRACKS_QUERY = gql`
             postedBy {
                 id
                 username
+                userprofile{
+                    avatarUrl
+                }
+            }
+            comments {
+                id
+                comment
+                createdAt
+                subcomments{
+                    subcomment
+                    id
+                    createdAt
+                    postedBy {
+                        username
+                        id
+                        userprofile{
+                            avatarUrl
+                        }
+                    }
+                }
+                postedBy{
+                    username
+                    id
+                    userprofile{
+                        avatarUrl
+                    }
+                }
+                
+                
+
             }
         }
     }
@@ -60,23 +91,38 @@ const SearchTrack: React.FC<any> = ({setSearchResults }) => {
         <>  
             <ApolloConsumer>
                 {client => (
-                   
-                    <Search placeholder="Search All Tracks" 
-                        size="large" 
-                        // allowClear
-                   
+
+                    <Search
+                        placeholder="Search All Tracks"
+                        enterButton="Search"
                         onSearch={() => {
                             setLoading(true);
                             handleSubmit(client)}
                         }
                         loading={loading} 
-                        enterButton 
-                        style={{padding: 10, paddingBottom:20, paddingTop:20}}
                         onChange={event => setSearch(event.target.value)}
                         value={search}
                         addonBefore={<Button type="primary" shape="circle" onClick={clearSearchInput}><i className="fas fa-times"></i></Button>}
+                        size="large"
                         
                     />
+                   
+                    // <Search placeholder="Search All Tracks" 
+                    //     size="large" 
+                    //     // allowClear
+                   
+                    //     onSearch={() => {
+                    //         setLoading(true);
+                    //         handleSubmit(client)}
+                    //     }
+                    //     loading={loading} 
+                    //     enterButton 
+                    //     style={{ marginTop:"20px", backgroundColor:"#8dcff8"}}
+                    //     onChange={event => setSearch(event.target.value)}
+                    //     value={search}
+                    //     addonBefore={<Button type="primary" shape="circle" onClick={clearSearchInput}><i className="fas fa-times"></i></Button>}
+                        
+                    // />
                     
 
 

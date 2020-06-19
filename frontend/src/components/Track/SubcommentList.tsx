@@ -7,8 +7,8 @@ import moment from 'moment';
 import { Link } from 'react-router-dom';
 import { UserContext } from '../../App';
 import { GET_TRACKS_QUERY } from '../../pages/Splash'
+import './track.css';
 const { TextArea } = Input;
-
 
 
 const Editor = ({ onChange, handleSubmit, submitting, value }) => (
@@ -101,7 +101,7 @@ const SubcommentList: React.FC<any> = ({ comments, commentId}) => {
                         deleteCommentDiv = (<span key="comment-basic-like">
 
 
-                            <span key="comment-basic-reply-to" onClick={() => {
+                            <span key="comment-basic-reply-to" className="reply-delete"  onClick={() => {
                                 deleteComment({
                                     variables: { subcommentId: comment.id }
                                 })

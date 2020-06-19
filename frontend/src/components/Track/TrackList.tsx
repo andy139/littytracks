@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Collapse, Select, List, Card, Avatar, Space } from 'antd';
-import { MessageOutlined, LikeOutlined, StarOutlined, SettingOutlined, CaretRightOutlined } from '@ant-design/icons';
+import { Collapse, Select, List, Card, Avatar, Space, Row, Col, Descriptions } from 'antd';
+import { MessageOutlined, LikeOutlined, StarOutlined, SettingOutlined, CaretRightOutlined, } from '@ant-design/icons';
 import { Query } from 'react-apollo';
 import { gql } from 'apollo-boost';
 import { Link } from 'react-router-dom';
@@ -26,6 +26,7 @@ const genExtra = () => (
 );
 
 const TrackList: React.FC<any> = ({ classes, tracks }) => {
+	debugger;
 	return (
 		<List
 			itemLayout="vertical"
@@ -37,67 +38,94 @@ const TrackList: React.FC<any> = ({ classes, tracks }) => {
 				pageSize: 6
 			}}
 			dataSource={tracks}
-			footer={
-				<div>
-					Footer
-				</div>
-			}
-			renderItem={(item: any) => (
-				<List.Item
-					key={item.title}
-					extra={
-						<img
-							width={225}
-							alt="logo"
-							src={
-								item.imgUrl ? (
-									item.imgUrl
-								) : (
-									'http://res.cloudinary.com/andytran/raw/upload/v1592239178/ksa9qczmaoicuqcgdo10'
-								)
-							}
-						/>
-					}
-				>
-					<List.Item.Meta
-						avatar={
-							<Avatar
-								size={64}
-								src={
-									item.postedBy.userprofile.avatarUrl ? (
-										item.postedBy.userprofile.avatarUrl
-									) : (
-										'https://avatars1.githubusercontent.com/u/8186664?s=460&v=4'
-									)
-								}
-							/>
-						}
-						title={item.title}
-						description={<Link to={`/profile/${item.postedBy.id}`}>{item.postedBy.username}</Link>}
-					/>
-					<AudioPlayer url={item.url} />
-					{/* actions={[<LikeTrack trackId={item.id} likeCount={item.likes.length} />, <CommentTrack track={item} commentCount={item.comments.length} />]} */}
-					<Collapse
-						bordered={false}
-						// expandIcon={({ isActive }) => <CaretRightOutlined rotate={isActive ? 90 : 0} />}
-						className="site-collapse-custom-collapse"
-						expandIconPosition={'right'}
+			footer={<div>Footer</div>}
+			renderItem={(item: any) => {
+				debugger;
+				return (
+					<List.Item
+						key={item.title}
+						// extra={
+						// 	<img
+						// 		width={225}
+						// 		alt="logo"
+						// 		src={
+						// 			item.imgUrl ? (
+						// 				item.imgUrl
+						// 			) : (
+						// 					'http://res.cloudinary.com/andytran/raw/upload/v1592239178/ksa9qczmaoicuqcgdo10'
+						// 				)
+						// 		}
+						// 	/>
+						// }
 					>
-						<Panel
-							header={
-								<Space>
-									<LikeTrack trackId={item.id} likeCount={item.likes.length} />
-									<CommentTrack track={item} commentCount={item.comments.length} />
-								</Space>
+						<List.Item.Meta
+							avatar={
+								<Avatar
+									size={64}
+									src={
+										item.postedBy.userprofile.avatarUrl ? (
+											item.postedBy.userprofile.avatarUrl
+										) : (
+											'https://avatars1.githubusercontent.com/u/8186664?s=460&v=4'
+										)
+									}
+								/>
 							}
-							key="1"
-							className="site-collapse-custom-panel"
+							title={item.title}
+							description={<Link to={`/profile/${item.postedBy.id}`}>{item.postedBy.username}</Link>}
+						/>
+
+						<Row justify="center" >
+							<Col flex="300px" style={{ display: 'flex', justifyContent: 'center' }}>
+								<img
+									width={225}
+									alt="logo"
+									src={
+										item.imgUrl ? (
+											item.imgUrl
+										) : (
+											'http://res.cloudinary.com/andytran/raw/upload/v1592239178/ksa9qczmaoicuqcgdo10'
+										)
+									}
+								/>
+							</Col>
+							<Col flex="auto">
+								<AudioPlayer url={item.url} />
+								{/* <Descriptions title="User Info">
+									
+									
+								</Descriptions>, */}
+								<p style={{marginTop:"20px"}}>
+									{item.description}
+
+								</p>
+								
+							</Col>
+						</Row>
+
+						<Collapse
+							bordered={false}
+							// expandIcon={({ isActive }) => <CaretRightOutlined rotate={isActive ? 90 : 0} />}
+							className="site-collapse-custom-collapse"
+							expandIconPosition={'right'}
+							style={{ marginTop: '20px' }}
 						>
-							<CommentList comments={item.comments} trackId={item.id} />
-						</Panel>
-					</Collapse>
-				</List.Item>
-			)}
+							<Panel
+								header={
+									<Space>
+										<LikeTrack trackId={item.id} likeCount={item.likes.length} />
+										<CommentTrack track={item} commentCount={item.comments.length} />
+									</Space>
+								}
+								key="1"
+								className="site-collapse-custom-panel"
+							>
+								<CommentList comments={item.comments} trackId={item.id} />
+							</Panel>
+						</Collapse>
+					</List.Item>
+				);
+			}}
 		/>
 	);
 };

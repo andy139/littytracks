@@ -9,6 +9,7 @@ import SearchTrack from '../Track/SearchTrack'
 import Signout from '../Session/Signout'
 
 import { GET_TRACKS_QUERY } from '../../pages/Splash';
+import './shared.css'
 
 const { Title } = Typography;
 const { Header, Content, Footer } = Layout;
@@ -34,7 +35,8 @@ const Navbar: React.FC<any> = ({ currentUser }) => {
    
         <Menu theme="dark" mode="horizontal" style={{position:'relative', display: 'flex', justifyContent: 'center', width:"75%"}} selectable={false}  >
             <Link to="/" style={{ position: 'absolute', top: 0, left: 0, display: 'flex', justifyContent: 'center', alignItems:'center', paddingTop:"10px"}}>
-                <Title level={4}> <Avatar size={42} src="https://django-app-images.s3-us-west-1.amazonaws.com/music-logo3.png" /> Better Tracks</Title>
+                <Title level={4} className='logo-font' style={{ color:"#d2e0fa"}}>LittyTracks</Title>
+                {/* <Avatar size={42} src="https://django-app-images.s3-us-west-1.amazonaws.com/sound.png" />  */}
             </Link>
     
             <MenuItem>

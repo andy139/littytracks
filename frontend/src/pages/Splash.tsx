@@ -74,8 +74,8 @@ const Splash: React.FC<any> = ({ classes }) => {
     
     return (
         <div>
-            {/* <SearchTrack setSearchResults={setSearchResults}/>
-            */}
+            <SearchTrack setSearchResults={setSearchResults}/>
+           
             <CreateTrack/>
             {loading ? <Loading/> : error ? <Error/> : <TrackList tracks={tracks}/>}
        
