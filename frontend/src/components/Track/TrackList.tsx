@@ -78,7 +78,7 @@ const TrackList: React.FC<any> = ({ classes, tracks }) => {
 						<Row justify="center" >
 							<Col flex="300px" style={{ display: 'flex', justifyContent: 'center' }}>
 								<img
-									width={225}
+									width={175}
 									alt="logo"
 									src={
 										item.imgUrl ? (

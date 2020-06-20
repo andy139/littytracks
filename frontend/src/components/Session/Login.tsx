@@ -59,7 +59,7 @@ const Login:React.FC<Props> = ({classes, setNewUser}) => {
 
 
     return (
-        <div style={{ display: "flex" }}>
+        <div style={{ display: "flex", height: "100vh", backgroundImage: `url("https://django-app-images.s3-us-west-1.amazonaws.com/wp2570965-background-full-hd.jpg")` }}>
             <Card style={{ width: 400, margin: "auto", marginTop: 50 }}>
                 <form >
                     <Form

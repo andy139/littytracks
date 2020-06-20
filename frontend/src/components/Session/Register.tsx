@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { Form, Input, Button, Checkbox, Card, Modal,Space, notification } from "antd";
-import { UserOutlined, LockOutlined, MailOutlined, SmileOutlined, PoweroffOutlined } from "@ant-design/icons";
+import { Form, Input, Button, Checkbox, Card, Modal,Space, notification, Divider } from "antd";
+import { UserOutlined, LockOutlined, MailOutlined, SmileOutlined, PoweroffOutlined} from "@ant-design/icons";
 import { gql } from "apollo-boost";
 import { useMutation } from '@apollo/react-hooks';
 import Error from '../Shared/Error';
@@ -71,8 +71,10 @@ const Register: React.FC<Props> = ({ classes, setNewUser }) => {
   };
 
   return (
-    <div style={{ display: "flex" }}>
-      <Card style={{ width: 400, margin: "auto", marginTop: 50 }}>
+    <div style={{ display: "flex", height: "100vh", backgroundImage: `url("https://django-app-images.s3-us-west-1.amazonaws.com/wp2570965-background-full-hd.jpg")` }}>
+      
+      
+      <Card style={{ width: 400, margin: "auto", marginTop: 100 }}>
         <form onSubmit={event => handleSubmit(createUser)}>
           <Form
            
