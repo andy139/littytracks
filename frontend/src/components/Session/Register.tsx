@@ -1,165 +1,167 @@
-import React, { useState } from "react";
-import { Form, Input, Button, Checkbox, Card, Modal,Space, notification, Divider } from "antd";
-import { UserOutlined, LockOutlined, MailOutlined, SmileOutlined, PoweroffOutlined} from "@ant-design/icons";
-import { gql } from "apollo-boost";
+import React, { useState } from 'react';
+import { Form, Input, Button, Checkbox, Card, Modal, Space, notification, Divider } from 'antd';
+import { UserOutlined, LockOutlined, MailOutlined, SmileOutlined, PoweroffOutlined } from '@ant-design/icons';
+import { gql } from 'apollo-boost';
 import { useMutation } from '@apollo/react-hooks';
 import Error from '../Shared/Error';
 
 interface Props {
-    classes? : string;
-    setNewUser(name: boolean): any;
-
+	classes?: string;
+	setNewUser(name: boolean): any;
 }
 
 const FormItem = Form.Item;
 
-const REGISTER_MUTATION = gql `
-  mutation($username: String!, $email: String!, $password: String!) {
-    createUser(username: $username, email: $email, password: $password) {
-      user {
-        username
-        email
-      }
-    }
-  }
+const REGISTER_MUTATION = gql`
+	mutation($username: String!, $email: String!, $password: String!) {
+		createUser(username: $username, email: $email, password: $password) {
+			user {
+				username
+				email
+			}
+		}
+	}
 `;
 
-
 const Register: React.FC<Props> = ({ classes, setNewUser }) => {
+	const [ username, setUsername ] = useState<string>('');
+	const [ email, setEmail ] = useState<string>('');
+	const [ password, setPassword ] = useState<string>('');
+	const [ createUser, { loading, error } ] = useMutation(REGISTER_MUTATION);
 
-  const [username, setUsername] = useState<string>("");
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("")
-  const [createUser, {loading, error}] = useMutation(REGISTER_MUTATION);
-
-  
-  function success() {
-    Modal.success({
-      title: 'New user',
-      content: (
-        <div>
-          <p>Successfully Created</p>
-        </div>
-      ),
-      onOk() { setNewUser(false) },
-      okText: "Login"
-    });
-  }
-
-  
-
-
-
-
-
-  const handleSubmit = async (createUser) => {
-    console.log("handlesubmit")
-    const res = await createUser({variables: { 
-      username: username,
-      email: email,
-      password: password,
-    }})
-
-    // console.log({res});
-    success();
+	function success() {
+		Modal.success({
+			title: 'New user',
+			content: (
+				<div>
+					<p>Successfully Created</p>
+				</div>
+			),
+			onOk() {
+				setNewUser(false);
+			},
+			okText: 'Login'
+		});
   }
 
 
-  const onFinish = (values) => {
-    // console.log("Received values of form: TEST ", values);
-    handleSubmit(createUser);
+	const handleSubmit = (createUser) => {
+		console.log('handlesubmit');
+		createUser({
+			variables: {
+				username: username,
+				email: email,
+				password: password
+			}
+		})
+			.then(() => {
+				success();
+			})
+			.catch((e) => {});
+	};
+
+	const onFinish = (values) => {
+		// console.log("Received values of form: TEST ", values);
+		handleSubmit(createUser);
+  };
+  
+  const validateMessages = {
+    required: '${name} is required!',
+    types: {
+      email: `The input is not a valid email!`,
+    },
+
   };
 
-  return (
-    <div style={{ display: "flex", height: "100vh", backgroundImage: `url("https://django-app-images.s3-us-west-1.amazonaws.com/wp2570965-background-full-hd.jpg")` }}>
-      
-      
-      <Card style={{ width: 400, margin: "auto", marginTop: 100 }}>
-        <form onSubmit={event => handleSubmit(createUser)}>
-          <Form
-           
-            name="normal_login"
-            className="login-form"
-            initialValues={{ remember: true }}
-            onFinish={onFinish}
 
-          >
-            <FormItem style={{ display: "flex" }}>
-
-              <h1>Register</h1>
+	return (
+		<div style={{ display: 'flex' }}>
+			<Card style={{ width: 400, margin: 'auto', marginTop: 100 }}>
+				<form onSubmit={(event) => handleSubmit(createUser)}>
+          <Form name="normal_login" className="login-form" initialValues={{ remember: true }} onFinish={onFinish} validateMessages={validateMessages} >
+						<FormItem style={{ display: 'flex' }}>
+							<h1>Register</h1>
+						</FormItem>
+						<FormItem name="username" rules={[ { required: true, message: 'Please input your Username!' } ]}>
+							<Input
+								prefix={<UserOutlined className="site-form-item-icon" />}
+								placeholder="Username"
+								onChange={(e) => setUsername(e.target.value)}
+							/>
+						</FormItem>
+            <FormItem name="Email" rules={[{ required: true, type: 'email' } ]}>
+							<Input
+								prefix={<MailOutlined className="site-form-item-icon" />}
+								placeholder="Email"
+								onChange={(e) => setEmail(e.target.value)}
+							/>
             </FormItem>
-            <FormItem
-              name="username"
+            
+            <FormItem name="password"
+              rules={[{ required: true, message: 'Please input your Password!' }]}
+              hasFeedback
+            >
+							<Input.Password
+								prefix={<LockOutlined className="site-form-item-icon" />}
+								type="password"
+								placeholder="Password"
+								onChange={(e) => setPassword(e.target.value)}
+							/>
+            </FormItem>
+            
+
+
+            <Form.Item
+              name="confirm"
+              
+              dependencies={['password']}
+              hasFeedback
               rules={[
-                { required: true, message: "Please input your Username!" },
+                {
+                  required: true,
+                  message: 'Please confirm your password!',
+                },
+                ({ getFieldValue }) => ({
+                  validator(rule, value) {
+                    if (!value || getFieldValue('password') === value) {
+                      return Promise.resolve();
+                    }
+                    return Promise.reject('The two passwords that you entered do not match!');
+                  },
+                }),
               ]}
             >
-              <Input
-                prefix={<UserOutlined className="site-form-item-icon" />}
-                placeholder="Username"
-                onChange={e => setUsername(e.target.value)}
-              />
-            </FormItem>
-            <FormItem
-              name="email"
-              rules={[{ required: true, message: "Please input your Email!" }]}
-            >
-              <Input
-                prefix={<MailOutlined className="site-form-item-icon" />}
-                placeholder="Email"
-                onChange={e => setEmail(e.target.value)}
-              />
-            </FormItem>
-            <FormItem
-              name="password"
-              rules={[
-                { required: true, message: "Please input your Password!" },
-              ]}
-            >
-              <Input
+              <Input.Password
                 prefix={<LockOutlined className="site-form-item-icon" />}
                 type="password"
-                placeholder="Password"
-                onChange={e => setPassword(e.target.value)}
-              />
-            </FormItem>
-    
-            <FormItem>
-              <Button
-                block
-            
-                loading={loading}
-                type="primary"
-                htmlType="submit"
-                className="login-form-button"
-                disabled={loading || !username.trim() || !email.trim() || !password.trim()}
-              >
-               Register
-            </Button>
-            </FormItem>
+                placeholder="Confirm Password"/>
+            </Form.Item>
 
-            <FormItem>
-              <Button
-                block
-                onClick={() => setNewUser(false)}
-                
-              >
-                Already have an account? Log in now!
-              </Button>
-              
-            </FormItem>
-          </Form>
+						<FormItem>
+							<Button
+								block
+								loading={loading}
+								type="primary"
+								htmlType="submit"
+								className="login-form-button"
+								disabled={loading || !username.trim() || !email.trim() || !password.trim()}
+							>
+								Register
+							</Button>
+						</FormItem>
 
-          {error && <Error error={error}/>}
-          
-        </form>
-       
-      </Card>
+						<FormItem>
+							<Button block onClick={() => setNewUser(false)}>
+								Already have an account? Log in now!
+							</Button>
+						</FormItem>
+					</Form>
 
-
-  
-    </div>
-  );
+					{error && <Error error={error} />}
+				</form>
+			</Card>
+		</div>
+	);
 };
 
 export default Register;

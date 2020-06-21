@@ -10,8 +10,8 @@ interface Props {
 
 
 const Error:React.FC<Props> = ({classes, error}) => {
-    const [open, setOpen] = useState(true);
-
+   
+    debugger
     const openNotification = () => {
         notification.open({
             message: error.message,
