@@ -1,7 +1,7 @@
 import graphene
 from graphene_django import DjangoObjectType
 from graphql import GraphQLError
-from .models import Track, Like, UserProfile, Comment, Subcomment
+from .models import Track, Like, Play, UserProfile, Comment, Subcomment
 from users.schema import UserType
 from django.db.models import Q  # all,. ows usto make more complex queries
 # from django_filters import FilterSet, OrderingFilter
@@ -21,6 +21,10 @@ class LikeType(DjangoObjectType):
     class Meta:
         model = Like
 
+class PlayType(DjangoObjectType):
+    class Meta:
+        model = Play       
+
 
 class CommentType(DjangoObjectType):
     class Meta:
@@ -35,6 +39,7 @@ class SubcommentType(DjangoObjectType):
 class Query(graphene.ObjectType):
     tracks = graphene.List(TrackType, search=graphene.String())
     likes = graphene.List(LikeType)
+    plays = graphene.List(PlayType)
     comments = graphene.List(CommentType)
     subcomments = graphene.List(SubcommentType)
 
@@ -54,6 +59,9 @@ class Query(graphene.ObjectType):
     def resolve_likes(self, info):
         return Like.objects.all()
 
+    def resolve_plays(self, info):
+        return Play.objects.all()
+
     def resolve_comments(self, info):
         return Comment.objects.all().reverse()
 
@@ -69,14 +77,15 @@ class CreateTrack(graphene.Mutation):
         description = graphene.String()
         url = graphene.String()
         img_url = graphene.String()
+        artist_name = graphene.String()
 
-    def mutate(self, info, title, description, url, img_url):
+    def mutate(self, info, title, description, url, img_url, artist_name):
         user = info.context.user
 
         if user.is_anonymous:
             raise GraphQLError('Login to add a track')
 
-        track = Track(title=title, description=description,
+        track = Track(title=title, description=description, artist_name=artist_name,
                       url=url, posted_by=user, img_url=img_url)
         track.save()
         return CreateTrack(track=track)
@@ -91,8 +100,9 @@ class UpdateTrack(graphene.Mutation):
         description = graphene.String()
         url = graphene.String()
         img_url = graphene.String()
+        artist_name = graphene.String()
 
-    def mutate(self, info, track_id, title, url, description, image_url):
+    def mutate(self, info, track_id, title, url, description, image_url, artist_name):
         user = info.context.user
         track = Track.objects.get(id=track_id)
 
@@ -103,6 +113,7 @@ class UpdateTrack(graphene.Mutation):
         track.description = description
         track.url = url
         track.image_url = image_url
+        artist_name = artist_name
 
         track.save()
 
@@ -125,6 +136,31 @@ class DeleteTrack(graphene.Mutation):
         track.delete()
 
         return DeleteTrack(track_id=track_id)
+
+
+class CreatePlay(graphene.Mutation):
+    user = graphene.Field(UserType)
+    track = graphene.Field(TrackType)
+
+    class Arguments:
+        track_id = graphene.Int(required=True)
+
+    def mutate(self, info, track_id):
+        user = info.context.user
+
+        if user.is_anonymous:
+            user = None
+
+        track = Track.objects.get(id=track_id)
+        if not track:
+            raise GraphQLError('Cannot find track with given track id')
+
+        Play.objects.create(
+            user=user,
+            track=track
+        )
+
+        return CreatePlay(user=user, track=track)
 
 
 class CreateLike(graphene.Mutation):
@@ -298,3 +334,4 @@ class Mutation(graphene.ObjectType):
         delete_comment = DeleteComment.Field()
         create_subcomment = CreateSubcomment.Field()
         delete_subcomment = DeleteSubcomment.Field()
+        create_play = CreatePlay.Field()

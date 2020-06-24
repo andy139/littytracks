@@ -7,6 +7,7 @@ from unixtimestampfield.fields import UnixTimeStampField
 class Track(models.Model):
     # id is added automatically
     title = models.CharField(max_length=50)
+    artist_name = models.CharField(max_length=50)
     description = models.TextField(blank=True)
     url = models.URLField()
     img_url = models.URLField()
@@ -33,6 +34,12 @@ class Subcomment(models.Model):
 class Like(models.Model):
     user = models.ForeignKey(get_user_model(), null=True, on_delete=models.CASCADE)
     track = models.ForeignKey('tracks.Track', related_name='likes', on_delete=models.CASCADE)
+
+class Play(models.Model):
+    user = models.ForeignKey(
+        get_user_model(), null=True, on_delete=models.CASCADE)
+    track = models.ForeignKey(
+        'tracks.Track', related_name='plays', on_delete=models.CASCADE)
 
     ## REFERENCES THE USER FOR A GIVEN TRACK
 class UserProfile(models.Model):

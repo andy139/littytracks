@@ -36,9 +36,19 @@ export const PROFILE_QUERY = gql`
 					title
 					url
 					description
+					artistName
+					imgUrl
 					likes {
 						id
 					}
+					comments{
+						id
+						comment
+						createdAt
+					}
+					plays {
+                		id
+            		}
 					postedBy {
 						id
 						username
@@ -50,9 +60,19 @@ export const PROFILE_QUERY = gql`
 				title
 				url
 				description
+				artistName
+				imgUrl
+				comments{
+					id
+					comment
+					createdAt
+				}
 				postedBy {
 					id
 					username
+				}
+				plays {
+					id
 				}
 				likes {
 					id
@@ -116,49 +136,17 @@ const Profile: React.FC<any> = ({ match, history, currentUser }) => {
 			loading={false}
 			dataSource={data.user.trackSet}
 			renderItem={(track: any) => (
-				<List.Item
-					extra={
-						<img
-							width={225}
-							alt="logo"
-							src={
-								track.imgUrl ? (
-									track.imgUrl
-								) : (
-									'http://res.cloudinary.com/andytran/raw/upload/v1592239178/ksa9qczmaoicuqcgdo10'
-								)
-							}
-						/>
-					}
-					actions={[
-						// <IconText icon={LikeOutlined} text={track.likes.length} key="list-vertical-like-o" />,
-
-						<UpdateTrack track={track} />,
-						<DeleteTrack track={track} userId={match.params.id} />
-					]}
-				>
-					<List.Item.Meta
-						avatar={<Avatar src="https://avatars1.githubusercontent.com/u/8186664?s=460&v=4" />}
-						title={
-							<div>
-								<div>{track.title}</div>
-								<div style={{ color: 'rgba(0, 0, 0, 0.45)' }}>{track.postedBy.username}</div>
-							</div>
-						}
-						description={<AudioPlayer url={track.url} />}
-					/>
+				<List.Item>
+					
+					<AudioPlayer streamUrl={track.url} match={match} trackTitle={track.title} imgUrl={track.imgUrl} track={track} preloadType="metadata" />
+					
+				
 				</List.Item>
 			)}
 		/>
 	);
 
-	const likedTracks = data.user.likeSet.map(({ track }) => (
-		<div>
-			{track.title} {track.likes.length}
-			{track.postedBy.username}
-			<AudioPlayer url={track.url} />
-		</div>
-	));
+
 
 	const likedTracks2 = (
 		<List
@@ -168,37 +156,10 @@ const Profile: React.FC<any> = ({ match, history, currentUser }) => {
 			loading={false}
 			dataSource={data.user.likeSet}
 			renderItem={({ track }: any) => (
-				<List.Item
-					extra={
-						<img
-							width={225}
-							alt="logo"
-							src={
-								track.imgUrl ? (
-									track.imgUrl
-								) : (
-									'http://res.cloudinary.com/andytran/raw/upload/v1592239178/ksa9qczmaoicuqcgdo10'
-								)
-							}
-						/>
-					}
-					actions={[
-						// <IconText icon={LikeOutlined} text={track.likes.length} key="list-vertical-like-o" />,
-
-						<UpdateTrack track={track} />,
-						<DeleteTrack track={track} userId={match.params.id} />
-					]}
-				>
-					<List.Item.Meta
-						avatar={<Avatar src="https://avatars1.githubusercontent.com/u/8186664?s=460&v=4" />}
-						title={
-							<div>
-								<div>{track.title}</div>
-								<div style={{ color: 'rgba(0, 0, 0, 0.45)' }}>{track.postedBy.username}</div>
-							</div>
-						}
-						description={<AudioPlayer url={track.url} />}
-					/>
+			
+				<List.Item>
+					<AudioPlayer streamUrl={track.url} match={match} trackTitle={track.title} imgUrl={track.imgUrl} track={track} preloadType="metadata" />
+					
 				</List.Item>
 			)}
 		/>
@@ -231,11 +192,7 @@ const Profile: React.FC<any> = ({ match, history, currentUser }) => {
 				}}
 			>
 				<UpdateAvatar style={{marginRight:'100'}} userId={match.params.id} />
-				{/* <Descriptions size="small" column={3}>
-					<Descriptions.Item>
-						<UpdateAvatar userId={match.params.id} />
-					</Descriptions.Item>
-				</Descriptions> */}
+			
 			</PageHeader>
 
 			<Tabs defaultActiveKey="1">

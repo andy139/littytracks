@@ -71,7 +71,7 @@ const LikeTrack: React.FC<any> = ({ trackId, likeCount }) => {
 							deleteLike({ variables: { trackId: parseInt(trackId) } }).then((data) => console.log(data));
 						}}
 					>
-						<LikeFilled style={{ fontSize: '20px', color: '#08c' }} />
+						<LikeFilled style={{ fontSize: '20px', color: '#08c' }} /> 
 					</Button>
 				) : (
 					<Button
@@ -82,11 +82,11 @@ const LikeTrack: React.FC<any> = ({ trackId, likeCount }) => {
 							createLike({ variables: { trackId: parseInt(trackId) } }).then((data) => console.log(data));
 						}}
 					>
-						<LikeOutlined style={{ fontSize: '20px', color: '#08c' }} />
+						<LikeOutlined style={{ fontSize: '20px', color: '#08c' }} /> 
 					</Button>
 				)
 			}
-			text={likeCount}
+			text={likeCount} 
 		/>
 	);
 };

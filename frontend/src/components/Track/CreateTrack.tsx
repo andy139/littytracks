@@ -14,14 +14,15 @@ import {PROFILE_QUERY} from '../../pages/Profile';
 
 
 const CREATE_TRACK_MUTATION = gql`
-    mutation ($title: String!, $description: String!, $url: String!, $imgUrl: String!){
-        createTrack(title: $title, description: $description, url: $url, imgUrl: $imgUrl){
+    mutation ($title: String!, $description: String!, $url: String!, $imgUrl: String!, $artistName: String!){
+        createTrack(title: $title, description: $description, url: $url, imgUrl: $imgUrl, artistName:$artistName){
             track{
                 id
                 title
                 description
                 url
                 imgUrl
+                artistName
                 likes {
                   id
                   
@@ -43,6 +44,7 @@ const CreateTrack: React.FC<any> = ({classes, userId, isNavbar}) => {
     if (!id) id = 21;
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
+    const [artistName, setArtistName] = useState("");
     const [file,setFile] = useState([]);
     const [progress, setProgress] = useState(0);
     const [submitting, setSubmitting] = useState(false);
@@ -169,7 +171,7 @@ const CreateTrack: React.FC<any> = ({classes, userId, isNavbar}) => {
     
          
         createTrack({
-            variables:{ title, description, url: url, imgUrl:imgUrl}
+            variables:{ title, description, url: url, imgUrl:imgUrl, artistName: artistName}
         }).then((data)=>{
             console.log({ data });
             setSubmitting(false);
@@ -178,7 +180,8 @@ const CreateTrack: React.FC<any> = ({classes, userId, isNavbar}) => {
             setDescription("");
             setUrl(null);
             setFile([]);
-            setImgUrl("")
+          setImgUrl("")
+          setArtistName("")
         })
 
     }
@@ -346,6 +349,14 @@ const CreateTrack: React.FC<any> = ({classes, userId, isNavbar}) => {
                     
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
+                  ></Input>
+                  <br />
+                  <br />
+                  <h4>Artist Name</h4>
+                  <Input
+
+                    value={artistName}
+                    onChange={(e) => setArtistName(e.target.value)}
                   ></Input>
                   <br />
                   <br />

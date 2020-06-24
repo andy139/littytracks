@@ -15,6 +15,9 @@ const SEARCH_TRACKS_QUERY = gql`
             description
             url
             imgUrl
+            plays {
+                id
+            }
             likes {
                 id
                 
