@@ -8,8 +8,8 @@ import Error from '../components/Shared/Error';
 import Loading from '../components/Shared/Loading';
 import { create } from 'domain';
 import format from 'date-fns/format';
-
-import { PageHeader, List, Avatar, Space, Divider, Empty, Button, Descriptions } from 'antd';
+import moment from 'moment';
+import { PageHeader, List, Avatar, Space, Divider, Empty, Button, Descriptions, Row, Col, Tabs } from 'antd';
 import { MessageOutlined, LikeOutlined, StarOutlined } from '@ant-design/icons';
 import DeleteTrack from '../components/Track/DeleteTrack';
 import UpdateTrack from '../components/Track/UpdateTrack';
@@ -61,6 +61,8 @@ export const PROFILE_QUERY = gql`
 		}
 	}
 `;
+
+const { TabPane } = Tabs;
 
 const Profile: React.FC<any> = ({ match, history, currentUser }) => {
 	const { loading, data, error } = useQuery(PROFILE_QUERY, {
@@ -202,37 +204,70 @@ const Profile: React.FC<any> = ({ match, history, currentUser }) => {
 		/>
 	);
 
+
+	const timestamp = data.user.dateJoined
+	const date = moment(timestamp)
+	const formattedDate = date.format('LL');
 	return (
 		<div>
 			{/* User info card */}
 			<PageHeader
+				style={{marginTop: 20}}
 				className="site-page-header"
 				onBack={() => history.goBack()}
-				title={data.user.username}
-				subTitle={`Joined ${data.user.dateJoined.substring(0, 10)}`}
+				title={
+					<div>
+						<Row>{data.user.username}</Row>
+						<Row />
+					</div>
+				}
+				subTitle={`Joined ${formattedDate}`}
 				avatar={{
 					src:
 						data.user.userprofile.avatarUrl === ''
 							? 'https://avatars1.githubusercontent.com/u/8186664?s=460&v=4'
 							: data.user.userprofile.avatarUrl,
-					size: 96
+					size: 180
 				}}
 			>
-				<Descriptions size="small" column={3}>
+				<UpdateAvatar style={{marginRight:'100'}} userId={match.params.id} />
+				{/* <Descriptions size="small" column={3}>
 					<Descriptions.Item>
 						<UpdateAvatar userId={match.params.id} />
 					</Descriptions.Item>
-				</Descriptions>
+				</Descriptions> */}
 			</PageHeader>
 
-			<Divider orientation="left">
-				<h3>Created Tracks</h3>
-			</Divider>
-			{createdTracks2}
-			<Divider orientation="left">
-				<h3>Liked Tracks</h3>
-			</Divider>
-			{likedTracks2}
+			<Tabs defaultActiveKey="1">
+				<TabPane
+					tab={
+						<span>
+							{/* <AppleOutlined /> */}
+							Music
+						</span>
+					}
+					key="1"
+				>
+					<h3>Created Tracks</h3>
+
+					{createdTracks2}
+				</TabPane>
+				<TabPane
+					tab={
+						<span>
+							{/* <AndroidOutlined /> */}
+							Likes
+						</span>
+					}
+					key="2"
+				>
+					<h3>Liked Tracks</h3>
+		
+				{likedTracks2}
+				</TabPane>
+			</Tabs>
+
+		
 
 			{match.params.id === currentUser.id ? <CreateTrack userId={match.params.id} /> : null}
 		</div>

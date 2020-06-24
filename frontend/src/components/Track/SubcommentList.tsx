@@ -8,6 +8,9 @@ import { Link } from 'react-router-dom';
 import { UserContext } from '../../App';
 import { GET_TRACKS_QUERY } from '../../pages/Splash'
 import './track.css';
+
+
+
 const { TextArea } = Input;
 
 
@@ -93,7 +96,7 @@ const SubcommentList: React.FC<any> = ({ comments, commentId}) => {
                     const isUser = userId === currentUser.id
                     
 
-                    debugger
+                      
 
                     let deleteCommentDiv;
 

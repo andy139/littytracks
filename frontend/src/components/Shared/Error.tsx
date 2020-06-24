@@ -1,44 +1,27 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import { Button, notification } from 'antd';
 import { SmileOutlined } from '@ant-design/icons';
 
 interface Props {
-    classes?:any;
-    error?:any | null;
-
+	classes?: any;
+	error?: any | null;
 }
 
+const Error: React.FC<Props> = ({ classes, error }) => {
+	const openNotification = () => {
+		notification.open({
+			message: error.message,
+			icon: <SmileOutlined style={{ color: '#108ee9' }} />,
+			placement: 'bottomLeft'
+		});
+	};
 
-const Error:React.FC<Props> = ({classes, error}) => {
-   
-    debugger
-    const openNotification = () => {
-        notification.open({
-            message: error.message,
-            icon: <SmileOutlined style={{ color: '#108ee9' }} />,
-            placement: 'bottomLeft',
-        });
-    };
+	useEffect(() => {
+		openNotification();
+		return () => {};
+	}, []);
 
-    useEffect(() => {
-
-        openNotification()
-        return () => {
-            
-        }
-    }, [])
- 
-
-    return(
-        <div>
-          
-        </div>
-    )
-
-
-
-
-}
-
+	return <div />;
+};
 
 export default Error;

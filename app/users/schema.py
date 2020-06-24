@@ -3,6 +3,7 @@ import graphene
 from graphene_django import DjangoObjectType
 from tracks.models import UserProfile
 from graphql import GraphQLError
+from django.core.exceptions import ValidationError
 
 
 class UserType(DjangoObjectType):
@@ -43,18 +44,36 @@ class CreateUser(graphene.Mutation):
         email = graphene.String(required=True)
     
     def mutate(self, info, username, password, email):
-        user = get_user_model()(
-            username=username,
-            email=email
-        )
+        errors = []
 
-        user.set_password(password)
-        user.save()
+        if get_user_model().objects.filter(email=email).exists():
+            errors.append('Email is already registered')
+            raise GraphQLError('Email is already registered')
 
-        user_profile = UserProfile(user = user)
-        user_profile.save()
+        if get_user_model().objects.filter(username=username).exists():
+            errors.append('Username is already registered')
+            raise GraphQLError('Username is already registered')
+           
 
-        return CreateUser(user=user)
+        if len(errors) == 0:
+            try:
+                user = get_user_model()(
+                    username=username,
+                    email=email
+                )
+                user.set_password(password)
+                user.save()
+
+                user_profile = UserProfile(user=user)
+                user_profile.save()
+                return CreateUser(user=user)
+            except ValidationError as e:
+                return CreateUser(errors=[e])
+
+        # import pdb; pdb.set_trace()
+        return CreateUser(errors=errors)
+
+        
 
 
 

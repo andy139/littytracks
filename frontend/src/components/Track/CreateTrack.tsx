@@ -37,7 +37,7 @@ const CREATE_TRACK_MUTATION = gql`
 
 
 `
-const CreateTrack: React.FC<any> = ({classes, userId}) => {
+const CreateTrack: React.FC<any> = ({classes, userId, isNavbar}) => {
     let id = userId;
 
     if (!id) id = 21;
@@ -259,7 +259,15 @@ const CreateTrack: React.FC<any> = ({classes, userId}) => {
         </Button>
   
       </div>
-    )
+  )
+  
+
+  const navbarButton = (
+    <span onClick={() => setModal(true)} style={{ fontSize: 16, cursor: "pointer" }} >
+        Upload Music
+    </span>
+
+  )
 
        
 
@@ -267,19 +275,15 @@ const CreateTrack: React.FC<any> = ({classes, userId}) => {
       <>
         {/* Create Track BUtton */}
 
-        <Affix style={{ position: "fixed", bottom: 30, right: 30, zIndex:999 }}>
-          {/* <Button
-            type="primary"
-            icon={<FileAddFilled style={{ fontSize: "20px" }} />}
-            onClick={() => setModal(true)}
-          /> */}
+        {isNavbar ? navbarButton : <Affix style={{ position: "fixed", bottom: 30, right: 30, zIndex: 999 }}>
 
-          {modalState ? <i className="fas fa-minus-circle button-shadow" style={{fontSize:50, color:'#f4364c'}}></i> : <i className="fas fa-plus-circle button-shadow" style={{fontSize:50, color:'#0079ff'}}
-          onClick={() => setModal(true)}
+          {modalState ? <i className="fas fa-cloud-upload-alt" style={{ fontSize: 50, color: '#f4364c', cursor: "pointer" }}></i> : <i className="fas fa-cloud-upload-alt" style={{ fontSize: 50, color: '#0079ff', cursor: "pointer" }}
+            onClick={() => setModal(true)}
           >
-          </i> }
-         
-        </Affix>
+          </i>}
+
+        </Affix>}
+
 
         {error ? (
           <Error error={error} />

@@ -22,6 +22,7 @@
 		"apollo-link-http": "^1.5.17",
 		"apollo-link-state": "^0.4.2",
 		"axios": "^0.19.2",
+		"basscss": "^8.0.2",
 		"craco-less": "^1.17.0",
 		"date-fns": "^2.14.0",
 		"graphql": "^15.0.0",
@@ -32,9 +33,11 @@
 		"react-devtools": "^4.7.0",
 		"react-dom": "^16.13.1",
 		"react-google-login": "^5.1.20",
+		"react-jinke-music-player": "^4.15.3",
 		"react-player": "^2.2.0",
 		"react-router-dom": "^5.2.0",
 		"react-scripts": "3.4.1",
+		"react-soundplayer": "^1.0.5",
 		"reaudio": "^0.1.8",
 		"typescript": "^3.7.5"
 	},
@@ -58,5 +61,8 @@
 			"last 1 firefox version",
 			"last 1 safari version"
 		]
+	},
+	"devDependencies": {
+		"style-loader": "^1.2.1"
 	}
 }

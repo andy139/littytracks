@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Form, Input, Button, Checkbox, Card, Modal, Space, notification, Divider } from 'antd';
+import { Form, Input, Button, Checkbox, Card, Modal, Space, notification, Divider, Row, Col, } from 'antd';
 import { UserOutlined, LockOutlined, MailOutlined, SmileOutlined, PoweroffOutlined } from '@ant-design/icons';
 import { gql } from 'apollo-boost';
 import { useMutation } from '@apollo/react-hooks';
@@ -75,92 +75,106 @@ const Register: React.FC<Props> = ({ classes, setNewUser }) => {
 
 
 	return (
-		<div style={{ display: 'flex' }}>
-			<Card style={{ width: 400, margin: 'auto', marginTop: 100 }}>
-				<form onSubmit={(event) => handleSubmit(createUser)}>
-          <Form name="normal_login" className="login-form" initialValues={{ remember: true }} onFinish={onFinish} validateMessages={validateMessages} >
-						<FormItem style={{ display: 'flex' }}>
-							<h1>Register</h1>
-						</FormItem>
-						<FormItem name="username" rules={[ { required: true, message: 'Please input your Username!' } ]}>
-							<Input
-								prefix={<UserOutlined className="site-form-item-icon" />}
-								placeholder="Username"
-								onChange={(e) => setUsername(e.target.value)}
-							/>
-						</FormItem>
-            <FormItem name="Email" rules={[{ required: true, type: 'email' } ]}>
-							<Input
-								prefix={<MailOutlined className="site-form-item-icon" />}
-								placeholder="Email"
-								onChange={(e) => setEmail(e.target.value)}
-							/>
-            </FormItem>
-            
-            <FormItem name="password"
-              rules={[{ required: true, message: 'Please input your Password!' }]}
-              hasFeedback
-            >
-							<Input.Password
-								prefix={<LockOutlined className="site-form-item-icon" />}
-								type="password"
-								placeholder="Password"
-								onChange={(e) => setPassword(e.target.value)}
-							/>
-            </FormItem>
-            
+		// <div>
+		// 	sd
+		// </div>
+		<>
+			<Row justify='center' style={{marginTop: 30}}>
+				<img src="https://django-app-images.s3-us-west-1.amazonaws.com/largelogo.png" style={{ width: 450 }} />
+			</Row>
+			<Divider orientation="left" style={{ color: '#333', fontWeight: 'normal' }}>
+				
+    </Divider>
 
+			<Row>
+				<Card style={{ width: 400, margin: 'auto', marginTop: 20 }}>
+					<form onSubmit={(event) => handleSubmit(createUser)}>
+						<Form name="normal_login" className="login-form" initialValues={{ remember: true }} onFinish={onFinish} validateMessages={validateMessages} >
+							<FormItem style={{ display: 'flex' }}>
+								<h1>Register</h1>
+							</FormItem>
+							<FormItem name="username" rules={[{ required: true, message: 'Please input your Username!' }]}>
+								<Input
+									prefix={<UserOutlined className="site-form-item-icon" />}
+									placeholder="Username"
+									onChange={(e) => setUsername(e.target.value)}
+								/>
+							</FormItem>
+							<FormItem name="Email" rules={[{ required: true, type: 'email' }]}>
+								<Input
+									prefix={<MailOutlined className="site-form-item-icon" />}
+									placeholder="Email"
+									onChange={(e) => setEmail(e.target.value)}
+								/>
+							</FormItem>
 
-            <Form.Item
-              name="confirm"
-              
-              dependencies={['password']}
-              hasFeedback
-              rules={[
-                {
-                  required: true,
-                  message: 'Please confirm your password!',
-                },
-                ({ getFieldValue }) => ({
-                  validator(rule, value) {
-                    if (!value || getFieldValue('password') === value) {
-                      return Promise.resolve();
-                    }
-                    return Promise.reject('The two passwords that you entered do not match!');
-                  },
-                }),
-              ]}
-            >
-              <Input.Password
-                prefix={<LockOutlined className="site-form-item-icon" />}
-                type="password"
-                placeholder="Confirm Password"/>
-            </Form.Item>
-
-						<FormItem>
-							<Button
-								block
-								loading={loading}
-								type="primary"
-								htmlType="submit"
-								className="login-form-button"
-								disabled={loading || !username.trim() || !email.trim() || !password.trim()}
+							<FormItem name="password"
+								rules={[{ required: true, message: 'Please input your Password!' }]}
+								hasFeedback
 							>
-								Register
-							</Button>
-						</FormItem>
+								<Input.Password
+									prefix={<LockOutlined className="site-form-item-icon" />}
+									type="password"
+									placeholder="Password"
+									onChange={(e) => setPassword(e.target.value)}
+								/>
+							</FormItem>
 
-						<FormItem>
-							<Button block onClick={() => setNewUser(false)}>
-								Already have an account? Log in now!
-							</Button>
-						</FormItem>
-					</Form>
 
-					{error && <Error error={error} />}
-				</form>
-			</Card>
-		</div>
+
+							<Form.Item
+								name="confirm"
+
+								dependencies={['password']}
+								hasFeedback
+								rules={[
+									{
+										required: true,
+										message: 'Please confirm your password!',
+									},
+									({ getFieldValue }) => ({
+										validator(rule, value) {
+											if (!value || getFieldValue('password') === value) {
+												return Promise.resolve();
+											}
+											return Promise.reject('The two passwords that you entered do not match!');
+										},
+									}),
+								]}
+							>
+								<Input.Password
+									prefix={<LockOutlined className="site-form-item-icon" />}
+									type="password"
+									placeholder="Confirm Password" />
+							</Form.Item>
+
+							<FormItem>
+								<Button
+									block
+									loading={loading}
+									type="primary"
+									htmlType="submit"
+									className="login-form-button"
+									disabled={loading || !username.trim() || !email.trim() || !password.trim()}
+								>
+									Register
+							</Button>
+							</FormItem>
+
+							<FormItem>
+								<Button block onClick={() => setNewUser(false)}>
+									Already have an account? Log in now!
+							</Button>
+							</FormItem>
+						</Form>
+
+						{error && <Error error={error} />}
+					</form>
+				</Card>
+			</Row>
+	
+		</>
+
 	);
 };
 

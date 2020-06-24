@@ -135,7 +135,7 @@ const UpdateAvatar: React.FC<any> = ({classes, userId, profileId}) => {
           customRequest={uploadImage}
           style={{zIndex:2}}
         >
-          <Button style={{marginLeft:20}} disabled={imageLoading}>
+          <Button style={{marginLeft:50}} disabled={imageLoading}>
            {imageLoading?  <LoadingOutlined/> : null}  &nbsp;Change Avatar
           </Button>
         </Upload>

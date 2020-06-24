@@ -10,7 +10,8 @@ import Profile from './pages/Profile';
 import Navbar from './components/Shared/Navbar';
 import Loading from './components/Shared/Loading';
 
-
+import ReactJkMusicPlayer from "react-jinke-music-player";
+import "react-jinke-music-player/assets/index.css";
 
 import "./App.less";
 
@@ -69,9 +70,9 @@ const App: React.FC<any> = () => {
         <UserContext.Provider value={currentUser}>
 
           <Layout >
-              <Header className="header">
+              
                 <Navbar currentUser={currentUser}  />
-              </Header>
+              
             <Content className="site-layout" style={{ padding: '0 50px', marginTop: 64, background: "#001934", minHeight: '100vh', width:"75%", marginLeft: "auto", marginRight: "auto" }}>
                 <Switch >
                   <Route exact path="/" component={Splash} ></Route>
@@ -79,7 +80,8 @@ const App: React.FC<any> = () => {
                   {/* <Route path="/profile/:id" component={() => <Profile currentUser={currentUser}/>}></Route> */}
                   <Route path="/profile/:id" render={(props) => <Profile {...props} currentUser={currentUser} />}></Route>
                 </Switch>
-              </Content>
+          </Content>
+        
           </Layout>
         </UserContext.Provider>
       </Router>

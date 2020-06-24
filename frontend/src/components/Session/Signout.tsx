@@ -19,8 +19,9 @@ const Signout: React.FC = ({ }) => {
             {client =>(
 
 
-                <Link onClick={() => handleSignout(client)} type="link" size={"large"} style={{ color: "#b7e3fa" }} >
-                    Sign Out &nbsp;<i className="fas fa-sign-out-alt"></i>
+                <Link onClick={() => handleSignout(client)} type="link" size={"large"} style={{}} >
+                    Sign Out
+                    {/* &nbsp;<i className="fas fa-sign-out-alt"></i> */}
                 </Link>
 
 
