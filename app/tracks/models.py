@@ -12,14 +12,19 @@ class Track(models.Model):
     url = models.URLField()
     img_url = models.URLField()
     created_at = models.DateTimeField(auto_now_add=True)
-    posted_by = models.ForeignKey(get_user_model(), null=True, on_delete=models.CASCADE) ##casecade if user deleted entire track will be deleted also
-    
-## class like
+    # casecade if user deleted entire track will be deleted also
+    posted_by = models.ForeignKey(
+        get_user_model(), null=True, on_delete=models.CASCADE)
+
+# class like
+
 
 class Comment(models.Model):
-    track = models.ForeignKey('tracks.Track', related_name='comments', on_delete=models.CASCADE)
+    track = models.ForeignKey(
+        'tracks.Track', related_name='comments', on_delete=models.CASCADE)
     comment = models.TextField(blank=True)
-    posted_by = models.ForeignKey(get_user_model(), null=True, on_delete=models.CASCADE)
+    posted_by = models.ForeignKey(
+        get_user_model(), null=True, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
 
 
@@ -28,12 +33,17 @@ class Subcomment(models.Model):
     comment = models.ForeignKey('tracks.Comment', related_name='subcomments', default="",
                                 on_delete=models.CASCADE)
     subcomment = models.TextField(blank=True)
-    posted_by = models.ForeignKey(get_user_model(), null=True, on_delete=models.CASCADE)
+    posted_by = models.ForeignKey(
+        get_user_model(), null=True, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
 
+
 class Like(models.Model):
-    user = models.ForeignKey(get_user_model(), null=True, on_delete=models.CASCADE)
-    track = models.ForeignKey('tracks.Track', related_name='likes', on_delete=models.CASCADE)
+    user = models.ForeignKey(
+        get_user_model(), null=True, on_delete=models.CASCADE)
+    track = models.ForeignKey(
+        'tracks.Track', related_name='likes', on_delete=models.CASCADE)
+
 
 class Play(models.Model):
     user = models.ForeignKey(
@@ -41,7 +51,9 @@ class Play(models.Model):
     track = models.ForeignKey(
         'tracks.Track', related_name='plays', on_delete=models.CASCADE)
 
-    ## REFERENCES THE USER FOR A GIVEN TRACK
+    # REFERENCES THE USER FOR A GIVEN TRACK
+
+
 class UserProfile(models.Model):
     avatar_url = models.URLField(default='')
     user = models.OneToOneField(User, on_delete=models.CASCADE,  null=True)
