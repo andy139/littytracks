@@ -25,7 +25,7 @@ SECRET_KEY = '9k$q-8#$(mjwzi-m#dfc8_628-n6a8!vhkogc1k+z31-_dy(hx'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['0.0.0.0', 'localhost', '127.0.0.1']
 
 
 # Application definition
@@ -41,19 +41,17 @@ INSTALLED_APPS = [
     'graphene_django',
     'tracks',
     'whitenoise.runserver_nostatic',  # < As per whitenoise documentation
-    'django.contrib.staticfiles',
 
-    # 3rd party apps
-    'rest_framework',
+    # # 3rd party apps
+    # 'rest_framework',
 
 ]
 
 
-
 GRAPHENE = {
-    'SCHEMA' : 'app.schema.schema',
+    'SCHEMA': 'app.schema.schema',
     'MIDDLEWARE': [
-        
+
         'graphql_jwt.middleware.JSONWebTokenMiddleware',
     ]
 
@@ -107,12 +105,27 @@ WSGI_APPLICATION = 'app.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
+# 'default': {
+#     'ENGINE': 'django.db.backends.sqlite3',
+#     'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+# }
 
 DATABASES = {
+
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    # }
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'littytracks',
+        'USER': 'andytran',
+        'PASSWORD': 'password',
+        'HOST': 'localhost',
+        'PORT': '',
     }
+
+
 }
 
 
@@ -159,11 +172,11 @@ USE_TZ = False
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 STATIC_URL = '/static/'
 # Place static in the same location as webpack build files
-STATIC_ROOT = os.path.join(BASE_DIR, 'build', 'static')
-STATICFILES_DIRS = []
+# STATIC_ROOT = os.path.join(BASE_DIR, 'build', 'static')
+# STATICFILES_DIRS = []
 
-# If you want to serve user uploaded files add these settings
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'build', 'media')
+# # If you want to serve user uploaded files add these settings
+# MEDIA_URL = '/media/'
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'build', 'media')
 
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
