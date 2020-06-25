@@ -27,7 +27,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['littytracks.herokuapp.com']
+ALLOWED_HOSTS = ['littytracks.herokuapp.com', 'localhost']
 
 
 # Application definition
@@ -46,11 +46,10 @@ INSTALLED_APPS = [
 ]
 
 
-
 GRAPHENE = {
-    'SCHEMA' : 'app.schema.schema',
+    'SCHEMA': 'app.schema.schema',
     'MIDDLEWARE': [
-        
+
         'graphql_jwt.middleware.JSONWebTokenMiddleware',
     ]
 
