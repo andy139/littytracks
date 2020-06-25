@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
+import django_heroku
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -37,12 +38,15 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles',
     'graphene_django',
     'tracks',
-    'whitenoise.runserver_nostatic',  # < As per whitenoise documentation
 
-    # # 3rd party apps
+
+
+    # 'whitenoise.runserver_nostatic',  # < As per whitenoise documentation
+    # 'django.contrib.staticfiles',
+
+    # # # 3rd party apps
     # 'rest_framework',
 
 ]
@@ -51,7 +55,6 @@ INSTALLED_APPS = [
 GRAPHENE = {
     'SCHEMA': 'app.schema.schema',
     'MIDDLEWARE': [
-
         'graphql_jwt.middleware.JSONWebTokenMiddleware',
     ]
 
@@ -165,15 +168,16 @@ USE_TZ = False
 # Configure app for Heroku deployment
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/2.1/howto/static-files/
+# django_heroku.settings(locals())
+
+
 STATIC_URL = '/static/'
 # Place static in the same location as webpack build files
-# STATIC_ROOT = os.path.join(BASE_DIR, 'build', 'static')
-# STATICFILES_DIRS = []
+STATIC_ROOT = os.path.join(BASE_DIR, 'build', 'static')
+STATICFILES_DIRS = []
 
-# # If you want to serve user uploaded files add these settings
-# MEDIA_URL = '/media/'
-# MEDIA_ROOT = os.path.join(BASE_DIR, 'build', 'media')
+# If you want to serve user uploaded files add these settings
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'build', 'media')
 
-# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
