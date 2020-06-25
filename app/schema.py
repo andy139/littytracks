@@ -1,7 +1,8 @@
 import graphene
-import users.schema
+
 import graphql_jwt
-import tracks.schema
+import users.schema 
+import tracks.schema 
 
 
 class Query(users.schema.Query, tracks.schema.Query, graphene.ObjectType):

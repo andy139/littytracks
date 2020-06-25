@@ -26,7 +26,8 @@ SECRET_KEY = '9k$q-8#$(mjwzi-m#dfc8_628-n6a8!vhkogc1k+z31-_dy(hx'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['0.0.0.0', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['0.0.0.0', 'localhost', '127.0.0.1',
+                 'https://littytracks.herokuapp.com/']
 
 
 # Application definition
@@ -63,9 +64,12 @@ GRAPHENE = {
 AUTH_PROFILE_MODULE = 'app.UserProfile'
 
 MIDDLEWARE = [
+    'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+    
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.security.SecurityMiddleware',
+
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
