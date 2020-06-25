@@ -121,7 +121,7 @@ const Navbar: React.FC<any> = ({ currentUser }) => {
 					placement="bottomRight"
 				>
 					<Button type="text">
-						<Avatar shape="circle" size="large" src={currentUser.userprofile.avatarUrl} style={{ cursor: 'pointer' }} />
+					<Avatar shape="circle" size="large" src={currentUser.userprofile.avatarUrl ? currentUser.userprofile.avatarUrl : 'https://avatars1.githubusercontent.com/u/8186664?s=460&v=4'} style={{ cursor: 'pointer' }} />
 					</Button>
 				</Dropdown>
 				
