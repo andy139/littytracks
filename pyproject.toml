@@ -14,6 +14,7 @@ django-heroku = "^0.3.1"
 django-cors-headers = "^3.4.0"
 graphene_django = "^2.11.0"
 django-graphql-jwt = "^0.3.1"
+django_heroku = "^0.3.1"
 
 [tool.poetry.dev-dependencies]
 
