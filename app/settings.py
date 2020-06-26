@@ -126,35 +126,35 @@ import dj_database_url
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get('DATABASE_URL'),
-        'USER': '',
-        'PASSWORD': '',
-        'HOST': 'localhost',
-        'PORT': '5432',
-    }
-}
-
-
 # DATABASES = {
-
-#     # 'default': {
-#     #     'ENGINE': 'django.db.backends.sqlite3',
-#     #     'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#     # }
 #     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': 'littytracks',
-#         'USER': 'andytran',
-#         'PASSWORD': 'password',
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': os.environ.get('DATABASE'),
+#         'USER': '',
+#         'PASSWORD': '',
 #         'HOST': 'localhost',
-        
+#         'PORT': '5432',
 #     }
-
-
 # }
+
+
+DATABASES = {
+
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    }
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.postgresql_psycopg2',
+    #     'NAME': 'littytracks',
+    #     'USER': 'andytran',
+    #     'PASSWORD': 'password',
+    #     'HOST': 'localhost',
+        
+    # }
+
+
+}
 
 # DATABASES = {'default': dj_database_url.config()}
 
