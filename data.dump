@@ -1,0 +1,1770 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 12.3
+-- Dumped by pg_dump version 12.3
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
+--
+-- Name: auth_group; Type: TABLE; Schema: public; Owner: andytran
+--
+
+CREATE TABLE public.auth_group (
+    id integer NOT NULL,
+    name character varying(150) NOT NULL
+);
+
+
+ALTER TABLE public.auth_group OWNER TO andytran;
+
+--
+-- Name: auth_group_id_seq; Type: SEQUENCE; Schema: public; Owner: andytran
+--
+
+CREATE SEQUENCE public.auth_group_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.auth_group_id_seq OWNER TO andytran;
+
+--
+-- Name: auth_group_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: andytran
+--
+
+ALTER SEQUENCE public.auth_group_id_seq OWNED BY public.auth_group.id;
+
+
+--
+-- Name: auth_group_permissions; Type: TABLE; Schema: public; Owner: andytran
+--
+
+CREATE TABLE public.auth_group_permissions (
+    id integer NOT NULL,
+    group_id integer NOT NULL,
+    permission_id integer NOT NULL
+);
+
+
+ALTER TABLE public.auth_group_permissions OWNER TO andytran;
+
+--
+-- Name: auth_group_permissions_id_seq; Type: SEQUENCE; Schema: public; Owner: andytran
+--
+
+CREATE SEQUENCE public.auth_group_permissions_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.auth_group_permissions_id_seq OWNER TO andytran;
+
+--
+-- Name: auth_group_permissions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: andytran
+--
+
+ALTER SEQUENCE public.auth_group_permissions_id_seq OWNED BY public.auth_group_permissions.id;
+
+
+--
+-- Name: auth_permission; Type: TABLE; Schema: public; Owner: andytran
+--
+
+CREATE TABLE public.auth_permission (
+    id integer NOT NULL,
+    name character varying(255) NOT NULL,
+    content_type_id integer NOT NULL,
+    codename character varying(100) NOT NULL
+);
+
+
+ALTER TABLE public.auth_permission OWNER TO andytran;
+
+--
+-- Name: auth_permission_id_seq; Type: SEQUENCE; Schema: public; Owner: andytran
+--
+
+CREATE SEQUENCE public.auth_permission_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.auth_permission_id_seq OWNER TO andytran;
+
+--
+-- Name: auth_permission_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: andytran
+--
+
+ALTER SEQUENCE public.auth_permission_id_seq OWNED BY public.auth_permission.id;
+
+
+--
+-- Name: auth_user; Type: TABLE; Schema: public; Owner: andytran
+--
+
+CREATE TABLE public.auth_user (
+    id integer NOT NULL,
+    password character varying(128) NOT NULL,
+    last_login timestamp with time zone,
+    is_superuser boolean NOT NULL,
+    username character varying(150) NOT NULL,
+    first_name character varying(30) NOT NULL,
+    last_name character varying(150) NOT NULL,
+    email character varying(254) NOT NULL,
+    is_staff boolean NOT NULL,
+    is_active boolean NOT NULL,
+    date_joined timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE public.auth_user OWNER TO andytran;
+
+--
+-- Name: auth_user_groups; Type: TABLE; Schema: public; Owner: andytran
+--
+
+CREATE TABLE public.auth_user_groups (
+    id integer NOT NULL,
+    user_id integer NOT NULL,
+    group_id integer NOT NULL
+);
+
+
+ALTER TABLE public.auth_user_groups OWNER TO andytran;
+
+--
+-- Name: auth_user_groups_id_seq; Type: SEQUENCE; Schema: public; Owner: andytran
+--
+
+CREATE SEQUENCE public.auth_user_groups_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.auth_user_groups_id_seq OWNER TO andytran;
+
+--
+-- Name: auth_user_groups_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: andytran
+--
+
+ALTER SEQUENCE public.auth_user_groups_id_seq OWNED BY public.auth_user_groups.id;
+
+
+--
+-- Name: auth_user_id_seq; Type: SEQUENCE; Schema: public; Owner: andytran
+--
+
+CREATE SEQUENCE public.auth_user_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.auth_user_id_seq OWNER TO andytran;
+
+--
+-- Name: auth_user_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: andytran
+--
+
+ALTER SEQUENCE public.auth_user_id_seq OWNED BY public.auth_user.id;
+
+
+--
+-- Name: auth_user_user_permissions; Type: TABLE; Schema: public; Owner: andytran
+--
+
+CREATE TABLE public.auth_user_user_permissions (
+    id integer NOT NULL,
+    user_id integer NOT NULL,
+    permission_id integer NOT NULL
+);
+
+
+ALTER TABLE public.auth_user_user_permissions OWNER TO andytran;
+
+--
+-- Name: auth_user_user_permissions_id_seq; Type: SEQUENCE; Schema: public; Owner: andytran
+--
+
+CREATE SEQUENCE public.auth_user_user_permissions_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.auth_user_user_permissions_id_seq OWNER TO andytran;
+
+--
+-- Name: auth_user_user_permissions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: andytran
+--
+
+ALTER SEQUENCE public.auth_user_user_permissions_id_seq OWNED BY public.auth_user_user_permissions.id;
+
+
+--
+-- Name: django_admin_log; Type: TABLE; Schema: public; Owner: andytran
+--
+
+CREATE TABLE public.django_admin_log (
+    id integer NOT NULL,
+    action_time timestamp with time zone NOT NULL,
+    object_id text,
+    object_repr character varying(200) NOT NULL,
+    action_flag smallint NOT NULL,
+    change_message text NOT NULL,
+    content_type_id integer,
+    user_id integer NOT NULL,
+    CONSTRAINT django_admin_log_action_flag_check CHECK ((action_flag >= 0))
+);
+
+
+ALTER TABLE public.django_admin_log OWNER TO andytran;
+
+--
+-- Name: django_admin_log_id_seq; Type: SEQUENCE; Schema: public; Owner: andytran
+--
+
+CREATE SEQUENCE public.django_admin_log_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.django_admin_log_id_seq OWNER TO andytran;
+
+--
+-- Name: django_admin_log_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: andytran
+--
+
+ALTER SEQUENCE public.django_admin_log_id_seq OWNED BY public.django_admin_log.id;
+
+
+--
+-- Name: django_content_type; Type: TABLE; Schema: public; Owner: andytran
+--
+
+CREATE TABLE public.django_content_type (
+    id integer NOT NULL,
+    app_label character varying(100) NOT NULL,
+    model character varying(100) NOT NULL
+);
+
+
+ALTER TABLE public.django_content_type OWNER TO andytran;
+
+--
+-- Name: django_content_type_id_seq; Type: SEQUENCE; Schema: public; Owner: andytran
+--
+
+CREATE SEQUENCE public.django_content_type_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.django_content_type_id_seq OWNER TO andytran;
+
+--
+-- Name: django_content_type_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: andytran
+--
+
+ALTER SEQUENCE public.django_content_type_id_seq OWNED BY public.django_content_type.id;
+
+
+--
+-- Name: django_migrations; Type: TABLE; Schema: public; Owner: andytran
+--
+
+CREATE TABLE public.django_migrations (
+    id integer NOT NULL,
+    app character varying(255) NOT NULL,
+    name character varying(255) NOT NULL,
+    applied timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE public.django_migrations OWNER TO andytran;
+
+--
+-- Name: django_migrations_id_seq; Type: SEQUENCE; Schema: public; Owner: andytran
+--
+
+CREATE SEQUENCE public.django_migrations_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.django_migrations_id_seq OWNER TO andytran;
+
+--
+-- Name: django_migrations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: andytran
+--
+
+ALTER SEQUENCE public.django_migrations_id_seq OWNED BY public.django_migrations.id;
+
+
+--
+-- Name: django_session; Type: TABLE; Schema: public; Owner: andytran
+--
+
+CREATE TABLE public.django_session (
+    session_key character varying(40) NOT NULL,
+    session_data text NOT NULL,
+    expire_date timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE public.django_session OWNER TO andytran;
+
+--
+-- Name: tracks_comment; Type: TABLE; Schema: public; Owner: andytran
+--
+
+CREATE TABLE public.tracks_comment (
+    id integer NOT NULL,
+    comment text NOT NULL,
+    created_at timestamp with time zone NOT NULL,
+    posted_by_id integer,
+    track_id integer NOT NULL
+);
+
+
+ALTER TABLE public.tracks_comment OWNER TO andytran;
+
+--
+-- Name: tracks_comment_id_seq; Type: SEQUENCE; Schema: public; Owner: andytran
+--
+
+CREATE SEQUENCE public.tracks_comment_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.tracks_comment_id_seq OWNER TO andytran;
+
+--
+-- Name: tracks_comment_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: andytran
+--
+
+ALTER SEQUENCE public.tracks_comment_id_seq OWNED BY public.tracks_comment.id;
+
+
+--
+-- Name: tracks_like; Type: TABLE; Schema: public; Owner: andytran
+--
+
+CREATE TABLE public.tracks_like (
+    id integer NOT NULL,
+    track_id integer NOT NULL,
+    user_id integer
+);
+
+
+ALTER TABLE public.tracks_like OWNER TO andytran;
+
+--
+-- Name: tracks_like_id_seq; Type: SEQUENCE; Schema: public; Owner: andytran
+--
+
+CREATE SEQUENCE public.tracks_like_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.tracks_like_id_seq OWNER TO andytran;
+
+--
+-- Name: tracks_like_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: andytran
+--
+
+ALTER SEQUENCE public.tracks_like_id_seq OWNED BY public.tracks_like.id;
+
+
+--
+-- Name: tracks_play; Type: TABLE; Schema: public; Owner: andytran
+--
+
+CREATE TABLE public.tracks_play (
+    id integer NOT NULL,
+    track_id integer NOT NULL,
+    user_id integer
+);
+
+
+ALTER TABLE public.tracks_play OWNER TO andytran;
+
+--
+-- Name: tracks_plays_id_seq; Type: SEQUENCE; Schema: public; Owner: andytran
+--
+
+CREATE SEQUENCE public.tracks_plays_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.tracks_plays_id_seq OWNER TO andytran;
+
+--
+-- Name: tracks_plays_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: andytran
+--
+
+ALTER SEQUENCE public.tracks_plays_id_seq OWNED BY public.tracks_play.id;
+
+
+--
+-- Name: tracks_subcomment; Type: TABLE; Schema: public; Owner: andytran
+--
+
+CREATE TABLE public.tracks_subcomment (
+    id integer NOT NULL,
+    created_at timestamp with time zone NOT NULL,
+    posted_by_id integer,
+    comment_id integer NOT NULL,
+    subcomment text NOT NULL
+);
+
+
+ALTER TABLE public.tracks_subcomment OWNER TO andytran;
+
+--
+-- Name: tracks_subcomment_id_seq; Type: SEQUENCE; Schema: public; Owner: andytran
+--
+
+CREATE SEQUENCE public.tracks_subcomment_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.tracks_subcomment_id_seq OWNER TO andytran;
+
+--
+-- Name: tracks_subcomment_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: andytran
+--
+
+ALTER SEQUENCE public.tracks_subcomment_id_seq OWNED BY public.tracks_subcomment.id;
+
+
+--
+-- Name: tracks_track; Type: TABLE; Schema: public; Owner: andytran
+--
+
+CREATE TABLE public.tracks_track (
+    id integer NOT NULL,
+    title character varying(50) NOT NULL,
+    description text NOT NULL,
+    url character varying(200) NOT NULL,
+    created_at timestamp with time zone NOT NULL,
+    posted_by_id integer,
+    img_url character varying(200) NOT NULL,
+    artist_name character varying(50) NOT NULL
+);
+
+
+ALTER TABLE public.tracks_track OWNER TO andytran;
+
+--
+-- Name: tracks_track_id_seq; Type: SEQUENCE; Schema: public; Owner: andytran
+--
+
+CREATE SEQUENCE public.tracks_track_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.tracks_track_id_seq OWNER TO andytran;
+
+--
+-- Name: tracks_track_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: andytran
+--
+
+ALTER SEQUENCE public.tracks_track_id_seq OWNED BY public.tracks_track.id;
+
+
+--
+-- Name: tracks_userprofile; Type: TABLE; Schema: public; Owner: andytran
+--
+
+CREATE TABLE public.tracks_userprofile (
+    id integer NOT NULL,
+    avatar_url character varying(200) NOT NULL,
+    user_id integer
+);
+
+
+ALTER TABLE public.tracks_userprofile OWNER TO andytran;
+
+--
+-- Name: tracks_userprofile_id_seq; Type: SEQUENCE; Schema: public; Owner: andytran
+--
+
+CREATE SEQUENCE public.tracks_userprofile_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.tracks_userprofile_id_seq OWNER TO andytran;
+
+--
+-- Name: tracks_userprofile_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: andytran
+--
+
+ALTER SEQUENCE public.tracks_userprofile_id_seq OWNED BY public.tracks_userprofile.id;
+
+
+--
+-- Name: auth_group id; Type: DEFAULT; Schema: public; Owner: andytran
+--
+
+ALTER TABLE ONLY public.auth_group ALTER COLUMN id SET DEFAULT nextval('public.auth_group_id_seq'::regclass);
+
+
+--
+-- Name: auth_group_permissions id; Type: DEFAULT; Schema: public; Owner: andytran
+--
+
+ALTER TABLE ONLY public.auth_group_permissions ALTER COLUMN id SET DEFAULT nextval('public.auth_group_permissions_id_seq'::regclass);
+
+
+--
+-- Name: auth_permission id; Type: DEFAULT; Schema: public; Owner: andytran
+--
+
+ALTER TABLE ONLY public.auth_permission ALTER COLUMN id SET DEFAULT nextval('public.auth_permission_id_seq'::regclass);
+
+
+--
+-- Name: auth_user id; Type: DEFAULT; Schema: public; Owner: andytran
+--
+
+ALTER TABLE ONLY public.auth_user ALTER COLUMN id SET DEFAULT nextval('public.auth_user_id_seq'::regclass);
+
+
+--
+-- Name: auth_user_groups id; Type: DEFAULT; Schema: public; Owner: andytran
+--
+
+ALTER TABLE ONLY public.auth_user_groups ALTER COLUMN id SET DEFAULT nextval('public.auth_user_groups_id_seq'::regclass);
+
+
+--
+-- Name: auth_user_user_permissions id; Type: DEFAULT; Schema: public; Owner: andytran
+--
+
+ALTER TABLE ONLY public.auth_user_user_permissions ALTER COLUMN id SET DEFAULT nextval('public.auth_user_user_permissions_id_seq'::regclass);
+
+
+--
+-- Name: django_admin_log id; Type: DEFAULT; Schema: public; Owner: andytran
+--
+
+ALTER TABLE ONLY public.django_admin_log ALTER COLUMN id SET DEFAULT nextval('public.django_admin_log_id_seq'::regclass);
+
+
+--
+-- Name: django_content_type id; Type: DEFAULT; Schema: public; Owner: andytran
+--
+
+ALTER TABLE ONLY public.django_content_type ALTER COLUMN id SET DEFAULT nextval('public.django_content_type_id_seq'::regclass);
+
+
+--
+-- Name: django_migrations id; Type: DEFAULT; Schema: public; Owner: andytran
+--
+
+ALTER TABLE ONLY public.django_migrations ALTER COLUMN id SET DEFAULT nextval('public.django_migrations_id_seq'::regclass);
+
+
+--
+-- Name: tracks_comment id; Type: DEFAULT; Schema: public; Owner: andytran
+--
+
+ALTER TABLE ONLY public.tracks_comment ALTER COLUMN id SET DEFAULT nextval('public.tracks_comment_id_seq'::regclass);
+
+
+--
+-- Name: tracks_like id; Type: DEFAULT; Schema: public; Owner: andytran
+--
+
+ALTER TABLE ONLY public.tracks_like ALTER COLUMN id SET DEFAULT nextval('public.tracks_like_id_seq'::regclass);
+
+
+--
+-- Name: tracks_play id; Type: DEFAULT; Schema: public; Owner: andytran
+--
+
+ALTER TABLE ONLY public.tracks_play ALTER COLUMN id SET DEFAULT nextval('public.tracks_plays_id_seq'::regclass);
+
+
+--
+-- Name: tracks_subcomment id; Type: DEFAULT; Schema: public; Owner: andytran
+--
+
+ALTER TABLE ONLY public.tracks_subcomment ALTER COLUMN id SET DEFAULT nextval('public.tracks_subcomment_id_seq'::regclass);
+
+
+--
+-- Name: tracks_track id; Type: DEFAULT; Schema: public; Owner: andytran
+--
+
+ALTER TABLE ONLY public.tracks_track ALTER COLUMN id SET DEFAULT nextval('public.tracks_track_id_seq'::regclass);
+
+
+--
+-- Name: tracks_userprofile id; Type: DEFAULT; Schema: public; Owner: andytran
+--
+
+ALTER TABLE ONLY public.tracks_userprofile ALTER COLUMN id SET DEFAULT nextval('public.tracks_userprofile_id_seq'::regclass);
+
+
+--
+-- Data for Name: auth_group; Type: TABLE DATA; Schema: public; Owner: andytran
+--
+
+COPY public.auth_group (id, name) FROM stdin;
+\.
+
+
+--
+-- Data for Name: auth_group_permissions; Type: TABLE DATA; Schema: public; Owner: andytran
+--
+
+COPY public.auth_group_permissions (id, group_id, permission_id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: auth_permission; Type: TABLE DATA; Schema: public; Owner: andytran
+--
+
+COPY public.auth_permission (id, name, content_type_id, codename) FROM stdin;
+37	Can add log entry	10	add_logentry
+38	Can change log entry	10	change_logentry
+39	Can delete log entry	10	delete_logentry
+40	Can view log entry	10	view_logentry
+41	Can add permission	11	add_permission
+42	Can change permission	11	change_permission
+43	Can delete permission	11	delete_permission
+44	Can view permission	11	view_permission
+45	Can add group	12	add_group
+46	Can change group	12	change_group
+47	Can delete group	12	delete_group
+48	Can view group	12	view_group
+49	Can add user	13	add_user
+50	Can change user	13	change_user
+51	Can delete user	13	delete_user
+52	Can view user	13	view_user
+53	Can add content type	14	add_contenttype
+54	Can change content type	14	change_contenttype
+55	Can delete content type	14	delete_contenttype
+56	Can view content type	14	view_contenttype
+57	Can add session	15	add_session
+58	Can change session	15	change_session
+59	Can delete session	15	delete_session
+60	Can view session	15	view_session
+61	Can add track	16	add_track
+62	Can change track	16	change_track
+63	Can delete track	16	delete_track
+64	Can view track	16	view_track
+65	Can add like	17	add_like
+66	Can change like	17	change_like
+67	Can delete like	17	delete_like
+68	Can view like	17	view_like
+69	Can add user profile	18	add_userprofile
+70	Can change user profile	18	change_userprofile
+71	Can delete user profile	18	delete_userprofile
+72	Can view user profile	18	view_userprofile
+73	Can add subcomment	19	add_subcomment
+74	Can change subcomment	19	change_subcomment
+75	Can delete subcomment	19	delete_subcomment
+76	Can view subcomment	19	view_subcomment
+77	Can add comment	20	add_comment
+78	Can change comment	20	change_comment
+79	Can delete comment	20	delete_comment
+80	Can view comment	20	view_comment
+81	Can add plays	21	add_plays
+82	Can change plays	21	change_plays
+83	Can delete plays	21	delete_plays
+84	Can view plays	21	view_plays
+85	Can add play	21	add_play
+86	Can change play	21	change_play
+87	Can delete play	21	delete_play
+88	Can view play	21	view_play
+\.
+
+
+--
+-- Data for Name: auth_user; Type: TABLE DATA; Schema: public; Owner: andytran
+--
+
+COPY public.auth_user (id, password, last_login, is_superuser, username, first_name, last_name, email, is_staff, is_active, date_joined) FROM stdin;
+1	pbkdf2_sha256$180000$hHpdQCFhs4E2$9AkmPgBa4kvPTprSRId8/UK+XhL1jX6fmqpSLAfgRWE=	\N	t	antr900			antr900@gmail.com	t	t	2020-06-25 08:46:32.569-07
+2	pbkdf2_sha256$180000$lkCa1okz0Xsp$WclmMGplf90xXW1UyzvUFSVqmK9vGPFy2OVvUi2I34M=	\N	f	testuser10			fmu@gmail.com	f	t	2020-06-25 09:07:44.768105-07
+21	pbkdf2_sha256$180000$aI8usdNKFLEI$4Zqjjpb7aaMqc2kqpPVk9n67kzaI333IUXQPh1/clYI=	\N	f	testuser			antr900@gmail.com	f	t	2020-06-15 19:21:20.135-07
+22	pbkdf2_sha256$180000$1P4TAeOAmp7K$s0MkwBfpVuRtwHdQJ5l+AuNUjUaMBh2yXR9Bc9Lv0yY=	\N	f	testuser2			kicks900@gmail.com	f	t	2020-06-16 11:45:35.498-07
+23	pbkdf2_sha256$180000$H13OjmJUQTJj$3G09xj6UDvmtqPe9MgKbEpXcDAjtANRbxuA1VvtEGHY=	\N	f	sdds			adsdasadsasd	f	t	2020-06-20 09:05:29.035-07
+24	pbkdf2_sha256$180000$esvT3EOSRQOW$BIqK5zcamxIQaQF0CgYt9AtRY5VwBOyX3N7kujFeSZ4=	\N	f	asd			adsdas	f	t	2020-06-20 10:57:08.574-07
+25	pbkdf2_sha256$180000$GmzK8tJnQNVP$Cm8tyuTSlctc0B1o4jIAOOHAusPcm1J+bzDcmDEb2ck=	\N	f	dsaasd			saddsa	f	t	2020-06-20 11:02:49.915-07
+26	pbkdf2_sha256$180000$bWdJDXRQF2lp$FUKzGSoMDzmUPUExWD2R+Iu7BTjXz8wEjT4ZwB0O4mM=	\N	f	adsasd			dsaasd	f	t	2020-06-20 14:51:43.102-07
+27	pbkdf2_sha256$180000$aEK9A2JMviYW$SRMal9SwP1j1u6nYH7FDfqBa7sXVGQnfL4n9zaeLd4Q=	\N	f	password			password	f	t	2020-06-20 14:52:46.876-07
+28	pbkdf2_sha256$180000$owaeZQ08UmW3$s0nyjQZ5Vyn8QKOc2Jjsyy8mBcx9s/9T1G3TX1duBKA=	\N	f	andy139			antr900@gmail.com	f	t	2020-06-20 15:40:29.508-07
+29	pbkdf2_sha256$180000$SzwPbMCIUIFK$5tuW6zc5FyEAQPrvrSORWh7PUBdZ/0wHUuV+ZBCdt8g=	\N	f	andytran139			kicks9000@gmail.com	f	t	2020-06-25 09:23:35.110323-07
+\.
+
+
+--
+-- Data for Name: auth_user_groups; Type: TABLE DATA; Schema: public; Owner: andytran
+--
+
+COPY public.auth_user_groups (id, user_id, group_id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: auth_user_user_permissions; Type: TABLE DATA; Schema: public; Owner: andytran
+--
+
+COPY public.auth_user_user_permissions (id, user_id, permission_id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: django_admin_log; Type: TABLE DATA; Schema: public; Owner: andytran
+--
+
+COPY public.django_admin_log (id, action_time, object_id, object_repr, action_flag, change_message, content_type_id, user_id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: django_content_type; Type: TABLE DATA; Schema: public; Owner: andytran
+--
+
+COPY public.django_content_type (id, app_label, model) FROM stdin;
+10	admin	logentry
+11	auth	permission
+12	auth	group
+13	auth	user
+14	contenttypes	contenttype
+15	sessions	session
+16	tracks	track
+17	tracks	like
+18	tracks	userprofile
+19	tracks	subcomment
+20	tracks	comment
+21	tracks	play
+\.
+
+
+--
+-- Data for Name: django_migrations; Type: TABLE DATA; Schema: public; Owner: andytran
+--
+
+COPY public.django_migrations (id, app, name, applied) FROM stdin;
+1	contenttypes	0001_initial	2020-06-25 08:45:39.231451-07
+2	auth	0001_initial	2020-06-25 08:45:39.274075-07
+3	admin	0001_initial	2020-06-25 08:45:39.323594-07
+4	admin	0002_logentry_remove_auto_add	2020-06-25 08:45:39.339635-07
+5	admin	0003_logentry_add_action_flag_choices	2020-06-25 08:45:39.347992-07
+6	contenttypes	0002_remove_content_type_name	2020-06-25 08:45:39.370442-07
+7	auth	0002_alter_permission_name_max_length	2020-06-25 08:45:39.38022-07
+8	auth	0003_alter_user_email_max_length	2020-06-25 08:45:39.388256-07
+9	auth	0004_alter_user_username_opts	2020-06-25 08:45:39.395992-07
+10	auth	0005_alter_user_last_login_null	2020-06-25 08:45:39.405009-07
+11	auth	0006_require_contenttypes_0002	2020-06-25 08:45:39.406985-07
+12	auth	0007_alter_validators_add_error_messages	2020-06-25 08:45:39.415792-07
+13	auth	0008_alter_user_username_max_length	2020-06-25 08:45:39.428386-07
+14	auth	0009_alter_user_last_name_max_length	2020-06-25 08:45:39.438306-07
+15	auth	0010_alter_group_name_max_length	2020-06-25 08:45:39.447507-07
+16	auth	0011_update_proxy_permissions	2020-06-25 08:45:39.459245-07
+17	sessions	0001_initial	2020-06-25 08:45:39.466127-07
+18	tracks	0001_initial	2020-06-25 08:45:39.478161-07
+19	tracks	0002_track_posted_by	2020-06-25 08:45:39.492089-07
+20	tracks	0003_like	2020-06-25 08:45:39.505529-07
+21	tracks	0004_like_user	2020-06-25 08:45:39.52112-07
+22	tracks	0005_track_img_url	2020-06-25 08:45:39.533272-07
+23	tracks	0006_userprofile	2020-06-25 08:45:39.547138-07
+24	tracks	0007_remove_userprofile_home_address	2020-06-25 08:45:39.561746-07
+25	tracks	0008_auto_20200616_0011	2020-06-25 08:45:39.598892-07
+26	tracks	0009_auto_20200616_0014	2020-06-25 08:45:39.606966-07
+27	tracks	0010_comment_subcomment	2020-06-25 08:45:39.633611-07
+28	tracks	0011_auto_20200618_2201	2020-06-25 08:45:39.666112-07
+29	tracks	0012_track_artist_name	2020-06-25 08:45:39.682599-07
+30	tracks	0013_plays	2020-06-25 08:45:39.69834-07
+31	tracks	0014_auto_20200624_1751	2020-06-25 08:45:39.733505-07
+\.
+
+
+--
+-- Data for Name: django_session; Type: TABLE DATA; Schema: public; Owner: andytran
+--
+
+COPY public.django_session (session_key, session_data, expire_date) FROM stdin;
+\.
+
+
+--
+-- Data for Name: tracks_comment; Type: TABLE DATA; Schema: public; Owner: andytran
+--
+
+COPY public.tracks_comment (id, comment, created_at, posted_by_id, track_id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: tracks_like; Type: TABLE DATA; Schema: public; Owner: andytran
+--
+
+COPY public.tracks_like (id, track_id, user_id) FROM stdin;
+273	74	21
+274	75	21
+276	73	21
+\.
+
+
+--
+-- Data for Name: tracks_play; Type: TABLE DATA; Schema: public; Owner: andytran
+--
+
+COPY public.tracks_play (id, track_id, user_id) FROM stdin;
+1	73	21
+2	73	21
+3	73	21
+4	73	21
+5	73	21
+6	73	21
+7	73	21
+8	73	21
+9	73	21
+10	73	21
+11	73	21
+12	73	21
+13	73	21
+14	73	21
+15	73	21
+16	73	21
+17	73	21
+18	73	21
+19	73	21
+20	73	21
+21	73	21
+22	73	21
+23	73	21
+24	73	21
+25	73	21
+26	73	21
+27	73	21
+28	73	21
+29	73	21
+30	73	21
+31	73	21
+32	73	21
+33	73	21
+34	73	21
+35	73	21
+36	73	21
+37	73	21
+38	73	21
+39	73	21
+40	73	21
+41	73	21
+42	73	21
+43	73	21
+44	73	21
+45	73	21
+46	73	21
+47	73	21
+48	73	21
+49	73	21
+50	73	21
+51	73	21
+52	73	21
+53	73	21
+54	73	21
+55	73	21
+56	73	21
+57	73	21
+58	73	21
+59	73	21
+60	73	21
+61	73	21
+62	73	21
+63	73	21
+64	73	21
+65	73	21
+66	73	21
+67	73	21
+68	73	21
+69	73	21
+70	73	21
+71	73	21
+72	73	21
+73	73	21
+74	73	21
+75	73	21
+76	73	21
+77	73	21
+78	73	21
+79	73	21
+80	73	21
+81	73	21
+82	73	21
+83	73	21
+84	73	21
+85	73	21
+86	73	21
+87	73	21
+88	73	21
+89	73	21
+90	73	21
+91	73	21
+92	73	21
+93	73	21
+94	73	21
+95	73	21
+96	73	21
+97	73	21
+98	73	21
+99	73	21
+100	73	21
+101	73	21
+102	73	21
+103	73	21
+104	73	21
+105	73	21
+106	73	21
+107	73	21
+108	73	21
+109	73	21
+110	73	21
+111	73	21
+112	73	21
+113	73	21
+114	73	21
+115	73	21
+116	73	21
+117	73	21
+118	73	21
+119	73	21
+120	73	21
+121	73	21
+122	74	21
+123	73	21
+124	74	21
+125	74	21
+126	73	21
+127	73	21
+128	73	21
+129	74	21
+130	74	21
+131	73	21
+132	73	21
+133	73	21
+134	73	21
+135	73	21
+136	74	21
+137	74	21
+138	74	21
+139	74	21
+140	75	21
+141	73	21
+142	74	21
+143	74	21
+144	73	21
+145	74	21
+146	73	21
+147	73	21
+148	73	21
+149	73	21
+150	75	21
+151	74	21
+152	73	29
+153	74	29
+154	74	29
+155	73	29
+156	73	29
+157	73	29
+158	73	29
+159	73	29
+160	73	29
+161	73	29
+162	74	29
+163	74	29
+164	73	29
+165	73	29
+166	73	29
+167	73	29
+168	73	29
+169	73	29
+170	73	29
+171	74	29
+172	74	29
+173	73	29
+174	74	29
+175	73	29
+176	73	29
+177	73	29
+178	73	29
+179	73	29
+180	73	29
+181	73	29
+182	73	29
+183	74	29
+184	75	29
+185	75	29
+186	75	29
+187	75	29
+188	75	29
+189	75	29
+190	75	29
+191	75	29
+192	74	29
+193	74	29
+194	75	29
+195	75	29
+196	73	29
+197	73	29
+198	73	29
+199	75	29
+200	75	29
+201	75	29
+202	75	29
+203	75	29
+204	75	29
+205	74	29
+206	74	29
+207	75	29
+208	75	29
+209	73	29
+210	73	29
+211	73	29
+212	73	29
+213	73	29
+214	73	29
+215	74	29
+216	75	29
+217	75	29
+218	73	29
+219	73	29
+220	73	29
+221	73	29
+222	73	21
+223	73	21
+224	73	21
+\.
+
+
+--
+-- Data for Name: tracks_subcomment; Type: TABLE DATA; Schema: public; Owner: andytran
+--
+
+COPY public.tracks_subcomment (id, created_at, posted_by_id, comment_id, subcomment) FROM stdin;
+\.
+
+
+--
+-- Data for Name: tracks_track; Type: TABLE DATA; Schema: public; Owner: andytran
+--
+
+COPY public.tracks_track (id, title, description, url, created_at, posted_by_id, img_url, artist_name) FROM stdin;
+73	Demon Slayer	I love this track, it's just so good. It reminds me of the good old days.	http://res.cloudinary.com/andytran/raw/upload/v1593020002/pqigmzjg2kpmkvtqjhut.mp3	2020-06-24 10:34:04.819-07	21	http://res.cloudinary.com/andytran/raw/upload/v1593020041/bxpm0tl55dbaobqsheqo	Anime Lovers
+74	Crawl Outta Love	This song makes me so sad. Omg!!!!	http://res.cloudinary.com/andytran/raw/upload/v1593027315/vfoy0s6fej1iwg3plidv.mp3	2020-06-24 12:35:21.926-07	21	http://res.cloudinary.com/andytran/raw/upload/v1593027292/v687zgjgpapuvjwr28nv	Illenium
+75	Closer	Omg, I love this song. It reminds me of the good old days	http://res.cloudinary.com/andytran/raw/upload/v1593028197/twe52dvregr9vjweqi5a.mp3	2020-06-24 12:50:02.164-07	21	http://res.cloudinary.com/andytran/raw/upload/v1593028198/ffe46rlqlearj2a6mozu	Chainsmokers
+\.
+
+
+--
+-- Data for Name: tracks_userprofile; Type: TABLE DATA; Schema: public; Owner: andytran
+--
+
+COPY public.tracks_userprofile (id, avatar_url, user_id) FROM stdin;
+1		2
+5	http://res.cloudinary.com/andytran/raw/upload/v1592938566/dzdm4edlcssue0k3hvo0	21
+6	http://res.cloudinary.com/andytran/raw/upload/v1592434202/amjjpvrcuobrjrniq7nw	22
+7		23
+8		24
+9		25
+10		26
+11		27
+12		28
+13		29
+\.
+
+
+--
+-- Name: auth_group_id_seq; Type: SEQUENCE SET; Schema: public; Owner: andytran
+--
+
+SELECT pg_catalog.setval('public.auth_group_id_seq', 1, false);
+
+
+--
+-- Name: auth_group_permissions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: andytran
+--
+
+SELECT pg_catalog.setval('public.auth_group_permissions_id_seq', 1, false);
+
+
+--
+-- Name: auth_permission_id_seq; Type: SEQUENCE SET; Schema: public; Owner: andytran
+--
+
+SELECT pg_catalog.setval('public.auth_permission_id_seq', 88, true);
+
+
+--
+-- Name: auth_user_groups_id_seq; Type: SEQUENCE SET; Schema: public; Owner: andytran
+--
+
+SELECT pg_catalog.setval('public.auth_user_groups_id_seq', 1, false);
+
+
+--
+-- Name: auth_user_id_seq; Type: SEQUENCE SET; Schema: public; Owner: andytran
+--
+
+SELECT pg_catalog.setval('public.auth_user_id_seq', 29, true);
+
+
+--
+-- Name: auth_user_user_permissions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: andytran
+--
+
+SELECT pg_catalog.setval('public.auth_user_user_permissions_id_seq', 1, false);
+
+
+--
+-- Name: django_admin_log_id_seq; Type: SEQUENCE SET; Schema: public; Owner: andytran
+--
+
+SELECT pg_catalog.setval('public.django_admin_log_id_seq', 1, false);
+
+
+--
+-- Name: django_content_type_id_seq; Type: SEQUENCE SET; Schema: public; Owner: andytran
+--
+
+SELECT pg_catalog.setval('public.django_content_type_id_seq', 21, true);
+
+
+--
+-- Name: django_migrations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: andytran
+--
+
+SELECT pg_catalog.setval('public.django_migrations_id_seq', 31, true);
+
+
+--
+-- Name: tracks_comment_id_seq; Type: SEQUENCE SET; Schema: public; Owner: andytran
+--
+
+SELECT pg_catalog.setval('public.tracks_comment_id_seq', 1, false);
+
+
+--
+-- Name: tracks_like_id_seq; Type: SEQUENCE SET; Schema: public; Owner: andytran
+--
+
+SELECT pg_catalog.setval('public.tracks_like_id_seq', 280, true);
+
+
+--
+-- Name: tracks_plays_id_seq; Type: SEQUENCE SET; Schema: public; Owner: andytran
+--
+
+SELECT pg_catalog.setval('public.tracks_plays_id_seq', 224, true);
+
+
+--
+-- Name: tracks_subcomment_id_seq; Type: SEQUENCE SET; Schema: public; Owner: andytran
+--
+
+SELECT pg_catalog.setval('public.tracks_subcomment_id_seq', 1, false);
+
+
+--
+-- Name: tracks_track_id_seq; Type: SEQUENCE SET; Schema: public; Owner: andytran
+--
+
+SELECT pg_catalog.setval('public.tracks_track_id_seq', 75, true);
+
+
+--
+-- Name: tracks_userprofile_id_seq; Type: SEQUENCE SET; Schema: public; Owner: andytran
+--
+
+SELECT pg_catalog.setval('public.tracks_userprofile_id_seq', 13, true);
+
+
+--
+-- Name: auth_group auth_group_name_key; Type: CONSTRAINT; Schema: public; Owner: andytran
+--
+
+ALTER TABLE ONLY public.auth_group
+    ADD CONSTRAINT auth_group_name_key UNIQUE (name);
+
+
+--
+-- Name: auth_group_permissions auth_group_permissions_group_id_permission_id_0cd325b0_uniq; Type: CONSTRAINT; Schema: public; Owner: andytran
+--
+
+ALTER TABLE ONLY public.auth_group_permissions
+    ADD CONSTRAINT auth_group_permissions_group_id_permission_id_0cd325b0_uniq UNIQUE (group_id, permission_id);
+
+
+--
+-- Name: auth_group_permissions auth_group_permissions_pkey; Type: CONSTRAINT; Schema: public; Owner: andytran
+--
+
+ALTER TABLE ONLY public.auth_group_permissions
+    ADD CONSTRAINT auth_group_permissions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_group auth_group_pkey; Type: CONSTRAINT; Schema: public; Owner: andytran
+--
+
+ALTER TABLE ONLY public.auth_group
+    ADD CONSTRAINT auth_group_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_permission auth_permission_content_type_id_codename_01ab375a_uniq; Type: CONSTRAINT; Schema: public; Owner: andytran
+--
+
+ALTER TABLE ONLY public.auth_permission
+    ADD CONSTRAINT auth_permission_content_type_id_codename_01ab375a_uniq UNIQUE (content_type_id, codename);
+
+
+--
+-- Name: auth_permission auth_permission_pkey; Type: CONSTRAINT; Schema: public; Owner: andytran
+--
+
+ALTER TABLE ONLY public.auth_permission
+    ADD CONSTRAINT auth_permission_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_user_groups auth_user_groups_pkey; Type: CONSTRAINT; Schema: public; Owner: andytran
+--
+
+ALTER TABLE ONLY public.auth_user_groups
+    ADD CONSTRAINT auth_user_groups_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_user_groups auth_user_groups_user_id_group_id_94350c0c_uniq; Type: CONSTRAINT; Schema: public; Owner: andytran
+--
+
+ALTER TABLE ONLY public.auth_user_groups
+    ADD CONSTRAINT auth_user_groups_user_id_group_id_94350c0c_uniq UNIQUE (user_id, group_id);
+
+
+--
+-- Name: auth_user auth_user_pkey; Type: CONSTRAINT; Schema: public; Owner: andytran
+--
+
+ALTER TABLE ONLY public.auth_user
+    ADD CONSTRAINT auth_user_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_user_user_permissions auth_user_user_permissions_pkey; Type: CONSTRAINT; Schema: public; Owner: andytran
+--
+
+ALTER TABLE ONLY public.auth_user_user_permissions
+    ADD CONSTRAINT auth_user_user_permissions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_user_user_permissions auth_user_user_permissions_user_id_permission_id_14a6b632_uniq; Type: CONSTRAINT; Schema: public; Owner: andytran
+--
+
+ALTER TABLE ONLY public.auth_user_user_permissions
+    ADD CONSTRAINT auth_user_user_permissions_user_id_permission_id_14a6b632_uniq UNIQUE (user_id, permission_id);
+
+
+--
+-- Name: auth_user auth_user_username_key; Type: CONSTRAINT; Schema: public; Owner: andytran
+--
+
+ALTER TABLE ONLY public.auth_user
+    ADD CONSTRAINT auth_user_username_key UNIQUE (username);
+
+
+--
+-- Name: django_admin_log django_admin_log_pkey; Type: CONSTRAINT; Schema: public; Owner: andytran
+--
+
+ALTER TABLE ONLY public.django_admin_log
+    ADD CONSTRAINT django_admin_log_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: django_content_type django_content_type_app_label_model_76bd3d3b_uniq; Type: CONSTRAINT; Schema: public; Owner: andytran
+--
+
+ALTER TABLE ONLY public.django_content_type
+    ADD CONSTRAINT django_content_type_app_label_model_76bd3d3b_uniq UNIQUE (app_label, model);
+
+
+--
+-- Name: django_content_type django_content_type_pkey; Type: CONSTRAINT; Schema: public; Owner: andytran
+--
+
+ALTER TABLE ONLY public.django_content_type
+    ADD CONSTRAINT django_content_type_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: django_migrations django_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: andytran
+--
+
+ALTER TABLE ONLY public.django_migrations
+    ADD CONSTRAINT django_migrations_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: django_session django_session_pkey; Type: CONSTRAINT; Schema: public; Owner: andytran
+--
+
+ALTER TABLE ONLY public.django_session
+    ADD CONSTRAINT django_session_pkey PRIMARY KEY (session_key);
+
+
+--
+-- Name: tracks_comment tracks_comment_pkey; Type: CONSTRAINT; Schema: public; Owner: andytran
+--
+
+ALTER TABLE ONLY public.tracks_comment
+    ADD CONSTRAINT tracks_comment_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: tracks_like tracks_like_pkey; Type: CONSTRAINT; Schema: public; Owner: andytran
+--
+
+ALTER TABLE ONLY public.tracks_like
+    ADD CONSTRAINT tracks_like_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: tracks_play tracks_plays_pkey; Type: CONSTRAINT; Schema: public; Owner: andytran
+--
+
+ALTER TABLE ONLY public.tracks_play
+    ADD CONSTRAINT tracks_plays_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: tracks_subcomment tracks_subcomment_pkey; Type: CONSTRAINT; Schema: public; Owner: andytran
+--
+
+ALTER TABLE ONLY public.tracks_subcomment
+    ADD CONSTRAINT tracks_subcomment_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: tracks_track tracks_track_pkey; Type: CONSTRAINT; Schema: public; Owner: andytran
+--
+
+ALTER TABLE ONLY public.tracks_track
+    ADD CONSTRAINT tracks_track_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: tracks_userprofile tracks_userprofile_pkey; Type: CONSTRAINT; Schema: public; Owner: andytran
+--
+
+ALTER TABLE ONLY public.tracks_userprofile
+    ADD CONSTRAINT tracks_userprofile_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: tracks_userprofile tracks_userprofile_user_id_key; Type: CONSTRAINT; Schema: public; Owner: andytran
+--
+
+ALTER TABLE ONLY public.tracks_userprofile
+    ADD CONSTRAINT tracks_userprofile_user_id_key UNIQUE (user_id);
+
+
+--
+-- Name: auth_group_name_a6ea08ec_like; Type: INDEX; Schema: public; Owner: andytran
+--
+
+CREATE INDEX auth_group_name_a6ea08ec_like ON public.auth_group USING btree (name varchar_pattern_ops);
+
+
+--
+-- Name: auth_group_permissions_group_id_b120cbf9; Type: INDEX; Schema: public; Owner: andytran
+--
+
+CREATE INDEX auth_group_permissions_group_id_b120cbf9 ON public.auth_group_permissions USING btree (group_id);
+
+
+--
+-- Name: auth_group_permissions_permission_id_84c5c92e; Type: INDEX; Schema: public; Owner: andytran
+--
+
+CREATE INDEX auth_group_permissions_permission_id_84c5c92e ON public.auth_group_permissions USING btree (permission_id);
+
+
+--
+-- Name: auth_permission_content_type_id_2f476e4b; Type: INDEX; Schema: public; Owner: andytran
+--
+
+CREATE INDEX auth_permission_content_type_id_2f476e4b ON public.auth_permission USING btree (content_type_id);
+
+
+--
+-- Name: auth_user_groups_group_id_97559544; Type: INDEX; Schema: public; Owner: andytran
+--
+
+CREATE INDEX auth_user_groups_group_id_97559544 ON public.auth_user_groups USING btree (group_id);
+
+
+--
+-- Name: auth_user_groups_user_id_6a12ed8b; Type: INDEX; Schema: public; Owner: andytran
+--
+
+CREATE INDEX auth_user_groups_user_id_6a12ed8b ON public.auth_user_groups USING btree (user_id);
+
+
+--
+-- Name: auth_user_user_permissions_permission_id_1fbb5f2c; Type: INDEX; Schema: public; Owner: andytran
+--
+
+CREATE INDEX auth_user_user_permissions_permission_id_1fbb5f2c ON public.auth_user_user_permissions USING btree (permission_id);
+
+
+--
+-- Name: auth_user_user_permissions_user_id_a95ead1b; Type: INDEX; Schema: public; Owner: andytran
+--
+
+CREATE INDEX auth_user_user_permissions_user_id_a95ead1b ON public.auth_user_user_permissions USING btree (user_id);
+
+
+--
+-- Name: auth_user_username_6821ab7c_like; Type: INDEX; Schema: public; Owner: andytran
+--
+
+CREATE INDEX auth_user_username_6821ab7c_like ON public.auth_user USING btree (username varchar_pattern_ops);
+
+
+--
+-- Name: django_admin_log_content_type_id_c4bce8eb; Type: INDEX; Schema: public; Owner: andytran
+--
+
+CREATE INDEX django_admin_log_content_type_id_c4bce8eb ON public.django_admin_log USING btree (content_type_id);
+
+
+--
+-- Name: django_admin_log_user_id_c564eba6; Type: INDEX; Schema: public; Owner: andytran
+--
+
+CREATE INDEX django_admin_log_user_id_c564eba6 ON public.django_admin_log USING btree (user_id);
+
+
+--
+-- Name: django_session_expire_date_a5c62663; Type: INDEX; Schema: public; Owner: andytran
+--
+
+CREATE INDEX django_session_expire_date_a5c62663 ON public.django_session USING btree (expire_date);
+
+
+--
+-- Name: django_session_session_key_c0390e0f_like; Type: INDEX; Schema: public; Owner: andytran
+--
+
+CREATE INDEX django_session_session_key_c0390e0f_like ON public.django_session USING btree (session_key varchar_pattern_ops);
+
+
+--
+-- Name: tracks_comment_posted_by_id_cb383c99; Type: INDEX; Schema: public; Owner: andytran
+--
+
+CREATE INDEX tracks_comment_posted_by_id_cb383c99 ON public.tracks_comment USING btree (posted_by_id);
+
+
+--
+-- Name: tracks_comment_track_id_91eee78e; Type: INDEX; Schema: public; Owner: andytran
+--
+
+CREATE INDEX tracks_comment_track_id_91eee78e ON public.tracks_comment USING btree (track_id);
+
+
+--
+-- Name: tracks_like_track_id_d94c303f; Type: INDEX; Schema: public; Owner: andytran
+--
+
+CREATE INDEX tracks_like_track_id_d94c303f ON public.tracks_like USING btree (track_id);
+
+
+--
+-- Name: tracks_like_user_id_650f4b3d; Type: INDEX; Schema: public; Owner: andytran
+--
+
+CREATE INDEX tracks_like_user_id_650f4b3d ON public.tracks_like USING btree (user_id);
+
+
+--
+-- Name: tracks_plays_track_id_9290676c; Type: INDEX; Schema: public; Owner: andytran
+--
+
+CREATE INDEX tracks_plays_track_id_9290676c ON public.tracks_play USING btree (track_id);
+
+
+--
+-- Name: tracks_plays_user_id_f3c5f63a; Type: INDEX; Schema: public; Owner: andytran
+--
+
+CREATE INDEX tracks_plays_user_id_f3c5f63a ON public.tracks_play USING btree (user_id);
+
+
+--
+-- Name: tracks_subcomment_comment_id_545d830a; Type: INDEX; Schema: public; Owner: andytran
+--
+
+CREATE INDEX tracks_subcomment_comment_id_545d830a ON public.tracks_subcomment USING btree (comment_id);
+
+
+--
+-- Name: tracks_subcomment_posted_by_id_622a8f5f; Type: INDEX; Schema: public; Owner: andytran
+--
+
+CREATE INDEX tracks_subcomment_posted_by_id_622a8f5f ON public.tracks_subcomment USING btree (posted_by_id);
+
+
+--
+-- Name: tracks_track_posted_by_id_19bc1935; Type: INDEX; Schema: public; Owner: andytran
+--
+
+CREATE INDEX tracks_track_posted_by_id_19bc1935 ON public.tracks_track USING btree (posted_by_id);
+
+
+--
+-- Name: auth_group_permissions auth_group_permissio_permission_id_84c5c92e_fk_auth_perm; Type: FK CONSTRAINT; Schema: public; Owner: andytran
+--
+
+ALTER TABLE ONLY public.auth_group_permissions
+    ADD CONSTRAINT auth_group_permissio_permission_id_84c5c92e_fk_auth_perm FOREIGN KEY (permission_id) REFERENCES public.auth_permission(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: auth_group_permissions auth_group_permissions_group_id_b120cbf9_fk_auth_group_id; Type: FK CONSTRAINT; Schema: public; Owner: andytran
+--
+
+ALTER TABLE ONLY public.auth_group_permissions
+    ADD CONSTRAINT auth_group_permissions_group_id_b120cbf9_fk_auth_group_id FOREIGN KEY (group_id) REFERENCES public.auth_group(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: auth_permission auth_permission_content_type_id_2f476e4b_fk_django_co; Type: FK CONSTRAINT; Schema: public; Owner: andytran
+--
+
+ALTER TABLE ONLY public.auth_permission
+    ADD CONSTRAINT auth_permission_content_type_id_2f476e4b_fk_django_co FOREIGN KEY (content_type_id) REFERENCES public.django_content_type(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: auth_user_groups auth_user_groups_group_id_97559544_fk_auth_group_id; Type: FK CONSTRAINT; Schema: public; Owner: andytran
+--
+
+ALTER TABLE ONLY public.auth_user_groups
+    ADD CONSTRAINT auth_user_groups_group_id_97559544_fk_auth_group_id FOREIGN KEY (group_id) REFERENCES public.auth_group(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: auth_user_groups auth_user_groups_user_id_6a12ed8b_fk_auth_user_id; Type: FK CONSTRAINT; Schema: public; Owner: andytran
+--
+
+ALTER TABLE ONLY public.auth_user_groups
+    ADD CONSTRAINT auth_user_groups_user_id_6a12ed8b_fk_auth_user_id FOREIGN KEY (user_id) REFERENCES public.auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: auth_user_user_permissions auth_user_user_permi_permission_id_1fbb5f2c_fk_auth_perm; Type: FK CONSTRAINT; Schema: public; Owner: andytran
+--
+
+ALTER TABLE ONLY public.auth_user_user_permissions
+    ADD CONSTRAINT auth_user_user_permi_permission_id_1fbb5f2c_fk_auth_perm FOREIGN KEY (permission_id) REFERENCES public.auth_permission(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: auth_user_user_permissions auth_user_user_permissions_user_id_a95ead1b_fk_auth_user_id; Type: FK CONSTRAINT; Schema: public; Owner: andytran
+--
+
+ALTER TABLE ONLY public.auth_user_user_permissions
+    ADD CONSTRAINT auth_user_user_permissions_user_id_a95ead1b_fk_auth_user_id FOREIGN KEY (user_id) REFERENCES public.auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: django_admin_log django_admin_log_content_type_id_c4bce8eb_fk_django_co; Type: FK CONSTRAINT; Schema: public; Owner: andytran
+--
+
+ALTER TABLE ONLY public.django_admin_log
+    ADD CONSTRAINT django_admin_log_content_type_id_c4bce8eb_fk_django_co FOREIGN KEY (content_type_id) REFERENCES public.django_content_type(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: django_admin_log django_admin_log_user_id_c564eba6_fk_auth_user_id; Type: FK CONSTRAINT; Schema: public; Owner: andytran
+--
+
+ALTER TABLE ONLY public.django_admin_log
+    ADD CONSTRAINT django_admin_log_user_id_c564eba6_fk_auth_user_id FOREIGN KEY (user_id) REFERENCES public.auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: tracks_comment tracks_comment_posted_by_id_cb383c99_fk_auth_user_id; Type: FK CONSTRAINT; Schema: public; Owner: andytran
+--
+
+ALTER TABLE ONLY public.tracks_comment
+    ADD CONSTRAINT tracks_comment_posted_by_id_cb383c99_fk_auth_user_id FOREIGN KEY (posted_by_id) REFERENCES public.auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: tracks_comment tracks_comment_track_id_91eee78e_fk_tracks_track_id; Type: FK CONSTRAINT; Schema: public; Owner: andytran
+--
+
+ALTER TABLE ONLY public.tracks_comment
+    ADD CONSTRAINT tracks_comment_track_id_91eee78e_fk_tracks_track_id FOREIGN KEY (track_id) REFERENCES public.tracks_track(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: tracks_like tracks_like_track_id_d94c303f_fk_tracks_track_id; Type: FK CONSTRAINT; Schema: public; Owner: andytran
+--
+
+ALTER TABLE ONLY public.tracks_like
+    ADD CONSTRAINT tracks_like_track_id_d94c303f_fk_tracks_track_id FOREIGN KEY (track_id) REFERENCES public.tracks_track(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: tracks_like tracks_like_user_id_650f4b3d_fk_auth_user_id; Type: FK CONSTRAINT; Schema: public; Owner: andytran
+--
+
+ALTER TABLE ONLY public.tracks_like
+    ADD CONSTRAINT tracks_like_user_id_650f4b3d_fk_auth_user_id FOREIGN KEY (user_id) REFERENCES public.auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: tracks_play tracks_plays_track_id_9290676c_fk_tracks_track_id; Type: FK CONSTRAINT; Schema: public; Owner: andytran
+--
+
+ALTER TABLE ONLY public.tracks_play
+    ADD CONSTRAINT tracks_plays_track_id_9290676c_fk_tracks_track_id FOREIGN KEY (track_id) REFERENCES public.tracks_track(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: tracks_play tracks_plays_user_id_f3c5f63a_fk_auth_user_id; Type: FK CONSTRAINT; Schema: public; Owner: andytran
+--
+
+ALTER TABLE ONLY public.tracks_play
+    ADD CONSTRAINT tracks_plays_user_id_f3c5f63a_fk_auth_user_id FOREIGN KEY (user_id) REFERENCES public.auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: tracks_subcomment tracks_subcomment_comment_id_545d830a_fk_tracks_comment_id; Type: FK CONSTRAINT; Schema: public; Owner: andytran
+--
+
+ALTER TABLE ONLY public.tracks_subcomment
+    ADD CONSTRAINT tracks_subcomment_comment_id_545d830a_fk_tracks_comment_id FOREIGN KEY (comment_id) REFERENCES public.tracks_comment(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: tracks_subcomment tracks_subcomment_posted_by_id_622a8f5f_fk_auth_user_id; Type: FK CONSTRAINT; Schema: public; Owner: andytran
+--
+
+ALTER TABLE ONLY public.tracks_subcomment
+    ADD CONSTRAINT tracks_subcomment_posted_by_id_622a8f5f_fk_auth_user_id FOREIGN KEY (posted_by_id) REFERENCES public.auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: tracks_track tracks_track_posted_by_id_19bc1935_fk_auth_user_id; Type: FK CONSTRAINT; Schema: public; Owner: andytran
+--
+
+ALTER TABLE ONLY public.tracks_track
+    ADD CONSTRAINT tracks_track_posted_by_id_19bc1935_fk_auth_user_id FOREIGN KEY (posted_by_id) REFERENCES public.auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: tracks_userprofile tracks_userprofile_user_id_58e0a37d_fk_auth_user_id; Type: FK CONSTRAINT; Schema: public; Owner: andytran
+--
+
+ALTER TABLE ONLY public.tracks_userprofile
+    ADD CONSTRAINT tracks_userprofile_user_id_58e0a37d_fk_auth_user_id FOREIGN KEY (user_id) REFERENCES public.auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- PostgreSQL database dump complete
+--
+
