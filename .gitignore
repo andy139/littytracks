@@ -5,6 +5,7 @@
 /.pnp
 .pnp.js
 
+app/local_settings.py
 # testing
 /coverage
 
