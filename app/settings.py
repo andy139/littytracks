@@ -127,7 +127,6 @@ WSGI_APPLICATION = 'app.wsgi.application'
 #     }
 # }
 
-DATABASES = {'default': dj_database_url.config()}
 
 # DATABASES = {
 
@@ -147,6 +146,7 @@ DATABASES = {'default': dj_database_url.config()}
 
 # }
 
+DATABASES = {'default': dj_database_url.config()}
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
@@ -200,6 +200,7 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'build', 'media')
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
 try:
     from .local_settings import *
 except ImportError:
