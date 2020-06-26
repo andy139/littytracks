@@ -27,8 +27,8 @@ SECRET_KEY = '9k$q-8#$(mjwzi-m#dfc8_628-n6a8!vhkogc1k+z31-_dy(hx'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['0.0.0.0', 'localhost', '127.0.0.1',
-                 'https://littytracks.herokuapp.com/']
+ALLOWED_HOSTS = ['0.0.0.0', 'localhost',
+                 '127.0.0.1', 'littytracks.herokuapp.com']
 
 
 # Application definition
