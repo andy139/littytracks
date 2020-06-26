@@ -8,6 +8,9 @@ bdist-mpkg==0.5.0
 django-cors-middleware
 django-oauth-toolkit
 graphene_django
+PyJWT
+graphql-core
+
 
 CacheControl==0.12.6
 cachy==0.3.0
