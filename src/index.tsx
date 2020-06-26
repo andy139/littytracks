@@ -30,7 +30,8 @@ const link = onError(({ graphQLErrors, networkError }) => {
 
 
 const client = new ApolloClient({
-  uri: "http://localhost:8000/graphql/",
+  uri: "https://littytracks.herokuapp.com/graphql/",
+  // uri: "http://localhost:8000/graphql/",
   // link: link,
   fetchOptions:{
     credentials:"include" //include auth header on request
