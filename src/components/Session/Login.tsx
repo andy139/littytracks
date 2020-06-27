@@ -12,7 +12,7 @@ interface Props {
 	setNewUser(name: boolean): any;
 }
 
-const LOGIN_MUTATION = gql`
+export const LOGIN_MUTATION = gql`
 	mutation($username: String!, $password: String!) {
 		tokenAuth(username: $username, password: $password) {
 			token
@@ -116,7 +116,7 @@ const Login: React.FC<Props> = ({ classes, setNewUser }) => {
 		try {
 			const res = await tokenAuth({
 				variables: {
-					username: 'testuser',
+					username: 'MusicLover415',
 					password: 'password'
 				}
 			});
@@ -180,6 +180,9 @@ const Login: React.FC<Props> = ({ classes, setNewUser }) => {
 								Log in
 							</Button>
 						</FormItem>
+						<Divider>
+							OR
+						</Divider>
 						
 						<FormItem>
 							<Button
@@ -194,6 +197,7 @@ const Login: React.FC<Props> = ({ classes, setNewUser }) => {
 								Log in with Demo User
 							</Button>
 						</FormItem>
+					
                         {/* <Form.Item name="remember" valuePropName="checked">
                             <Checkbox>Remember me</Checkbox>
                         </Form.Item> */}

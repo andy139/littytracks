@@ -28,12 +28,12 @@ const CREATE_COMMENT_MUTATION = gql`
 
 
 
-const CommentTrack: React.FC<any> = ({ track, commentCount }) => {
+const CommentTrack: React.FC<any> = ({ track, commentCount, setModal}) => {
 	const [ createComment, { data, loading } ] = useMutation(CREATE_COMMENT_MUTATION, {
 		refetchQueries: [ { query: ME_QUERY } ]
     });
     
-    const [modalState, setModal] = useState(false);
+
 
 	// const currentUser: any = useContext(UserContext);
 	// if (!currentUser) return null;

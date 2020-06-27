@@ -52,6 +52,9 @@ export const PROFILE_QUERY = gql`
 					postedBy {
 						id
 						username
+						userprofile{
+							avatarUrl
+						}
 					}
 				}
 			}
@@ -70,6 +73,9 @@ export const PROFILE_QUERY = gql`
 				postedBy {
 					id
 					username
+					userprofile{
+						avatarUrl
+					}
 				}
 				plays {
 					id
@@ -89,6 +95,8 @@ const Profile: React.FC<any> = ({ match, history, currentUser }) => {
 		variables: { id: match.params.id }
 	});
 
+	const [open, openTrack] = useState(false);
+
 	if (loading) return <Loading />;
 
 	if (error) return <Error error={error} />;
@@ -104,10 +112,22 @@ const Profile: React.FC<any> = ({ match, history, currentUser }) => {
 		<Empty
 			image="https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg"
 			imageStyle={{
-				height: 60
+				height: 110
 			}}
 			description={
-				<span>{currentUser.id === match.params.id ? 'You got no music :(' : 'This user has no music yet'}</span>
+				<span>{currentUser.id === match.params.id ?
+					<span>
+						You got no music!
+						<Row justify={'center'} style={{marginTop: 10}} >
+							
+							<CreateTrack isProfile={true} />
+						
+						</Row>
+							
+						
+				
+					</span>
+					: 'This user has no music yet'}</span>
 			}
 		>
 			{/* <Button type="primary">Upload some cool sounds now!</Button> */}
@@ -118,10 +138,10 @@ const Profile: React.FC<any> = ({ match, history, currentUser }) => {
 		<Empty
 			image="https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg"
 			imageStyle={{
-				height: 60
+				height: 110
 			}}
 			description={
-				<span>{currentUser.id === match.params.id ? 'This user has no likes yet' : 'This user has no likes yet'}</span>
+				<span>{currentUser.id === match.params.id ? 'You have no likes yet!' : 'This user has no likes yet'}</span>
 			}
 		>
 			{/* <Button type="primary">Upload some cool sounds now!</Button> */}
@@ -134,11 +154,19 @@ const Profile: React.FC<any> = ({ match, history, currentUser }) => {
 			size="large"
 			locale={{ emptyText: emptyList }}
 			loading={false}
+			pagination={{
+				onChange: (page) => {
+
+				},
+				pageSize: 4
+			}}
+			style={{ paddingBottom: 15,  }}
 			dataSource={data.user.trackSet}
+			footer={<div></div>}
 			renderItem={(track: any) => (
 				<List.Item>
 					
-					<AudioPlayer streamUrl={track.url} match={match} trackTitle={track.title} imgUrl={track.imgUrl} track={track} preloadType="metadata" />
+					<AudioPlayer clientId={'xxx'} streamUrl={track.url} match={match} trackTitle={track.title} imgUrl={track.imgUrl} track={track} preloadType="metadata" />
 					
 				
 				</List.Item>
@@ -153,8 +181,17 @@ const Profile: React.FC<any> = ({ match, history, currentUser }) => {
 			itemLayout="vertical"
 			size="large"
 			locale={{ emptyText: emptyLikes }}
+			pagination={{
+				onChange: (page) => {
+
+				},
+				pageSize: 4
+			}}
 			loading={false}
 			dataSource={data.user.likeSet}
+			footer={<div></div>}
+
+			style={{paddingBottom:15}}
 			renderItem={({ track }: any) => (
 			
 				<List.Item>
@@ -198,27 +235,27 @@ const Profile: React.FC<any> = ({ match, history, currentUser }) => {
 			<Tabs defaultActiveKey="1">
 				<TabPane
 					tab={
-						<span>
+						<span style={{ fontSize: 20 }}>
 							{/* <AppleOutlined /> */}
-							Music
+							Tracks
 						</span>
 					}
 					key="1"
 				>
-					<h3>Created Tracks</h3>
+					
 
 					{createdTracks2}
 				</TabPane>
 				<TabPane
 					tab={
-						<span>
+						<span style={{ fontSize: 20 }}>
 							{/* <AndroidOutlined /> */}
 							Likes
 						</span>
 					}
 					key="2"
 				>
-					<h3>Liked Tracks</h3>
+				
 		
 				{likedTracks2}
 				</TabPane>

@@ -38,7 +38,7 @@ const CREATE_TRACK_MUTATION = gql`
 
 
 `
-const CreateTrack: React.FC<any> = ({classes, userId, isNavbar}) => {
+const CreateTrack: React.FC<any> = ({classes, userId, isNavbar, isProfile}) => {
     let id = userId;
 
     if (!id) id = 21;
@@ -277,6 +277,11 @@ const CreateTrack: React.FC<any> = ({classes, userId, isNavbar}) => {
     return (
       <>
         {/* Create Track BUtton */}
+
+        <span>
+          {isProfile ? <Button onClick={() => setModal(true)}>Upload Now</Button> : null}
+
+        </span>
 
         {isNavbar ? navbarButton : <Affix style={{ position: "fixed", bottom: 30, right: 30, zIndex: 999 }}>
 

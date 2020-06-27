@@ -3,8 +3,8 @@ import React from 'react';
 import { useQuery } from "@apollo/react-hooks";
 import { gql } from 'apollo-boost';
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
-
-import { Layout } from 'antd';
+import { GithubOutlined, LinkedinOutlined,  } from '@ant-design/icons'
+import { Layout, Space, Button } from 'antd';
 import Splash from './pages/Splash';
 import Profile from './pages/Profile';
 import Navbar from './components/Shared/Navbar';
@@ -15,7 +15,7 @@ import "react-jinke-music-player/assets/index.css";
 
 import "./App.less";
 
-const { Header, Footer, Sider, Content } = Layout;
+const { Header, Footer, Sider, Content,  } = Layout;
 // ctrl + space to see what type component is taking in
 
 export const UserContext =  React.createContext(null);
@@ -82,6 +82,21 @@ const App: React.FC<any> = () => {
                 </Switch>
           </Content>
         
+          <Footer style={{ textAlign: 'center' }}>
+            <span>
+              Created by&nbsp;
+                <a
+                style={{ color: 'inherit'}}
+                href='https://www.atran.co/' target="_blank"  
+              >
+                Andy Tran
+                </a>
+              </span>
+                &nbsp;
+                <Button type="link" href='https://www.linkedin.com/in/andy139/' target="_blank" icon={<LinkedinOutlined /> }/>
+            <Button type="link" href='https://github.com/andy139'target="_blank" icon={<GithubOutlined />}/>
+          
+          </Footer>
           </Layout>
         </UserContext.Provider>
       </Router>

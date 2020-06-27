@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Collapse, Select, List, Card, Avatar, Space, Row, Col, Descriptions, Divider } from 'antd';
+import { Collapse, Select, List, Card, Avatar, Space, Row, Col, Modal, Divider } from 'antd';
 import { MessageOutlined, LikeOutlined, StarOutlined, SettingOutlined, CaretRightOutlined } from '@ant-design/icons';
 
 import { Query } from 'react-apollo';
@@ -26,11 +26,19 @@ const CREATE_PLAY_MUTATION = gql`
 `;
 const { SoundCloudLogoSVG, PlayIconSVG, PauseIconSVG, NextIconSVG, PrevIconSVG } = Icons;
 
+
+
+
 const AudioPlayer: React.FC<any> = withCustomAudio((props) => {
-	const { soundCloudAudio, trackTitle, match, imgUrl, playing, track, currentTime, duration } = props;
+	const { soundCloudAudio, trackTitle, match, imgUrl, playing, track, currentTime, duration, } = props;
 	const [ createPlay, { data, loading } ] = useMutation(CREATE_PLAY_MUTATION, {
 		refetchQueries: [ { query: ME_QUERY } ]
 	});
+
+	const [modal, setModal] = useState(false);
+
+
+
 	const play = () => {
 		if (playing) {
 			soundCloudAudio.pause();
@@ -41,22 +49,33 @@ const AudioPlayer: React.FC<any> = withCustomAudio((props) => {
 	};
 
 	useEffect(() => {
-		console.log(currentTime);
-		console.log(duration);
+	
 		return () => {
 			if (currentTime > duration / 2) {
 				createPlay({ variables: { trackId: track.id } });
-				console.log(currentTime);
-				console.log(duration);
+			
 			}
 		};
 	}, []);
 
 	return (
 		<div className="trackBox">
+
+			<Modal
+				title="Basic Modal"
+				visible={modal}
+				onCancel={() => setModal(false)}
+
+			>
+				<p>Some contents...</p>
+				<p>Some contents...</p>
+				<p>Some contents...</p>
+			</Modal>
+
 			<Row align="middle" justify="center">
 				<Col flex="0 1 300px" style={{ justifyContent: 'center', display: 'flex' }}>
 					<img
+						onClick={() => setModal(true)}
 						width={225}
 						className="imgTrack"
 						alt="logo"
@@ -76,7 +95,12 @@ const AudioPlayer: React.FC<any> = withCustomAudio((props) => {
 					</h2>
 
 					<h3>
-						<Link to={`/profile/${track.postedBy.id}`}>{track.postedBy.username}</Link>
+
+						<Link to={`/profile/${track.postedBy.id}`}>
+							<Avatar size="small" icon={<img src={track.postedBy.userprofile.avatarUrl}></img>} />
+							&nbsp; {track.postedBy.username}
+						
+						</Link>
 					</h3>
 
 					{/* <PlayButton className="playButton" {...props}/>  */}
@@ -106,10 +130,15 @@ const AudioPlayer: React.FC<any> = withCustomAudio((props) => {
 						<Progress {...props} className="bar-radius" innerClassName="bar-color" />
 					</div>
 					<Divider />
+
+	
+
+
 					<Row>
 						<Space>
 							<LikeTrack trackId={track.id} likeCount={track.likes.length} />
-							<CommentTrack track={track} commentCount={track.comments.length} />
+
+							<CommentTrack track={track} commentCount={track.comments.length} setModal={setModal}  />
 							<span style={{ float: 'right' }}>{track.plays.length} Plays</span>
 						</Space>
 					</Row>

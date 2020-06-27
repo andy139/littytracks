@@ -4,6 +4,7 @@ import { UserOutlined, LockOutlined, MailOutlined, SmileOutlined, PoweroffOutlin
 import { gql } from 'apollo-boost';
 import { useMutation } from '@apollo/react-hooks';
 import Error from '../Shared/Error';
+import { LOGIN_MUTATION } from '../Session/Login';
 
 interface Props {
 	classes?: string;
@@ -28,6 +29,11 @@ const Register: React.FC<Props> = ({ classes, setNewUser }) => {
 	const [ email, setEmail ] = useState<string>('');
 	const [ password, setPassword ] = useState<string>('');
 	const [ createUser, { loading, error } ] = useMutation(REGISTER_MUTATION);
+	const [tokenAuth, { client }] = useMutation(LOGIN_MUTATION, {
+		onError(err) {
+			console.log(err);
+		}
+	});
 
 	function success() {
 		Modal.success({
@@ -42,7 +48,52 @@ const Register: React.FC<Props> = ({ classes, setNewUser }) => {
 			},
 			okText: 'Login'
 		});
-  }
+	}
+	
+	const loginDemoUser = async (tokenAuth, client) => {
+		// e.preventDefault();
+
+		// setUsername("")
+		// setPassword("")
+
+		// const user = 'testuser';
+		// const pass = 'password';
+
+		// handleUsername(user)
+
+		// setTimeout(() => {
+		// 	handlePassword(pass)
+		// }, 1000)
+
+		// setTimeout(() => {
+		// 	  
+		// 	handleSubmit(tokenAuth, client)
+		// }, 1500)
+
+
+
+		try {
+			const res = await tokenAuth({
+				variables: {
+					username: 'MusicLover415',
+					password: 'password'
+				}
+			});
+
+
+			localStorage.setItem('authToken', res.data.tokenAuth.token);
+			client.writeData({ data: { isLoggedIn: true } });
+			console.log({ res });
+		} catch (e) {
+
+
+			// console.log(e)
+		}
+
+
+
+	}
+
 
 
 	const handleSubmit = (createUser) => {
@@ -160,6 +211,21 @@ const Register: React.FC<Props> = ({ classes, setNewUser }) => {
 									Register
 							</Button>
 							</FormItem>
+							<Divider> OR </Divider>
+							<FormItem>
+								<Button
+									block
+
+									type="primary"
+
+									className="login-form-button"
+									onClick={(e) => loginDemoUser(tokenAuth, client)}
+
+								>
+									Log in with Demo User
+								</Button>
+							</FormItem>
+
 
 							<FormItem>
 								<Button block onClick={() => setNewUser(false)}>

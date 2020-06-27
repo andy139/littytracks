@@ -34,18 +34,20 @@ const TrackList: React.FC<any> = ({ classes, tracks }) => {
 			size="large"
 			pagination={{
 				onChange: (page) => {
-					console.log(page);
+			
 				},
-				pageSize: 3
+				pageSize: 4
 			}}
+			style={{ paddingBottom:'15px',}}
 			
 			dataSource={tracks}
-			footer={<div />}
+			footer={<div></div>}
 			renderItem={(item: any) => {
 				return (
 					<List.Item style={{ borderRadius: '4px' }}> 
 				
-						<AudioPlayer streamUrl={item.url} trackTitle={item.title} imgUrl={item.imgUrl} track={item} preloadType="metadata" />
+						<AudioPlayer streamUrl={item.url} trackTitle={item.title} imgUrl={item.imgUrl} track={item} clientId={'xxx'} preloadType="metadata" />
+				
 					</List.Item>
 				);
 			}}

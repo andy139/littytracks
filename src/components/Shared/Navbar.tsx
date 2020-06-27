@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { LogoutOutlined, UserOutlined, CloudUploadOutlined } from '@ant-design/icons';
 import { Query } from 'react-apollo';
+import { useHistory } from 'react-router-dom';
 import { useQuery } from '@apollo/react-hooks';
 import { gql } from 'apollo-boost';
 import { Layout, Menu, Breadcrumb, Button, Avatar, Typography, Space, Dropdown, Tooltip } from 'antd';
@@ -22,19 +23,23 @@ const Navbar: React.FC<any> = ({ currentUser }) => {
 
 	const [ searchResults, setSearchResults ] = useState([]);
 
+	const history = useHistory();
+
 	if (!data) return null;
 	const tracks = searchResults.length > 0 ? searchResults : data.tracks;
 
 	const menu = (
 		<Menu style={{ borderRadius: 5 }} mode="inline">
 			<Menu.Item style={{ fontSize: 20 }}>
-				<a className="ant-dropdown-link" onClick={(e) => e.preventDefault()}>
-					{currentUser && (
-						<Link to={`/profile/${currentUser.id}`} style={{}}>
-							View Profile
-						</Link>
-					)}
-				</a>
+				{currentUser ? (
+					<a
+						className="ant-dropdown-link"
+						onClick={(e) => {
+							e.preventDefault();
+							history.push(`/profile/${currentUser.id}`);
+						}}
+					/>
+				) : null}
 			</Menu.Item>
 			<Menu.Item style={{ fontSize: 20, color: '#b7e3fa' }}>
 				<Signout />
@@ -43,7 +48,7 @@ const Navbar: React.FC<any> = ({ currentUser }) => {
 	);
 
 	return (
-		<Header className="header" style={{ zIndex: 90, display: 'flex', justifyContent: 'center', alignItems: 'center' }} >
+		<Header className="header" style={{ zIndex: 90, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
 			<div className="logo">
 				<Link to="/" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
 					{/* <Title level={4} className='logo-font' style={{ color: "#d2e0fa" }}>LittyTracks</Title> */}
@@ -84,48 +89,60 @@ const Navbar: React.FC<any> = ({ currentUser }) => {
 				</SubMenu> */}
 			</Menu>
 
-		
-				<Dropdown
-					overlay={
+			<Dropdown
+				overlay={
 					<Menu style={{ marginTop: 20, borderRadius: '7%' }}>
-						<Menu.Item style={{ fontSize: 20,  zIndex: 100  }}>
-								<CreateTrack isNavbar={true} />
-							</Menu.Item>
-						</Menu>
-					}
-					placement="bottomRight"
-				>
-					<Button type="text">
-						<CloudUploadOutlined style={{ fontSize: 30,}} />
-					</Button>
-				</Dropdown>
+						<Menu.Item style={{ fontSize: 20, zIndex: 100 }}>
+							<CreateTrack isNavbar={true} />
+						</Menu.Item>
+					</Menu>
+				}
+				placement="bottomRight"
+			>
+				<Button type="text">
+					<CloudUploadOutlined style={{ fontSize: 30 }} />
+				</Button>
+			</Dropdown>
 
-				<Dropdown
-					overlay={
-					<Menu style={{ marginTop: 20, borderRadius: '7%'}}>
-							<Menu.Item style={{ fontSize: 16 }}>
-								<a className="ant-dropdown-link" onClick={(e) => e.preventDefault()}>
-									{currentUser && (
-									<Link to={`/profile/${currentUser.id}`} >
-											View Profile
-										</Link>
-									)}
-								</a>
-							</Menu.Item>
-							<Menu.Divider />
-							<Menu.Item style={{ fontSize: 16,}}>
+			<Dropdown
+				overlay={
+					<Menu style={{ marginTop: 20, borderRadius: '7%' }}>
+						<Menu.Item
+							style={{ fontSize: 16, width: 150, height: 30 }}
+							onClick={(e) => {
+								history.push(`/profile/${currentUser.id}`);
+							}}
+						>
+							{currentUser && (
+								<span>View Profile</span>
+								// <Link to={`/profile/${currentUser.id}`} >
+								// 		View Profile
+								// 	</Link>
+							)}
+						</Menu.Item>
+						<Menu.Divider />
+						<Menu.Item style={{ fontSize: 16, width: 150 }}>
 							<Signout />
-							</Menu.Item>
-						</Menu>
-					}
-					placement="bottomRight"
-				>
-					<Button type="text">
-					<Avatar shape="circle" size="large" src={currentUser.userprofile.avatarUrl ? currentUser.userprofile.avatarUrl : 'https://avatars1.githubusercontent.com/u/8186664?s=460&v=4'} style={{ cursor: 'pointer' }} />
-					</Button>
-				</Dropdown>
-				
-			
+						</Menu.Item>
+					</Menu>
+				}
+				placement="bottomRight"
+			>
+				<Button type="text">
+					<Avatar
+						shape="circle"
+						size="large"
+						src={
+							currentUser.userprofile.avatarUrl ? (
+								currentUser.userprofile.avatarUrl
+							) : (
+								'https://avatars1.githubusercontent.com/u/8186664?s=460&v=4'
+							)
+						}
+						style={{ cursor: 'pointer' }}
+					/>
+				</Button>
+			</Dropdown>
 		</Header>
 	);
 };
