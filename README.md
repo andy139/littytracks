@@ -17,5 +17,7 @@
 
 ## Future Features
 7. Share Music
-8. Make Playlist
-9. Follow Other Users
+8. Make Playlis
+9. Unlimited scrolling for comments
+10. Follow Other Users
+11. Global Music Player
