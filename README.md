@@ -1,4 +1,4 @@
-# ![alt text](https://django-app-images.s3-us-west-1.amazonaws.com/logo.png)
+# <img src="https://django-app-images.s3-us-west-1.amazonaws.com/logoicon.png" width="50" height="50"> 
 [littytracks](https://littytracks.herokuapp.com/) is a music sharing application built with Django/GraphQL & React/TypeScript/AntDesign
 
 ## Roadmap
