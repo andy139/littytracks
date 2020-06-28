@@ -55,8 +55,8 @@ const CommentList: React.FC < any > = ({ comments, trackId }) => {
 
 
 
-    
-    const [spinner, setLoading] = useState(false);
+    const [newData, setData] = useState([])    
+    const [loader, setLoading] = useState(false);
     const [hasMore, setHasMore] = useState(true);
     const [submitting, changeSubmit] = useState(false);
     const [value, changeValue] = useState('');
@@ -68,14 +68,38 @@ const CommentList: React.FC < any > = ({ comments, trackId }) => {
         refetchQueries: [{ query: GET_TRACKS_QUERY }]
     });
     
-    // useEffect(() => {
-    //     let reversedOrder = [...comments].reverse()
-    //     setComment(reversedOrder)
-    // });
 
-  
+    useEffect(() => {
 
-    const wrapperElement = document.createElement("div")
+
+        setData(newData.concat(comments.slice(3)));
+
+
+    }, [])
+
+
+    
+
+
+    const handleInfiniteOnLoad = () => {
+        setLoading(true);
+
+        if (newData > comments.length) {
+
+            debugger
+            setHasMore(false)
+            setLoading(false)
+            return;
+
+        }
+
+        setData(newData.concat(comments.slice(3)))
+        setLoading(false);
+
+
+    }
+
+
 
     const messagesEndRef:any = useRef(null)
 
@@ -132,7 +156,13 @@ const CommentList: React.FC < any > = ({ comments, trackId }) => {
        
             <div className='demo-infinite-container' ref={messagesEndRef}>
 
-       
+                <InfiniteScroll
+                    initialLoad={false}
+                    pageStart={0}
+                    loadMore={handleInfiniteOnLoad}
+                    hasMore={!loading && hasMore}
+                    useWindow={false}
+                >
       
                 <List
                     itemLayout="horizontal"
@@ -235,7 +265,8 @@ const CommentList: React.FC < any > = ({ comments, trackId }) => {
                     /> */}
 
 
-                </List> 
+                    </List> 
+                </InfiniteScroll>
 
             </div>
             

@@ -18,7 +18,7 @@ import { MessageOutlined, LikeOutlined, StarOutlined, SettingOutlined, CaretRigh
 
 import { Query } from 'react-apollo';
 import { gql } from 'apollo-boost';
-
+import $ from 'jquery';
 import { useMutation } from '@apollo/react-hooks';
 import { Link } from 'react-router-dom';
 import { PlayButton, Timer, Progress, Icons, VolumeControl, Cover } from 'react-soundplayer/components';
@@ -52,15 +52,21 @@ const AudioPlayer: React.FC<any> = withCustomAudio((props) => {
 		refetchQueries: [ { query: ME_QUERY } ]
 	});
 
+	const [scrolling, setScroll] = useState(true);
+
 	const [ modal, setModal ] = useState(false);
 
 	const setTrackModal = () => {
-		document.body.style.overflow = 'hidden';
+		setScroll(false);
+		$("body").addClass("modal-open");
+		// document.body.style.overflow = 'hidden';
 		setModal(true);
 	};
 
 	const disableTrackModal = () => {
-		document.body.style.overflow = 'unset';
+		setScroll(true)
+		$("body").removeClass("modal-open");
+		// document.body.style.overflow = 'unset';
 		setModal(false);
 	};
 
@@ -188,6 +194,7 @@ const AudioPlayer: React.FC<any> = withCustomAudio((props) => {
 			<Row align="middle" justify="center">
 				<Col flex="0 1 300px" style={{ justifyContent: 'center', display: 'flex' }}>
 					<img
+						// onClick={() => setTrackModal()}
 						onClick={() => setTrackModal()}
 						width={225}
 						className="imgTrack"

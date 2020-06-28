@@ -1,5 +1,6 @@
 import React from 'react';
 // import {Query} from 'react-apollo';
+import $ from 'jquery';
 import { useQuery } from "@apollo/react-hooks";
 import { gql } from 'apollo-boost';
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
@@ -73,7 +74,7 @@ const App: React.FC<any> = () => {
               
                 <Navbar currentUser={currentUser}  />
               
-            <Content className="site-layout" style={{ padding: '0 50px', marginTop: 64, background: "#001934", minHeight: '100vh', width:"75%", marginLeft: "auto", marginRight: "auto" }}>
+            <Content className="site-layout" style={{ padding: '0 50px', marginTop: 64, background: "#001934", width:"75%", marginLeft: "auto", marginRight: "auto" }}>
                 <Switch >
                   <Route exact path="/" component={Splash} ></Route>
                   

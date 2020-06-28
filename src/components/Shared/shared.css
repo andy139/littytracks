@@ -21,6 +21,12 @@
   
 }
 
+.modal-open {
+    overflow: hidden;
+}
+
+
+
 .col-padding {
     padding: 10px;
     
