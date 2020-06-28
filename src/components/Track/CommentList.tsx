@@ -1,17 +1,19 @@
-import React, { useState, createElement, useContext } from 'react';
+import React, { useState, createElement, useContext, useEffect, useRef } from 'react';
 import { gql } from 'apollo-boost';
 import { useMutation } from '@apollo/react-hooks';
 import { Comment, Avatar, Form, Button, List, Input, Tooltip, } from 'antd';
 import { DeleteFilled } from '@ant-design/icons';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
-
+import InfiniteScroll from 'react-infinite-scroller';
 import { UserContext } from '../../App';
 import { ME_QUERY } from '../../App';
 import SubcommentList from './SubcommentList'
-import {GET_TRACKS_QUERY } from '../../pages/Splash'
-const { TextArea } = Input;
+import { GET_TRACKS_QUERY } from '../../pages/Splash'
 
+import './track.css'
+
+const { TextArea } = Input;
 
 
 const Editor = ({ onChange, handleSubmit, submitting, value }) => (
@@ -51,6 +53,11 @@ const DELETE_COMMENT_MUTATION = gql`
 const CommentList: React.FC < any > = ({ comments, trackId }) => {
     const currentUser: any = useContext(UserContext);
 
+
+
+    
+    const [spinner, setLoading] = useState(false);
+    const [hasMore, setHasMore] = useState(true);
     const [submitting, changeSubmit] = useState(false);
     const [value, changeValue] = useState('');
     const [createComment, { data, loading }] = useMutation(CREATE_COMMENT_MUTATION, {
@@ -60,59 +67,106 @@ const CommentList: React.FC < any > = ({ comments, trackId }) => {
     const [deleteComment] = useMutation(DELETE_COMMENT_MUTATION, {
         refetchQueries: [{ query: GET_TRACKS_QUERY }]
     });
+    
+    // useEffect(() => {
+    //     let reversedOrder = [...comments].reverse()
+    //     setComment(reversedOrder)
+    // });
 
+  
+
+    const wrapperElement = document.createElement("div")
+
+    const messagesEndRef:any = useRef(null)
+
+
+
+    const scrollToBottom = () => {
+        messagesEndRef.current.scrollIntoView({
+            behavior: "smooth",
+            block: "nearest"
+        })
+        
+    }
 
 
     const handleSubmit = (trackId) => {
 
         changeSubmit(true);
         createComment({
-            variables:{trackId:trackId, comment: value}
+            variables: { trackId: trackId, comment: value }
         }).then(() => {
             changeSubmit(false)
             changeValue('')
+            messagesEndRef.current.scrollIntoView({
+                behavior: "smooth",
+                block: "nearest"
+            })
+            scrollToBottom();
         })
     }
+    
+    // const handleInfiniteOnLoad = () => {
+    //     // let { data } = this.state;
+    //     // this.setState({
+    //     //     loading: true,
+    //     // });
+    //     setLoading(true);
+    //     if (commentData.length > 3) {
+       
+    //         setHasMore(false);
+    //         setLoading(false);
+    //         return;
+    //     }
+    //     // this.fetchData(res => {
+    //     //     data = data.concat(res.results);
+    //     //     this.setState({
+    //     //         data,
+    //     //         loading: false,
+    //     //     });
+    //     // });
+    // };
 
 
         
-    let reversedOrder = [...comments].reverse()
+   
 
       
 
     return (
-        <>
-            <List
-                itemLayout="horizontal"
-                dataSource={reversedOrder}
-                pagination={{
-                    onChange: (page) => {
-                        
-                    },
-                    pageSize: 4
-                }}
-                renderItem={(comment: any) => {
+        <div>
+       
+            <div className='demo-infinite-container' ref={messagesEndRef}>
 
-                    // Format Date\
+       
+      
+                <List
+                    itemLayout="horizontal"
+                    dataSource={[...comments].reverse()}
+                    style={{ height: '350px' }}
+                  
+                    renderItem={(comment: any) => {
 
-               
-                    const timestamp = comment.createdAt
-                    const date = moment(timestamp + 'Z').fromNow()
-                    const date2 = moment(comment.createdBy);
-                    const formattedDate = date2.format('llll');
-                    const userId = comment.postedBy.id;
-                    const isUser = userId === currentUser.id
-                    const subcomments = comment.subcomments
+                        // Format Date\
 
-                   
 
-                    let deleteCommentDiv;
-                    
-               
+                        const timestamp = comment.createdAt
+                        const date = moment(timestamp + 'Z').fromNow()
+                        const date2 = moment(comment.createdBy);
+                        const formattedDate = date2.format('llll');
+                        const userId = comment.postedBy.id;
+                        const isUser = userId === currentUser.id
+                        const subcomments = comment.subcomments
 
-                    if (isUser) {
-                        deleteCommentDiv = (<span key="comment-basic-like">
-                         
+
+
+                        let deleteCommentDiv;
+
+
+
+                        if (isUser) {
+                            deleteCommentDiv = (<span key="comment-basic-like">
+
 
                                 <span key="comment-basic-reply-to" onClick={() => {
                                     deleteComment({
@@ -120,76 +174,96 @@ const CommentList: React.FC < any > = ({ comments, trackId }) => {
                                     })
                                 }} >Delete</span>
                                 {/* <DeleteFilled /> */}
-                            
-                        </span>)
-                    } else {
-                        deleteCommentDiv = null;
-                    }
+
+                            </span>)
+                        } else {
+                            deleteCommentDiv = null;
+                        }
 
 
 
 
 
 
-                    return <Comment
+                        return <Comment
                         author={
                             <Link style={{ color: "#8dcff8" }} to={`/profile/${comment.postedBy.id}`}>{comment.postedBy.username}</Link>
-                            
-                          }
-                        datetime={
-                            <Tooltip title={formattedDate}>
-                                <span>{date}</span>
-                            </Tooltip>
-                        }
-                        // actions={[<a key="list-loadmore-edit">Reply</a>, <span>Delete</span>]}
-                        actions={[
-                            deleteCommentDiv,
-                            <span key="comment-basic-reply-to">Reply</span>,
-                        ]
-                        }
+
+                            }
+                            datetime={
+                                <Tooltip title={formattedDate}>
+                                    <span>{date}</span>
+                                </Tooltip>
+                            }
+                            // actions={[<a key="list-loadmore-edit">Reply</a>, <span>Delete</span>]}
+                            actions={[
+                                deleteCommentDiv,
+                                <span key="comment-basic-reply-to">Reply</span>,
+                            ]
+                            }
+                            avatar={
+                                <Avatar
+                                    src={comment.postedBy.userprofile.avatarUrl}
+                                    alt="Han Solo"
+                                />
+                            }
+                            content={
+                                <p>
+                                    {comment.comment}
+                                </p>
+                            }
+                        >
+
+
+                            <SubcommentList comments={subcomments} commentId={comment.id}></SubcommentList>
+
+
+                        </Comment>
+                    }
+
+                    }
+                >
+                    {/* <Comment
                         avatar={
                             <Avatar
-                                src={comment.postedBy.userprofile.avatarUrl}
+                                src={currentUser.userprofile.avatarUrl}
                                 alt="Han Solo"
                             />
                         }
                         content={
-                            <p>
-                                {comment.comment}
-                            </p>
+                            <Editor
+                                onChange={e => changeValue(e.target.value)}
+                                handleSubmit={() => handleSubmit(trackId)}
+                                submitting={submitting}
+                                value={value}
+                            />
                         }
-                    >
-                       
-                        
-                       <SubcommentList comments={subcomments} commentId={comment.id}></SubcommentList>
-                
-    
-                    </Comment>
-                }
-                   
-                }
-            >
-                <Comment
-                    avatar={
-                        <Avatar
-                            src={currentUser.userprofile.avatarUrl}
-                            alt="Han Solo"
-                        />
-                    }
-                    content={
-                        <Editor
-                            onChange={e => changeValue(e.target.value)}
-                            handleSubmit={() => handleSubmit(trackId)}
-                            submitting={submitting}
-                            value={value}
-                        />
-                    }
-                />
+                    /> */}
 
-           
-            </List> 
 
-        </>
+                </List> 
+
+            </div>
+            
+            <Comment
+                avatar={
+                    <Avatar
+                        src={currentUser.userprofile.avatarUrl}
+                        alt="Han Solo"
+                    />
+                }
+                content={
+                    <Editor
+                        onChange={e => changeValue(e.target.value)}
+                        handleSubmit={() => handleSubmit(trackId)}
+                        submitting={submitting}
+                        value={value}
+                    />
+                }
+            />
+        </div>
+
+     
     )
 
 }

@@ -279,7 +279,7 @@ const CreateTrack: React.FC<any> = ({classes, userId, isNavbar, isProfile}) => {
         {/* Create Track BUtton */}
 
         <span>
-          {isProfile ? <Button onClick={() => setModal(true)}>Upload Now</Button> : null}
+          {isProfile ? <Button type="primary" onClick={() => setModal(true)}>Upload Now</Button> : null}
 
         </span>
 

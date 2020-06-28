@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Collapse, Select, List, Card, Avatar, Space, Row, Col, Descriptions, Divider } from 'antd';
+import { Collapse, Select, Carousel, List, Card, Avatar, Space, Row, Col, Descriptions, Divider, Modal } from 'antd';
 import { MessageOutlined, LikeOutlined, StarOutlined, SettingOutlined, CaretRightOutlined } from '@ant-design/icons';
 
 
@@ -27,8 +27,16 @@ const genExtra = () => (
 	/>
 );
 
+
+
 const TrackList: React.FC<any> = ({ classes, tracks }) => {
+	
+
 	return (
+		<>
+
+			
+
 		<List
 			itemLayout="vertical"
 			size="large"
@@ -46,12 +54,13 @@ const TrackList: React.FC<any> = ({ classes, tracks }) => {
 				return (
 					<List.Item style={{ borderRadius: '4px' }}> 
 				
-						<AudioPlayer streamUrl={item.url} trackTitle={item.title} imgUrl={item.imgUrl} track={item} clientId={'xxx'} preloadType="metadata" />
+						<AudioPlayer tracks={tracks} streamUrl={item.url} trackTitle={item.title} imgUrl={item.imgUrl} track={item} clientId={'xxx'} preloadType="metadata"  />
 				
 					</List.Item>
 				);
 			}}
-		/>
+			/>
+		</>
 	);
 };
 

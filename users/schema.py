@@ -36,8 +36,7 @@ class Query(graphene.ObjectType):
 
 class CreateUser(graphene.Mutation):
     user = graphene.Field(UserType)
-
-
+   
     class Arguments:
         username = graphene.String(required=True)
         password = graphene.String(required=True)
@@ -65,6 +64,7 @@ class CreateUser(graphene.Mutation):
                 user.save()
 
                 user_profile = UserProfile(user=user)
+                user_profile.avatar_url = 'https://avatars1.githubusercontent.com/u/8186664?s=460&v=4'
                 user_profile.save()
                 return CreateUser(user=user)
             except ValidationError as e:
