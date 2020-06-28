@@ -1,6 +1,5 @@
-# django-graphql-music-app
-
-Django/GraphQL with React/TypeScript/AntDesign
+# littytracks
+[littytracks](https://littytracks.herokuapp.com/) is a music sharing application built with Django/GraphQL & React/TypeScript/AntDesign
 
 ## Roadmap
 1. Deploy backend and frontend (Done)
@@ -15,3 +14,8 @@ Django/GraphQL with React/TypeScript/AntDesign
 4. Play Tracks
 5. Create Account
 6. Search Tracks
+
+## Future Features
+7. Share Music
+8. Make Playlist
+9. Follow Other Users
