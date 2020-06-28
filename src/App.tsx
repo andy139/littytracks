@@ -74,7 +74,7 @@ const App: React.FC<any> = () => {
               
                 <Navbar currentUser={currentUser}  />
               
-            <Content className="site-layout" style={{ padding: '0 50px', marginTop: 64, background: "#001934", width:"75%", marginLeft: "auto", marginRight: "auto" }}>
+          <Content className="site-layout" style={{ padding: '0 50px', marginTop: 64, background: "#001934", width: "75%", minHeight: '100vh', marginLeft: "auto", marginRight: "auto" }}>
                 <Switch >
                   <Route exact path="/" component={Splash} ></Route>
                   
