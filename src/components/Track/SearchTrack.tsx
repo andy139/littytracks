@@ -107,7 +107,7 @@ const SearchTrack: React.FC<any> = ({setSearchResults }) => {
                         value={search}
                         addonBefore={<Button type="primary" shape="circle" onClick={clearSearchInput}><i className="fas fa-times"></i></Button>}
                         size="large"
-                        style={{ width:"80%", marginTop: "20px", marginBottom:"20px"}}
+                        style={{ width:"80%", marginTop: "30px", marginBottom:"20px"}}
                         
                     />
                    
