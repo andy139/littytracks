@@ -1,7 +1,7 @@
 import React, { useState, createElement, useContext, useEffect, useRef } from 'react';
 import { gql } from 'apollo-boost';
 import { useMutation } from '@apollo/react-hooks';
-import { Comment, Avatar, Form, Button, List, Input, Tooltip, } from 'antd';
+import { Comment, Avatar, Form, Button, List, Empty, Input, Tooltip, } from 'antd';
 import { DeleteFilled } from '@ant-design/icons';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
@@ -106,26 +106,20 @@ const CommentList: React.FC < any > = ({ comments, trackId }) => {
         })
     }
     
-    // const handleInfiniteOnLoad = () => {
-    //     // let { data } = this.state;
-    //     // this.setState({
-    //     //     loading: true,
-    //     // });
-    //     setLoading(true);
-    //     if (commentData.length > 3) {
-       
-    //         setHasMore(false);
-    //         setLoading(false);
-    //         return;
-    //     }
-    //     // this.fetchData(res => {
-    //     //     data = data.concat(res.results);
-    //     //     this.setState({
-    //     //         data,
-    //     //         loading: false,
-    //     //     });
-    //     // });
-    // };
+    const emptyLikes = (
+        <Empty
+            image="https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg"
+            imageStyle={{
+                height: 80
+            }}
+            description={
+                <span>No Comments Yet</span>
+            }
+        >
+            
+        </Empty>
+    );
+
 
 
         
@@ -142,9 +136,9 @@ const CommentList: React.FC < any > = ({ comments, trackId }) => {
       
                 <List
                     itemLayout="horizontal"
-                    dataSource={[...comments].reverse()}
+                    dataSource={comments}
                     style={{ height: '350px' }}
-                  
+                    locale={{ emptyText: emptyLikes }}
                     renderItem={(comment: any) => {
 
                         // Format Date\

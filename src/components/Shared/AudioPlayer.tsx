@@ -89,9 +89,10 @@ const AudioPlayer: React.FC<any> = withCustomAudio((props) => {
 			
 				// overflow: 'hidden',
 			}}
+			closable={false}
 			footer={null}
 
-			bodyStyle={{height:'82vh'}}
+			bodyStyle={{height:'89vh'}}
 			
 
 		>
