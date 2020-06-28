@@ -101,7 +101,7 @@ const AudioPlayer: React.FC<any> = withCustomAudio((props) => {
 			<Row align={'middle'}>
 				<Col span={12} className='col-padding col-blurry' >
 
-					<Button type='text' onClick={() => setModal(false)} icon={<i className="fas fa-times-circle" style={{fontSize:45, paddingBottom:'15px'}}></i>}>
+					<Button type='text' onClick={() => disableTrackModal()} icon={<i className="fas fa-times-circle" style={{fontSize:45, paddingBottom:'15px'}}></i>}>
 
 					</Button>
 					<br/>
