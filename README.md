@@ -1,6 +1,15 @@
 # <img src="https://django-app-images.s3-us-west-1.amazonaws.com/logoicon.png" width="50" height="50"> &nbsp; littytracks
 [littytracks](https://littytracks.herokuapp.com/) is a music sharing application built with Django/GraphQL & React/TypeScript/AntDesign
 
+## Technologies
+- GraphQL
+- Javascript
+- Django
+- AntDesign
+- Cloudinary API
+- react-sound-player
+
+
 ## Roadmap
 1. Deploy backend and frontend (Done)
 2. Website and App Create Track (Done)
