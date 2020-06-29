@@ -8,16 +8,16 @@
 4. Website and App User session auth (Done)
 
 ## Current Features
-1. Upload Tracks
-2. Like/Dislike Tracks
-3. Comment Tracks
-4. Play Tracks
-5. Create Account
-6. Search Tracks
+- Upload Tracks
+- Like/Dislike Tracks
+- Comment Tracks
+- Play Tracks
+- Create Account
+- Search Tracks
 
 ## Future Features
-7. Share Music
-8. Make Playlist
-9. Unlimited scrolling for comments
-10. Follow Other Users
-11. Global Music Player
+- Share Music
+- Make Playlist
+- Unlimited scrolling for comments
+- Follow Other Users
+- Global Music Player
