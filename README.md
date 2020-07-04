@@ -13,10 +13,10 @@
 
 
 ## Roadmap
-1. Deploy backend and frontend (Done)
-2. Website and App Create Track (Done)
-3. Website and App Rate Track (Done)
-4. Website and App User session auth (Done)
+1. Deploy backend and frontend 
+2. Website and App Create Track 
+3. Website and App Rate Track 
+4. Website and App User session auth 
 
 ## Current Features
 - Upload Tracks
