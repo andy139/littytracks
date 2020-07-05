@@ -2,7 +2,7 @@
 
 <img src="screenshot.png"> 
 
-[littytracks](https://littytracks.herokuapp.com/) is a music sharing application built with Django/GraphQL & React/TypeScript/AntDesign
+[littytracks](https://littytracks.herokuapp.com/) is a music sharing application built with Django/GraphQL & React/AntDesign
 
 ## Technologies
 - GraphQL
