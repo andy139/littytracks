@@ -145,7 +145,7 @@ const Login: React.FC<Props> = ({ classes, setNewUser }) => {
 			<Divider orientation="left" style={{ color: '#333', fontWeight: 'normal' }}>
 
 			</Divider>
-			<Card style={{ width: 400, margin: 'auto', marginTop: 30, opacity: 0.9 }}>
+			<Card style={{ width: 400, margin: 'auto', marginTop: 90, opacity: 0.9 }}>
 				<form>
                     <Form name="normal_login" className="login-form" initialValues={{ remember: true }} onFinish={onFinish} onFinishFailed={onFinishFailed}>
 						<FormItem style={{ display: 'flex' }}>

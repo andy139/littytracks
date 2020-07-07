@@ -117,7 +117,7 @@ const Register: React.FC<Props> = ({ classes, setNewUser }) => {
     		</Divider>
 
 			<Row>
-				<Card style={{ width: 400, margin: 'auto', marginTop: 20, opacity:0.9 }}>
+				<Card style={{ width: 400, margin: 'auto', marginTop: 90, opacity:0.9 }}>
 					<form onSubmit={(event) => handleSubmit(createUser)}>
 						<Form name="normal_login" className="login-form" initialValues={{ remember: true }} onFinish={onFinish} validateMessages={validateMessages} >
 							<FormItem style={{ display: 'flex' }}>
