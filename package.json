@@ -11,6 +11,7 @@
 		"@testing-library/user-event": "^7.2.1",
 		"@types/jest": "^24.9.1",
 		"@types/node": "^12.12.43",
+		"@types/node-sass": "^4.11.1",
 		"@types/react": "^16.9.35",
 		"@types/react-dom": "^16.9.8",
 		"antd": "^4.3.1",
@@ -25,11 +26,13 @@
 		"axios": "^0.19.2",
 		"basscss": "^8.0.2",
 		"craco-less": "^1.17.0",
+		"css-loader": "^3.6.0",
+		"css-modules-typescript-loader": "^4.0.0",
 		"date-fns": "^2.14.0",
 		"graphql": "^15.0.0",
 		"graphql-tag": "^2.10.3",
 		"jquery": "^3.5.1",
-		"less-loader": "^5.0.0",
+		"node-sass": "^4.14.1",
 		"react": "^16.13.1",
 		"react-apollo": "^3.1.5",
 		"react-devtools": "^4.7.0",
@@ -44,7 +47,9 @@
 		"react-virtualized": "^9.21.2",
 		"reaudio": "^0.1.8",
 		"reqwest": "^2.0.5",
-		"typescript": "^3.7.5"
+		"sass-loader": "^9.0.1",
+		"ts-loader": "^7.0.5",
+		"typescript": "^3.9.6"
 	},
 	"scripts": {
 		"start": "craco start",
@@ -68,6 +73,7 @@
 		]
 	},
 	"devDependencies": {
+		"less-loader": "^5.0.0",
 		"style-loader": "^1.2.1"
 	}
 }

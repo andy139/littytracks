@@ -30,7 +30,7 @@ import DeleteTrack from '../Track/DeleteTrack';
 import CommentList from '../Track/CommentList';
 import { ME_QUERY } from '../../App';
 
-import './shared.css';
+// import styles from './shared.css';
 
 const { Paragraph } = Typography;
 const CREATE_PLAY_MUTATION = gql`
@@ -92,25 +92,30 @@ const AudioPlayer: React.FC<any> = withCustomAudio((props) => {
 
 	const modalComponent = (
 		<Modal
+			
 			title={
-				<Link to="/" style={{}}>
-					{/* <Title level={4} className='logo-font' style={{ color: "#d2e0fa" }}>LittyTracks</Title> */}
-					<img src="https://django-app-images.s3-us-west-1.amazonaws.com/logo.png" style={{ width: 150 }} />
-				</Link>
+				null
+				// <Link to="/" style={{}}>
+				// 	{/* <Title level={4} className='logo-font' style={{ color: "#d2e0fa" }}>LittyTracks</Title> */}
+				// 	<img src="https://django-app-images.s3-us-west-1.amazonaws.com/logo.png" style={{ width: 150 }} />
+				// </Link>
 			}
 			visible={modal}
 			onCancel={() => disableTrackModal()}
 			width="100%"
 			style={{
-				top: 20
-
+				top: 20,
 				// overflow: 'hidden',
 			}}
+
+		
+			
 			closable={false}
 			footer={null}
-			bodyStyle={{ height: '89vh' }}
+			bodyStyle={{height:'89vh'}}
+			
 		>
-			<Row align={'middle'}>
+			<Row align={'middle'} >
 				<Col span={12} className="col-padding col-blurry">
 					<Button
 						type="text"
