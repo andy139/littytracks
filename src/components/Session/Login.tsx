@@ -138,14 +138,14 @@ const Login: React.FC<Props> = ({ classes, setNewUser }) => {
 	
 
 	return (
-		<div>
+		<div className='background-div'>
 			<Row justify='center' style={{ marginTop: 30 }}>
 				<img src="https://django-app-images.s3-us-west-1.amazonaws.com/largelogo.png" style={{ width: 450 }} />
 			</Row>
 			<Divider orientation="left" style={{ color: '#333', fontWeight: 'normal' }}>
 
 			</Divider>
-			<Card style={{ width: 400, margin: 'auto', marginTop: 30 }}>
+			<Card style={{ width: 400, margin: 'auto', marginTop: 30, opacity: 0.9 }}>
 				<form>
                     <Form name="normal_login" className="login-form" initialValues={{ remember: true }} onFinish={onFinish} onFinishFailed={onFinishFailed}>
 						<FormItem style={{ display: 'flex' }}>

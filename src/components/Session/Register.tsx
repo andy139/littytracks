@@ -107,9 +107,7 @@ const Register: React.FC<Props> = ({ classes, setNewUser }) => {
 
 
 	return (
-		// <div>
-		// 	sd
-		// </div>
+	
 		<div className='background-div'>
 			<Row justify='center' style={{marginTop: 30}}>
 				<img src="https://django-app-images.s3-us-west-1.amazonaws.com/largelogo.png" style={{ width: 450 }} />
@@ -119,7 +117,7 @@ const Register: React.FC<Props> = ({ classes, setNewUser }) => {
     		</Divider>
 
 			<Row>
-				<Card style={{ width: 400, margin: 'auto', marginTop: 20 }}>
+				<Card style={{ width: 400, margin: 'auto', marginTop: 20, opacity:0.9 }}>
 					<form onSubmit={(event) => handleSubmit(createUser)}>
 						<Form name="normal_login" className="login-form" initialValues={{ remember: true }} onFinish={onFinish} validateMessages={validateMessages} >
 							<FormItem style={{ display: 'flex' }}>
