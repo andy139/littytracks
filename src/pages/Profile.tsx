@@ -45,6 +45,25 @@ export const PROFILE_QUERY = gql`
 						id
 						comment
 						createdAt
+						postedBy {
+							username
+							id
+							userprofile {
+								avatarUrl
+							}
+						}
+						subcomments {
+							subcomment
+							id
+							createdAt
+							postedBy {
+								username
+								id
+								userprofile {
+									avatarUrl
+								}
+							}
+						}
 					}
 					plays {
                 		id
@@ -69,6 +88,25 @@ export const PROFILE_QUERY = gql`
 					id
 					comment
 					createdAt
+					postedBy {
+					username
+					id
+						userprofile {
+							avatarUrl
+						}
+					}
+					subcomments {
+						subcomment
+						id
+						createdAt
+						postedBy {
+							username
+							id
+							userprofile {
+								avatarUrl
+							}
+						}
+					}
 				}
 				postedBy {
 					id

@@ -178,6 +178,7 @@ const CommentList: React.FC < any > = ({ comments, trackId }) => {
                         const date = moment(timestamp + 'Z').fromNow()
                         const date2 = moment(comment.createdBy);
                         const formattedDate = date2.format('llll');
+                        debugger
                         const userId = comment.postedBy.id;
                         const isUser = userId === currentUser.id
                         const subcomments = comment.subcomments
