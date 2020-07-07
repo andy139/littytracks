@@ -138,7 +138,7 @@ const Login: React.FC<Props> = ({ classes, setNewUser }) => {
 	
 
 	return (
-		<>
+		<div>
 			<Row justify='center' style={{ marginTop: 30 }}>
 				<img src="https://django-app-images.s3-us-west-1.amazonaws.com/largelogo.png" style={{ width: 450 }} />
 			</Row>
@@ -220,7 +220,7 @@ const Login: React.FC<Props> = ({ classes, setNewUser }) => {
 					{error && <Error error={error} />}
 				</form>
 			</Card>
-		</>
+		</div>
 	);
 };
 

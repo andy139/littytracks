@@ -1,0 +1,9 @@
+.background-div {
+    background-image: url(https://cdnb.artstation.com/p/assets/images/images/014/665/033/original/yargon-kerman-webp-net-gifmaker-39.gif?1544919451);
+    background-position: center center;
+    overflow-y: scroll;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    background-attachment: scroll;
+    height: 100vh;
+}

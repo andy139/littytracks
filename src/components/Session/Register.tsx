@@ -5,6 +5,7 @@ import { gql } from 'apollo-boost';
 import { useMutation } from '@apollo/react-hooks';
 import Error from '../Shared/Error';
 import { LOGIN_MUTATION } from '../Session/Login';
+import './session.css';
 
 interface Props {
 	classes?: string;
@@ -51,26 +52,6 @@ const Register: React.FC<Props> = ({ classes, setNewUser }) => {
 	}
 	
 	const loginDemoUser = async (tokenAuth, client) => {
-		// e.preventDefault();
-
-		// setUsername("")
-		// setPassword("")
-
-		// const user = 'testuser';
-		// const pass = 'password';
-
-		// handleUsername(user)
-
-		// setTimeout(() => {
-		// 	handlePassword(pass)
-		// }, 1000)
-
-		// setTimeout(() => {
-		// 	  
-		// 	handleSubmit(tokenAuth, client)
-		// }, 1500)
-
-
 
 		try {
 			const res = await tokenAuth({
@@ -129,13 +110,13 @@ const Register: React.FC<Props> = ({ classes, setNewUser }) => {
 		// <div>
 		// 	sd
 		// </div>
-		<>
+		<div className='background-div'>
 			<Row justify='center' style={{marginTop: 30}}>
 				<img src="https://django-app-images.s3-us-west-1.amazonaws.com/largelogo.png" style={{ width: 450 }} />
 			</Row>
 			<Divider orientation="left" style={{ color: '#333', fontWeight: 'normal' }}>
 				
-    </Divider>
+    		</Divider>
 
 			<Row>
 				<Card style={{ width: 400, margin: 'auto', marginTop: 20 }}>
@@ -239,7 +220,7 @@ const Register: React.FC<Props> = ({ classes, setNewUser }) => {
 				</Card>
 			</Row>
 	
-		</>
+		</div>
 
 	);
 };
