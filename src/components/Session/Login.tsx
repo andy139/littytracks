@@ -156,7 +156,7 @@ const Login: React.FC<Props> = ({ classes, setNewUser }) => {
 								prefix={<UserOutlined className="site-form-item-icon" />}
 								placeholder="Username"
 								onChange={(e) => setUsername(e.target.value)}
-								autoComplete="off" 
+								autoComplete="new-password" 
 							/>
 						</FormItem>
 
@@ -166,7 +166,7 @@ const Login: React.FC<Props> = ({ classes, setNewUser }) => {
 								type="password"
 								placeholder="Password"
 								onChange={(e) => setPassword(e.target.value)}
-								autoComplete="off" 
+								autoComplete="new-password" 
 							/>
 						</FormItem>
 

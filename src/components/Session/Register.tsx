@@ -128,7 +128,7 @@ const Register: React.FC<Props> = ({ classes, setNewUser }) => {
 									prefix={<UserOutlined className="site-form-item-icon" />}
 									placeholder="Username"
 									onChange={(e) => setUsername(e.target.value)}
-									autoComplete="off" 
+									autoComplete="new-password"
 								/>
 							</FormItem>
 							<FormItem name="Email" rules={[{ required: true, type: 'email' }]}>
@@ -136,7 +136,7 @@ const Register: React.FC<Props> = ({ classes, setNewUser }) => {
 									prefix={<MailOutlined className="site-form-item-icon" />}
 									placeholder="Email"
 									onChange={(e) => setEmail(e.target.value)}
-									autoComplete="off" 
+									autoComplete="new-password"
 								/>
 							</FormItem>
 
@@ -149,7 +149,7 @@ const Register: React.FC<Props> = ({ classes, setNewUser }) => {
 									type="password"
 									placeholder="Password"
 									onChange={(e) => setPassword(e.target.value)}
-									autoComplete="off" 
+									autoComplete="new-password" 
 								/>
 							</FormItem>
 
