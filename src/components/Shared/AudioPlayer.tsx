@@ -52,20 +52,20 @@ const AudioPlayer: React.FC<any> = withCustomAudio((props) => {
 		refetchQueries: [ { query: ME_QUERY } ]
 	});
 
-	const [scrolling, setScroll] = useState(true);
+	const [ scrolling, setScroll ] = useState(true);
 
 	const [ modal, setModal ] = useState(false);
 
 	const setTrackModal = () => {
 		setScroll(false);
-		$("body").addClass("modal-open");
+		$('body').addClass('modal-open');
 		// document.body.style.overflow = 'hidden';
 		setModal(true);
 	};
 
 	const disableTrackModal = () => {
-		setScroll(true)
-		$("body").removeClass("modal-open");
+		setScroll(true);
+		$('body').removeClass('modal-open');
 		// document.body.style.overflow = 'unset';
 		setModal(false);
 	};
@@ -92,7 +92,6 @@ const AudioPlayer: React.FC<any> = withCustomAudio((props) => {
 
 	const modalComponent = (
 		<Modal
-			
 			title={
 				null
 				// <Link to="/" style={{}}>
@@ -104,19 +103,15 @@ const AudioPlayer: React.FC<any> = withCustomAudio((props) => {
 			onCancel={() => disableTrackModal()}
 			width="100%"
 			style={{
-				top: 20,
+				top: 20
 				// overflow: 'hidden',
 			}}
-
-		
-			
 			closable={false}
 			footer={null}
-			bodyStyle={{height:'89vh'}}
-			
+			bodyStyle={{ height: '95vh' }}
 		>
-			<Row align={'middle'} >
-				<Col span={12} className="col-padding col-blurry">
+			<Row align={'middle'} justify={'center'}>
+				<Col span={16} className="col-padding col-blurry">
 					<Button
 						type="text"
 						onClick={() => disableTrackModal()}
@@ -160,19 +155,8 @@ const AudioPlayer: React.FC<any> = withCustomAudio((props) => {
 						<h1>{track.plays.length} Plays</h1>
 					</div>
 				</Col>
-				<Col span={12} className="col-padding">
-					{/* <Row>
-						<h2 className="header-title">
-							{trackTitle} - {track.artistName}
-							{match ? <Space style={{ float: 'right' }}>
-								{' '}
-
-								<UpdateTrack track={track} />
-								<DeleteTrack track={track} userId={match.params.id} />
-							</Space> : null}
-
-						</h2>
-					</Row> */}
+				<Col span={8} className="col-padding">
+				
 					<Row>
 						<h2>
 							<Link to={`/profile/${track.postedBy.id}`}>
