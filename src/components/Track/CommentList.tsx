@@ -1,26 +1,29 @@
 import React, { useState, createElement, useContext, useEffect, useRef } from 'react';
 import { gql } from 'apollo-boost';
 import { useMutation } from '@apollo/react-hooks';
-import { Comment, Avatar, Form, Button, List, Empty, Input, Tooltip, } from 'antd';
+import { Comment, Avatar, Form, Button, List, Empty, Input, Tooltip, Row, Col, Spin } from 'antd';
 import { DeleteFilled } from '@ant-design/icons';
+import { useQuery } from '@apollo/react-hooks';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
 import InfiniteScroll from 'react-infinite-scroller';
 import { UserContext } from '../../App';
-import { ME_QUERY } from '../../App';
-import SubcommentList from './SubcommentList'
-import { GET_TRACKS_QUERY } from '../../pages/Splash'
 
+import TrackComment from './TrackComment'
 import './track.css'
-
+import './comment.css'
 const { TextArea } = Input;
 
 
 const Editor = ({ onChange, handleSubmit, submitting, value }) => (
     <>
-        <Form.Item>
-            <Input onChange={onChange} value={value} placeholder="Write a comment..." onPressEnter={() => handleSubmit()} />
-        </Form.Item>
+        <Form size={"large"}>
+            <Form.Item>
+                <Input className='input-comment' onChange={onChange} value={value} placeholder="Write a comment..." onPressEnter={() => handleSubmit()} />
+            </Form.Item>
+
+        </Form>
+       
     </>
 );
 
@@ -50,7 +53,54 @@ const DELETE_COMMENT_MUTATION = gql`
 `;
 
 
-const CommentList: React.FC < any > = ({ comments, trackId }) => {
+export const GET_COMMENTS_QUERY = gql`
+    query($trackId: Int!, $page: Int!){
+            comments(trackId: $trackId, page: $page) {
+                    page
+                    pages
+                    hasNext
+                    hasPrev
+                    objects {
+                        comment
+                        postedBy {
+                            id
+                        }
+                        createdAt
+                        id
+                        postedBy {
+                            username
+                            id
+                            userprofile {
+                            avatarUrl
+                            }
+                        }
+                    }       
+    
+            }
+
+    }
+
+`
+
+const GET_SUBCOMMENTS_QUERY = gql`
+    query($commentId: Int!){
+        subcomments(commentId: $commentId){
+            subcomment
+            createdAt
+            id
+            postedBy {
+                username
+                id
+                userprofile {
+                    avatarUrl
+                }
+            }
+        }
+    }
+`
+
+
+const CommentList: React.FC < any > = ({ trackId }) => {
     const currentUser: any = useContext(UserContext);
 
 
@@ -60,44 +110,28 @@ const CommentList: React.FC < any > = ({ comments, trackId }) => {
     const [hasMore, setHasMore] = useState(true);
     const [submitting, changeSubmit] = useState(false);
     const [value, changeValue] = useState('');
-    const [createComment, { data, loading }] = useMutation(CREATE_COMMENT_MUTATION, {
-        refetchQueries: [{ query: GET_TRACKS_QUERY}]
-    });
-
-    const [deleteComment] = useMutation(DELETE_COMMENT_MUTATION, {
-        refetchQueries: [{ query: GET_TRACKS_QUERY }]
-    });
-    
-
-    useEffect(() => {
 
 
-        setData(newData.concat(comments.slice(3)));
-
-
-    }, [])
-
-
-    
-
-
-    const handleInfiniteOnLoad = () => {
-        setLoading(true);
-
-        if (newData > comments.length) {
-
-            debugger
-            setHasMore(false)
-            setLoading(false)
-            return;
-
+    const { data, loading, fetchMore} = useQuery(GET_COMMENTS_QUERY, {
+        variables: {
+            trackId: Number(trackId),
+            page: 1
         }
+    });
 
-        setData(newData.concat(comments.slice(3)))
-        setLoading(false);
+    
 
+    // remake comments query
+    const [createComment] = useMutation(CREATE_COMMENT_MUTATION, {
+        refetchQueries: [{
+            query: GET_COMMENTS_QUERY,
+            variables: {trackId: Number(trackId), page:1}
+        
+        }]
+    });
 
-    }
+  
+    
 
 
 
@@ -122,11 +156,7 @@ const CommentList: React.FC < any > = ({ comments, trackId }) => {
         }).then(() => {
             changeSubmit(false)
             changeValue('')
-            messagesEndRef.current.scrollIntoView({
-                behavior: "smooth",
-                block: "nearest"
-            })
-            scrollToBottom();
+      
         })
     }
     
@@ -146,136 +176,47 @@ const CommentList: React.FC < any > = ({ comments, trackId }) => {
 
 
 
-        
+    if (loading) return <Spin size="large" />
    
+    // if (!data) return null;
+    
+    const comments = data.comments.objects
 
-      
+    debugger
+    
+    function handleMore() {
+        //fetch more data
+    }
 
     return (
-        <div>
-       
-            <div className='demo-infinite-container' ref={messagesEndRef}>
+        <>
+            <div className='row-one comment-container' >
 
-                <InfiniteScroll
-                    initialLoad={false}
-                    pageStart={0}
-                    loadMore={handleInfiniteOnLoad}
-                    hasMore={!loading && hasMore}
-                    useWindow={false}
-                >
-      
-                <List
-                    itemLayout="horizontal"
-                    dataSource={comments}
-                    style={{ height: '350px' }}
-                    locale={{ emptyText: emptyLikes }}
-                    renderItem={(comment: any) => {
-
-                        // Format Date\
-
-
-                        const timestamp = comment.createdAt
-                        const date = moment(timestamp + 'Z').fromNow()
-                        const date2 = moment(comment.createdBy);
-                        const formattedDate = date2.format('llll');
-                        debugger
-                        const userId = comment.postedBy.id;
-                        const isUser = userId === currentUser.id
-                        const subcomments = comment.subcomments
-
-
-
-                        let deleteCommentDiv;
-
-
-
-                        if (isUser) {
-                            deleteCommentDiv = (<span key="comment-basic-like">
-
-
-                                <span key="comment-basic-reply-to" onClick={() => {
-                                    deleteComment({
-                                        variables: { commentId: comment.id }
-                                    })
-                                }} >Delete</span>
-                                {/* <DeleteFilled /> */}
-
-                            </span>)
-                        } else {
-                            deleteCommentDiv = null;
-                        }
-
-
-
-
-
-
-                        return <Comment
-                        author={
-                            <Link style={{ color: "#8dcff8" }} to={`/profile/${comment.postedBy.id}`}>{comment.postedBy.username}</Link>
-
-                            }
-                            datetime={
-                                <Tooltip title={formattedDate}>
-                                    <span>{date}</span>
-                                </Tooltip>
-                            }
-                            // actions={[<a key="list-loadmore-edit">Reply</a>, <span>Delete</span>]}
-                            actions={[
-                                deleteCommentDiv,
-                                <span key="comment-basic-reply-to">Reply</span>,
-                            ]
-                            }
-                            avatar={
-                                <Avatar
-                                    src={comment.postedBy.userprofile.avatarUrl}
-                                    alt="Han Solo"
-                                />
-                            }
-                            content={
-                                <p>
-                                    {comment.comment}
-                                </p>
-                            }
-                        >
-
-
-                            <SubcommentList comments={subcomments} commentId={comment.id}></SubcommentList>
-
-
-                        </Comment>
-                    }
-
-                    }
-                >
-                    {/* <Comment
-                        avatar={
-                            <Avatar
-                                src={currentUser.userprofile.avatarUrl}
-                                alt="Han Solo"
-                            />
-                        }
-                        content={
-                            <Editor
-                                onChange={e => changeValue(e.target.value)}
-                                handleSubmit={() => handleSubmit(trackId)}
-                                submitting={submitting}
-                                value={value}
-                            />
-                        }
-                    /> */}
-
-
-                    </List> 
-                </InfiniteScroll>
-
-            </div>
             
-            <Comment
+            <List
+                itemLayout="horizontal"
+                dataSource={comments}
+                // className='comment-container'
+                locale={{ emptyText: emptyLikes }}
+                renderItem={(comment: any) => {
+
+                    return <TrackComment comment={comment} trackId={trackId}>
+                    </TrackComment>
+                
+                }
+            }
+            >
+            </List> 
+            
+            </div>
+
+             <Comment
                 avatar={
                     <Avatar
+                        // style={{ marginTop: '5px'}}
                         src={currentUser.userprofile.avatarUrl}
-                        alt="Han Solo"
+                        alt="User photo"
+                        size='large'
                     />
                 }
                 content={
@@ -287,7 +228,8 @@ const CommentList: React.FC < any > = ({ comments, trackId }) => {
                     />
                 }
             />
-        </div>
+            </>
+       
 
      
     )

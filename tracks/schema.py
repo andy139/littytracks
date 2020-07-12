@@ -1,10 +1,11 @@
 import graphene
+
 from graphene_django import DjangoObjectType
 from graphql import GraphQLError
 from .models import Track, Like, Play, UserProfile, Comment, Subcomment
 from users.schema import UserType
-from django.db.models import Q  # all,. ows usto make more complex queries
-# from django_filters import FilterSet, OrderingFilter
+from django.db.models import Q
+from .utils import get_paginator
 
 
 class TrackType(DjangoObjectType):
@@ -21,9 +22,10 @@ class LikeType(DjangoObjectType):
     class Meta:
         model = Like
 
+
 class PlayType(DjangoObjectType):
     class Meta:
-        model = Play       
+        model = Play
 
 
 class CommentType(DjangoObjectType):
@@ -36,14 +38,24 @@ class SubcommentType(DjangoObjectType):
         model = Subcomment
 
 
+class CommentPaginatedType(graphene.ObjectType):
+    page = graphene.Int()
+    pages = graphene.Int()
+    has_next = graphene.Boolean()
+    has_prev = graphene.Boolean()
+    objects = graphene.List(CommentType)
+
+
 class Query(graphene.ObjectType):
-    tracks = graphene.List(TrackType, search=graphene.String())
+    tracks = graphene.List(TrackType, search=graphene.String(
+    ), first=graphene.Int(), skip=graphene.Int())
     likes = graphene.List(LikeType)
     plays = graphene.List(PlayType)
-    comments = graphene.List(CommentType)
-    subcomments = graphene.List(SubcommentType)
+    comments = graphene.Field(
+        CommentPaginatedType, trackId=graphene.Int(), page=graphene.Int())
+    subcomments = graphene.List(SubcommentType, commentId=graphene.Int())
 
-    def resolve_tracks(self, info, search=None):
+    def resolve_tracks(self, info, search=None, first=None, skip=None):
         if search:
             filter = (
                 Q(title__icontains=search) |
@@ -62,11 +74,15 @@ class Query(graphene.ObjectType):
     def resolve_plays(self, info):
         return Play.objects.all()
 
-    def resolve_comments(self, info):
-        return Comment.objects.all().reverse()
+    def resolve_comments(self, info, trackId, page):
+        qs = Track.objects.get(
+            id=trackId).comments.all().order_by('created_at').reverse()
 
-    def resolve_subcomments(self, info):
-        return Subcomment.objects.all().reverse()
+        page_size = 5
+        return get_paginator(qs, page_size, page, CommentPaginatedType)
+
+    def resolve_subcomments(self, info, commentId):
+        return Comment.objects.get(id=commentId).subcomments.all().order_by('created_at').reverse()
 
 
 class CreateTrack(graphene.Mutation):
@@ -218,10 +234,8 @@ class CreateComment(graphene.Mutation):
     def mutate(self, info, comment, track_id):
         user = info.context.user
 
-        
         # import pdb; pdb.set_trace()
         track = Track.objects.get(id=track_id)
-        
 
         if user.is_anonymous:
             raise GraphQLError('Login to comment')
@@ -255,6 +269,7 @@ class DeleteComment(graphene.Mutation):
 
         return DeleteComment(user=user)
 
+
 class CreateSubcomment(graphene.Mutation):
     user = graphene.Field(UserType)
     track = graphene.Field(TrackType)
@@ -271,14 +286,11 @@ class CreateSubcomment(graphene.Mutation):
         if user.is_anonymous:
             raise GraphQLError('Login to comment')
 
-       
-
         Subcomment.objects.create(
             subcomment=subcomment,
             posted_by=user,
             comment=comment
         )
-
 
         return Subcomment(posted_by=user, comment=comment)
 
@@ -299,8 +311,6 @@ class DeleteSubcomment(graphene.Mutation):
         subcomment.delete()
 
         return DeleteComment(user=user)
-
-    
 
 
 class UpdateProfile(graphene.Mutation):
@@ -324,14 +334,14 @@ class UpdateProfile(graphene.Mutation):
 
 
 class Mutation(graphene.ObjectType):
-        create_track = CreateTrack.Field()
-        update_track = UpdateTrack.Field()
-        delete_track = DeleteTrack.Field()
-        create_like = CreateLike.Field()
-        update_profile = UpdateProfile.Field()
-        delete_like = DeleteLike.Field()
-        create_comment = CreateComment.Field()
-        delete_comment = DeleteComment.Field()
-        create_subcomment = CreateSubcomment.Field()
-        delete_subcomment = DeleteSubcomment.Field()
-        create_play = CreatePlay.Field()
+    create_track = CreateTrack.Field()
+    update_track = UpdateTrack.Field()
+    delete_track = DeleteTrack.Field()
+    create_like = CreateLike.Field()
+    update_profile = UpdateProfile.Field()
+    delete_like = DeleteLike.Field()
+    create_comment = CreateComment.Field()
+    delete_comment = DeleteComment.Field()
+    create_subcomment = CreateSubcomment.Field()
+    delete_subcomment = DeleteSubcomment.Field()
+    create_play = CreatePlay.Field()

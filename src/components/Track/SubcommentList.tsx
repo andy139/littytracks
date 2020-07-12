@@ -7,6 +7,7 @@ import moment from 'moment';
 import { Link } from 'react-router-dom';
 import { UserContext } from '../../App';
 import { GET_TRACKS_QUERY } from '../../pages/Splash'
+import { useQuery } from '@apollo/react-hooks';
 import './track.css';
 
 
@@ -16,9 +17,13 @@ const { TextArea } = Input;
 
 const Editor = ({ onChange, handleSubmit, submitting, value }) => (
     <>
-        <Form.Item>
-            <Input onChange={onChange} value={value} placeholder="Write a reply..." onPressEnter={() => handleSubmit()} />
-        </Form.Item>
+        <Form size={"large"}>
+
+            <Form.Item>
+                <Input onChange={onChange} value={value} placeholder="Write a reply..." onPressEnter={() => handleSubmit()} />
+            </Form.Item>
+
+        </Form>
     </>
 );
 
@@ -44,19 +49,51 @@ const DELETE_SUBCOMMENT_MUTATION = gql`
 
 `;
 
+const GET_SUBCOMMENTS_QUERY = gql`
+    query($commentId: Int!){
+        subcomments(commentId: $commentId){
+            subcomment
+            createdAt
+            id
+            postedBy {
+                username
+                id
+                userprofile {
+                    avatarUrl
+                }
+            }
+        }
+    }
+`
 
-const SubcommentList: React.FC<any> = ({ comments, commentId}) => {
+
+const SubcommentList: React.FC<any> = ({ commentId}) => {
     const currentUser: any = useContext(UserContext);
 
     const [submitting, changeSubmit] = useState(false);
     const [value, changeValue] = useState('');
-    const [createComment, { data, loading }] = useMutation(CREATE_SUBCOMMENT_MUTATION, {
-        refetchQueries: [{ query: GET_TRACKS_QUERY }]
+    const [createComment] = useMutation(CREATE_SUBCOMMENT_MUTATION, {
+        refetchQueries: [{
+            query: GET_SUBCOMMENTS_QUERY,
+            variables: {commentId: Number(commentId)}
+        
+        }]
     });
 
     const [deleteComment] = useMutation(DELETE_SUBCOMMENT_MUTATION, {
-        refetchQueries: [{ query: GET_TRACKS_QUERY }]
+        refetchQueries: [{
+            query: GET_SUBCOMMENTS_QUERY,
+            variables: { commentId: Number(commentId) }
+
+        }]
     });
+
+
+    const { data } = useQuery(GET_SUBCOMMENTS_QUERY, {
+        variables: {
+            commentId: Number(commentId)
+        }
+    })
 
 
 
@@ -73,7 +110,12 @@ const SubcommentList: React.FC<any> = ({ comments, commentId}) => {
 
 
 
-    let reversedOrder = [...comments].reverse()
+    if (!data) return null;
+
+    const subcomments = data.subcomments
+
+
+
 
 
 
@@ -81,13 +123,10 @@ const SubcommentList: React.FC<any> = ({ comments, commentId}) => {
         <>
             <List
                 itemLayout="horizontal"
-                dataSource={reversedOrder}
+                dataSource={subcomments}
                
            
                 renderItem={(comment: any) => {
-
-                    // Format Date\
-
 
                     const timestamp = comment.createdAt
                     const date = moment(timestamp + 'Z').fromNow()

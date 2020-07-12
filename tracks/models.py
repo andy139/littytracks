@@ -24,7 +24,6 @@ class Comment(models.Model):
 
 
 class Subcomment(models.Model):
-
     comment = models.ForeignKey('tracks.Comment', related_name='subcomments', default="",
                                 on_delete=models.CASCADE)
     subcomment = models.TextField(blank=True)

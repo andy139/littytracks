@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { useMutation } from '@apollo/react-hooks';
 import { MessageOutlined, LikeOutlined, StarOutlined } from '@ant-design/icons';
-import { Button, Space, Modal, Row, Col, Divider } from 'antd';
+import { Button, Space, Modal, Row, Col, Divider, Spin } from 'antd';
 import { UserContext } from '../../App';
 import { gql } from 'apollo-boost';
 import { ME_QUERY } from '../../App';
@@ -34,17 +34,6 @@ const CommentTrack: React.FC<any> = ({ track, commentCount, setModal}) => {
     });
     
 
-
-	// const currentUser: any = useContext(UserContext);
-	// if (!currentUser) return null;
-
-	// const disableLikes: any = () => {
-	// 	const userLikes: any = currentUser.likeSet;
-
-	// 	const isTrackLiked = userLikes.findIndex(({ track }) => track.id === trackId) > -1;
-
-	// 	return isTrackLiked;
-	// };
 
     return (
         <>

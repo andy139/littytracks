@@ -55,6 +55,14 @@ Django = ">=2.0"
 
 [[package]]
 category = "main"
+description = "Cursor based pagination for Django"
+name = "django-cursor-pagination"
+optional = false
+python-versions = "*"
+version = "0.1.4"
+
+[[package]]
+category = "main"
 description = "JSON Web Token for Django GraphQL"
 name = "django-graphql-jwt"
 optional = false
@@ -80,6 +88,14 @@ dj-database-url = ">=0.5.0"
 django = "*"
 psycopg2 = "*"
 whitenoise = "*"
+
+[[package]]
+category = "main"
+description = "Django-six —— Django Compatibility Library"
+name = "django-six"
+optional = false
+python-versions = "*"
+version = "1.0.4"
 
 [[package]]
 category = "main"
@@ -297,7 +313,7 @@ version = "5.1.0"
 brotli = ["brotli"]
 
 [metadata]
-content-hash = "0357c6fb5997e9c2d1f16a9bd6f4cda4b4866c0316c9865e86bbc7ca365f41f4"
+content-hash = "67695e2d1e69984bcfb2c4dd278dcfd2eefed9d0d47e2a4877a8282f78201a7a"
 python-versions = "^3.7"
 
 [metadata.files]
@@ -321,6 +337,10 @@ django-cors-headers = [
     {file = "django-cors-headers-3.4.0.tar.gz", hash = "sha256:f5218f2f0bb1210563ff87687afbf10786e080d8494a248e705507ebd92d7153"},
     {file = "django_cors_headers-3.4.0-py3-none-any.whl", hash = "sha256:5240062ef0b16668ce8a5f43324c388d65f5439e1a30e22c38684d5ddaff0d15"},
 ]
+django-cursor-pagination = [
+    {file = "django-cursor-pagination-0.1.4.tar.gz", hash = "sha256:063fce867442c97798a247a306f9d889374eb630a3246b15493f08b72d3dbcd7"},
+    {file = "django_cursor_pagination-0.1.4-py3-none-any.whl", hash = "sha256:0a738fb24d1e52b28556054804a7cb6cc76c2c32019299d3321fc1c77be49c73"},
+]
 django-graphql-jwt = [
     {file = "django-graphql-jwt-0.3.1.tar.gz", hash = "sha256:468e09b8ce67324fcba21dc33b7c1ea9d234bfc10df7cbfe9c5477be0302f933"},
     {file = "django_graphql_jwt-0.3.1-py2.py3-none-any.whl", hash = "sha256:2189f6d1a13b827d486780fa74a631a15e4f7f0235a3a87a487736b5b0dc4690"},
@@ -328,6 +348,10 @@ django-graphql-jwt = [
 django-heroku = [
     {file = "django-heroku-0.3.1.tar.gz", hash = "sha256:6af4bc3ae4a9b55eaad6dbe5164918982d2762661aebc9f83d9fa49f6009514e"},
     {file = "django_heroku-0.3.1-py2.py3-none-any.whl", hash = "sha256:2bc690aab89eedbe01311752320a9a12e7548e3b0ed102681acc5736a41a4762"},
+]
+django-six = [
+    {file = "django-six-1.0.4.tar.gz", hash = "sha256:b05c96f5a7dbdcf9b513748df27421e8d63e586399bac80a928a29d97d78d450"},
+    {file = "django_six-1.0.4-py2.py3-none-any.whl", hash = "sha256:d307483f3591fa3b471a3724659710229ea3127e112499f2b6f7fa7faa1e27e4"},
 ]
 djangorestframework = [
     {file = "djangorestframework-3.11.0-py3-none-any.whl", hash = "sha256:05809fc66e1c997fd9a32ea5730d9f4ba28b109b9da71fccfa5ff241201fd0a4"},

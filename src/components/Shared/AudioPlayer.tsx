@@ -42,6 +42,29 @@ const CREATE_PLAY_MUTATION = gql`
 		}
 	}
 `;
+
+export const GET_COMMENTS_QUERY = gql`
+    query($trackId: Int!){
+            comments(trackId: $trackId) {
+                comment
+                    postedBy {
+                    id
+                    }
+                    createdAt
+                    id
+                    postedBy {
+                    username
+                    id
+                    userprofile {
+                        avatarUrl
+                    }
+            }
+        }
+
+    }
+
+`
+
 const { SoundCloudLogoSVG, PlayIconSVG, PauseIconSVG, NextIconSVG, PrevIconSVG } = Icons;
 
 const { Header, Footer, Sider, Content } = Layout;
@@ -103,59 +126,94 @@ const AudioPlayer: React.FC<any> = withCustomAudio((props) => {
 			onCancel={() => disableTrackModal()}
 			width="100%"
 			style={{
-				top: 20
-				// overflow: 'hidden',
+				top: 20,
+			
 			}}
 			closable={false}
 			footer={null}
-			bodyStyle={{ height: '95vh' }}
+			bodyStyle={{ height: '89vh', overflowY: 'auto' }}
 		>
-			<Row align={'middle'} justify={'center'}>
-				<Col span={16} className="col-padding col-blurry">
-					<Button
-						type="text"
-						onClick={() => disableTrackModal()}
-						icon={<i className="fas fa-times-circle" style={{ fontSize: 45, paddingBottom: '15px' }} />}
-					/>
-					<br />
+			{/* <Row className="player-background">
+				<Button
+					type="text"
+					onClick={() => disableTrackModal()}
+					icon={<i className="fas fa-times-circle" style={{ fontSize: 45, paddingBottom: '15px' }} />}
+				/>
+			</Row> */}
 
-					<Cover
-						trackName={trackTitle}
-						className="coveralbum"
-						artistName={track.artistName}
-						backgroundUrl={track.imgUrl}
-					/>
 
-					<div className="player-modal">
-						<Timer {...props} className="timer" />
+			<Row justify={'center'} className='full-row'> 
+			
+				<Col span={16} className="col-padding col-blurry center-col row-modal">
+					<div className='player-background'>
+						<Button
+							type="text"
+							onClick={() => disableTrackModal()}
+							icon={<i className="fas fa-times-circle" style={{ fontSize: 45, paddingBottom: '15px' }} />}
+						/>
 
-						<span className="playButton" onClick={() => play()}>
-							{playing ? (
-								<span>
-									{' '}
-									<PauseIconSVG />&nbsp;&nbsp; PAUSE
-								</span>
-							) : (
-								<span>
-									<PlayIconSVG />&nbsp;&nbsp;PLAY
-								</span>
-							)}
-						</span>
+					
 
-						<div className="music-settings">
-							<VolumeControl
-								className="music-settings"
-								buttonClassName="volume-button"
-								rangeClassName="range-volume"
-								{...props}
-							/>
-							<Progress {...props} className="bar-radius" innerClassName="bar-color" />
-						</div>
-
-						<h1>{track.plays.length} Plays</h1>
 					</div>
+
+					<div className="player-modal over">
+
+						<Row align="middle" justify="center" gutter={[24, 16]}>
+							<Col flex="0 1 400px" style={{ justifyContent: 'center', display: 'flex' }}>
+								<img
+
+									width={300}
+									className="imgTrack"
+									alt="logo"
+									src={imgUrl ? imgUrl : 'http://res.cloudinary.com/andytran/raw/upload/v1592239178/ksa9qczmaoicuqcgdo10'}
+								/>
+							</Col>
+
+							<Col flex="1 1 200px">
+								<h2>Track</h2>
+
+								<h1 style={{ fontSize: 40 }}>{trackTitle}</h1>
+								<h2>By {track.artistName}</h2>
+								&nbsp;
+								<Timer {...props} className="timer" />
+
+								<span className="playButton2" onClick={() => play()}>
+									{playing ? (
+										<span>
+											{' '}
+											<PauseIconSVG />&nbsp;&nbsp; PAUSE
+										</span>
+									) : (
+											<span>
+												<PlayIconSVG />&nbsp;&nbsp;PLAY
+											</span>
+										)}
+								</span>
+
+								<div className="music-settings">
+									<VolumeControl
+										className="music-settings"
+										buttonClassName="volume-button"
+										rangeClassName="range-volume"
+										{...props}
+									/>
+									<Progress {...props} className="bar-radius" innerClassName="bar-color" />
+								</div>
+
+								<h1>{track.plays.length} Plays</h1>
+
+							</Col>
+
+
+						</Row>
+
+
+					</div>
+					
+
+					{/* Music Player */}
 				</Col>
-				<Col span={8} className="col-padding">
+				<Col span={8} className="col-modal-right" >
 				
 					<Row>
 						<h2>
@@ -170,6 +228,8 @@ const AudioPlayer: React.FC<any> = withCustomAudio((props) => {
 					&nbsp;
 					<CommentTrack track={track} commentCount={track.comments.length} setModal={setTrackModal} />
 					<Divider />
+				
+
 					<CommentList trackId={track.id} comments={track.comments} />
 				</Col>
 			</Row>

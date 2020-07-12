@@ -1,0 +1,36 @@
+.col-modal-right {
+  height: 100%;
+  /* background-color: pink; */
+  display: flex;
+  flex-direction: column;
+}
+
+.comment-container {
+  /* border: 1px solid #e8e8e8; */
+  border-radius: 4px;
+  overflow: auto;
+  padding: 8px 24px;
+  height: 100%;
+  /* width: 90%; */
+}
+.demo-loading-container {
+  position: absolute;
+  bottom: 40px;
+  width: 100%;
+  text-align: center;
+}
+
+.input-comment {
+    /* height: 40px; */
+}
+
+.row-one {
+  height: 76%;
+
+}
+
+.full-comment-container {
+  flex-grow: 1;
+  flex: 1 1 auto;
+  background-color: black;
+}
