@@ -29,7 +29,11 @@ const genExtra = () => (
 
 
 
+
+
 const TrackList: React.FC<any> = ({ classes, tracks }) => {
+
+	const [gifNum, setGifNum] = useState(0);
 	
 
 	return (
@@ -54,7 +58,7 @@ const TrackList: React.FC<any> = ({ classes, tracks }) => {
 				return (
 					<List.Item style={{ borderRadius: '4px' }}> 
 				
-						<AudioPlayer tracks={tracks} streamUrl={item.url} trackTitle={item.title} imgUrl={item.imgUrl} track={item} clientId={'xxx'} preloadType="metadata"  />
+						<AudioPlayer tracks={tracks} gifNum={gifNum} setGifNum={setGifNum} streamUrl={item.url} trackTitle={item.title} imgUrl={item.imgUrl} track={item} clientId={'xxx'} preloadType="metadata"  />
 				
 					</List.Item>
 				);
