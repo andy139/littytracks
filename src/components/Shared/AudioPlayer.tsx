@@ -131,11 +131,11 @@ const AudioPlayer: React.FC<any> = withCustomAudio((props) => {
 	const modalComponent = (
 		<Modal
 			title={
-				null
-				// <Link to="/" style={{}}>
-				// 	{/* <Title level={4} className='logo-font' style={{ color: "#d2e0fa" }}>LittyTracks</Title> */}
-				// 	<img src="https://django-app-images.s3-us-west-1.amazonaws.com/logo.png" style={{ width: 150 }} />
-				// </Link>
+				// null
+				<Link to="/" style={{}}>
+					{/* <Title level={4} className='logo-font' style={{ color: "#d2e0fa" }}>LittyTracks</Title> */}
+					<img src="https://django-app-images.s3-us-west-1.amazonaws.com/logo.png" style={{ width: 150 }} />
+				</Link>
 			}
 			visible={modal}
 			onCancel={() => disableTrackModal()}
@@ -162,7 +162,7 @@ const AudioPlayer: React.FC<any> = withCustomAudio((props) => {
 			</Row> */}
 
 
-			<Row justify={'center'} className='full-row'> 
+			<Row justify={'center'} align={'middle'}className='full-row'> 
 			
 				<Col span={16} className="col-padding col-blurry center-col row-modal">
 					<div className='player-background'>
