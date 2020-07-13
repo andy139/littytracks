@@ -5,7 +5,7 @@ from graphql import GraphQLError
 from .models import Track, Like, Play, UserProfile, Comment, Subcomment
 from users.schema import UserType
 from django.db.models import Q
-from .utils import get_paginator
+# from .utils import get_paginator
 
 
 class TrackType(DjangoObjectType):
@@ -51,8 +51,8 @@ class Query(graphene.ObjectType):
     ), first=graphene.Int(), skip=graphene.Int())
     likes = graphene.List(LikeType)
     plays = graphene.List(PlayType)
-    comments = graphene.Field(
-        CommentPaginatedType, trackId=graphene.Int(), page=graphene.Int())
+    comments = graphene.List(
+        CommentType, trackId=graphene.Int(), page=graphene.Int(), offset=graphene.Int(), limit=graphene.Int())
     subcomments = graphene.List(SubcommentType, commentId=graphene.Int())
 
     def resolve_tracks(self, info, search=None, first=None, skip=None):
@@ -74,12 +74,16 @@ class Query(graphene.ObjectType):
     def resolve_plays(self, info):
         return Play.objects.all()
 
-    def resolve_comments(self, info, trackId, page):
+    def resolve_comments(self, info, trackId, limit, offset):
         qs = Track.objects.get(
             id=trackId).comments.all().order_by('created_at').reverse()
 
-        page_size = 5
-        return get_paginator(qs, page_size, page, CommentPaginatedType)
+        if offset:
+            qs = qs[offset:]
+        if limit:
+            qs = qs[:limit]
+
+        return qs
 
     def resolve_subcomments(self, info, commentId):
         return Comment.objects.get(id=commentId).subcomments.all().order_by('created_at').reverse()
@@ -224,6 +228,7 @@ class DeleteLike(graphene.Mutation):
 
 
 class CreateComment(graphene.Mutation):
+    comment = graphene.Field(CommentType)
     user = graphene.Field(UserType)
     track = graphene.Field(TrackType)
 
@@ -242,18 +247,20 @@ class CreateComment(graphene.Mutation):
 
         # import pdb; pdb.set_trace()
 
-        Comment.objects.create(
-            comment=comment,
-            track=track,
-            posted_by=user
-        )
+        new_comment = Comment(comment=comment,
+                              track=track,
+                              posted_by=user
+                              )
 
-        return Comment(track=track)
+        new_comment.save()
+
+        return CreateComment(track=track, comment=new_comment)
 
 
 class DeleteComment(graphene.Mutation):
     user = graphene.Field(UserType)
     track = graphene.Field(TrackType)
+    comment_id = graphene.Int()
 
     class Arguments:
         comment_id = graphene.Int(required=True)
@@ -267,7 +274,7 @@ class DeleteComment(graphene.Mutation):
 
         comment.delete()
 
-        return DeleteComment(user=user)
+        return DeleteComment(comment_id=comment_id)
 
 
 class CreateSubcomment(graphene.Mutation):

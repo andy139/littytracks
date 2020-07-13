@@ -24,10 +24,10 @@ import { Link } from 'react-router-dom';
 import { PlayButton, Timer, Progress, Icons, VolumeControl, Cover } from 'react-soundplayer/components';
 import { withCustomAudio } from 'react-soundplayer/addons';
 import LikeTrack from '../Track/LikeTrack';
-import CommentTrack from '../Track/CommentTrack';
+import CommentTrack from '../Comment/CommentTrack';
 import UpdateTrack from '../Track/UpdateTrack';
 import DeleteTrack from '../Track/DeleteTrack';
-import CommentList from '../Track/CommentList';
+import CommentList from '../Comment/CommentList';
 import { ME_QUERY } from '../../App';
 
 // import styles from './shared.css';

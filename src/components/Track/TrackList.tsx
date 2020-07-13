@@ -11,8 +11,8 @@ import AudioPlayer from '../Shared/AudioPlayer';
 import LikeTrack from './LikeTrack';
 import DeleteTrack from './DeleteTrack';
 import UpdateTrack from './UpdateTrack';
-import CommentTrack from './CommentTrack';
-import CommentList from './CommentList';
+import CommentTrack from '../Comment/CommentTrack';
+import CommentList from '../Comment/CommentList';
 
 import './track.css';
 import { OmitProps } from 'antd/lib/transfer/ListBody';
