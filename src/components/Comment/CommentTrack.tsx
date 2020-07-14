@@ -5,6 +5,7 @@ import { Button, Space, Modal, Row, Col, Divider, Spin } from 'antd';
 import { UserContext } from '../../App';
 import { gql } from 'apollo-boost';
 import { ME_QUERY } from '../../App';
+import { GET_TRACKS_QUERY } from '../../pages/Splash'
 
 const IconText:any = ({ icon, text }) => (
 	<Space>
@@ -30,7 +31,7 @@ const CREATE_COMMENT_MUTATION = gql`
 
 const CommentTrack: React.FC<any> = ({ track, commentCount, setModal}) => {
 	const [ createComment, { data, loading } ] = useMutation(CREATE_COMMENT_MUTATION, {
-		refetchQueries: [ { query: ME_QUERY } ]
+        refetchQueries: [{ query: GET_TRACKS_QUERY } ]
     });
     
 

@@ -23,6 +23,10 @@ const SEARCH_TRACKS_QUERY = gql`
                 id
                 
             }
+           comments {
+				id
+			
+			}
             postedBy {
                 id
                 username
