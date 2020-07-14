@@ -41,7 +41,7 @@ export const PROFILE_QUERY = gql`
 					likes {
 						id
 					}
-					comments{
+					comments {
 						id
 						comment
 						createdAt
@@ -66,12 +66,12 @@ export const PROFILE_QUERY = gql`
 						}
 					}
 					plays {
-                		id
-            		}
+						id
+					}
 					postedBy {
 						id
 						username
-						userprofile{
+						userprofile {
 							avatarUrl
 						}
 					}
@@ -84,13 +84,13 @@ export const PROFILE_QUERY = gql`
 				description
 				artistName
 				imgUrl
-				comments{
+				comments {
 					id
 					comment
 					createdAt
 					postedBy {
-					username
-					id
+						username
+						id
 						userprofile {
 							avatarUrl
 						}
@@ -111,7 +111,7 @@ export const PROFILE_QUERY = gql`
 				postedBy {
 					id
 					username
-					userprofile{
+					userprofile {
 						avatarUrl
 					}
 				}
@@ -133,13 +133,11 @@ const Profile: React.FC<any> = ({ match, history, currentUser }) => {
 		variables: { id: match.params.id }
 	});
 
-
-	
 	useEffect(() => {
-		window.scrollTo(0, 0)
-	}, [])
-	
-	const [open, openTrack] = useState(false);
+		window.scrollTo(0, 0);
+	}, []);
+
+	const [ open, openTrack ] = useState(false);
 
 	if (loading) return <Loading />;
 
@@ -159,19 +157,18 @@ const Profile: React.FC<any> = ({ match, history, currentUser }) => {
 				height: 110
 			}}
 			description={
-				<span>{currentUser.id === match.params.id ?
-					<span>
-						You got no music!
-						<Row justify={'center'} style={{marginTop: 10}} >
-							
-							<CreateTrack isProfile={true} />
-						
-						</Row>
-							
-						
-				
-					</span>
-					: 'This user has no music yet'}</span>
+				<span>
+					{currentUser.id === match.params.id ? (
+						<span>
+							You got no music!
+							<Row justify={'center'} style={{ marginTop: 10 }}>
+								<CreateTrack isProfile={true} />
+							</Row>
+						</span>
+					) : (
+						'This user has no music yet'
+					)}
+				</span>
 			}
 		>
 			{/* <Button type="primary">Upload some cool sounds now!</Button> */}
@@ -199,26 +196,27 @@ const Profile: React.FC<any> = ({ match, history, currentUser }) => {
 			locale={{ emptyText: emptyList }}
 			loading={false}
 			pagination={{
-				onChange: (page) => {
-
-				},
+				onChange: (page) => {},
 				pageSize: 4
 			}}
-			style={{ paddingBottom: 15,  }}
+			style={{ paddingBottom: 15 }}
 			dataSource={data.user.trackSet}
-			footer={<div></div>}
+			footer={<div />}
 			renderItem={(track: any) => (
 				<List.Item>
-					
-					<AudioPlayer clientId={'xxx'} currentUser={currentUser} streamUrl={track.url} match={match} trackTitle={track.title} imgUrl={track.imgUrl} track={track} preloadType="metadata" />
-					
-				
+					<AudioPlayer
+						clientId={'xxx'}
+						currentUser={currentUser}
+						streamUrl={track.url}
+						match={match}
+						trackTitle={track.title}
+						imgUrl={track.imgUrl}
+						track={track}
+					/>
 				</List.Item>
 			)}
 		/>
 	);
-
-
 
 	const likedTracks2 = (
 		<List
@@ -226,35 +224,37 @@ const Profile: React.FC<any> = ({ match, history, currentUser }) => {
 			size="large"
 			locale={{ emptyText: emptyLikes }}
 			pagination={{
-				onChange: (page) => {
-
-				},
+				onChange: (page) => {},
 				pageSize: 4
 			}}
 			loading={false}
 			dataSource={data.user.likeSet}
-			footer={<div></div>}
-
-			style={{paddingBottom:15}}
+			footer={<div />}
+			style={{ paddingBottom: 15 }}
 			renderItem={({ track }: any) => (
-			
 				<List.Item>
-					<AudioPlayer streamUrl={track.url} currentUser={currentUser} match={match} trackTitle={track.title} imgUrl={track.imgUrl} track={track} preloadType="metadata" />
-					
+					<AudioPlayer
+						streamUrl={track.url}
+						currentUser={currentUser}
+						match={match}
+						trackTitle={track.title}
+						imgUrl={track.imgUrl}
+						track={track}
+						
+					/>
 				</List.Item>
 			)}
 		/>
 	);
 
-
-	const timestamp = data.user.dateJoined
-	const date = moment(timestamp)
+	const timestamp = data.user.dateJoined;
+	const date = moment(timestamp);
 	const formattedDate = date.format('LL');
 	return (
 		<div>
 			{/* User info card */}
 			<PageHeader
-				style={{marginTop: 20}}
+				style={{ marginTop: 20 }}
 				className="site-page-header"
 				onBack={() => history.goBack()}
 				title={
@@ -272,8 +272,7 @@ const Profile: React.FC<any> = ({ match, history, currentUser }) => {
 					size: 180
 				}}
 			>
-				<UpdateAvatar style={{marginRight:'100'}} userId={match.params.id} />
-			
+				<UpdateAvatar style={{ marginRight: '100' }} userId={match.params.id} />
 			</PageHeader>
 
 			<Tabs defaultActiveKey="1">
@@ -286,8 +285,6 @@ const Profile: React.FC<any> = ({ match, history, currentUser }) => {
 					}
 					key="1"
 				>
-					
-
 					{createdTracks2}
 				</TabPane>
 				<TabPane
@@ -299,13 +296,9 @@ const Profile: React.FC<any> = ({ match, history, currentUser }) => {
 					}
 					key="2"
 				>
-				
-		
-				{likedTracks2}
+					{likedTracks2}
 				</TabPane>
 			</Tabs>
-
-		
 
 			{match.params.id === currentUser.id ? <CreateTrack userId={match.params.id} /> : null}
 		</div>
