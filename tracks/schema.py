@@ -5,7 +5,7 @@ from graphql import GraphQLError
 from .models import Track, Like, Play, UserProfile, Comment, Subcomment
 from users.schema import UserType
 from django.db.models import Q
-# from .utils import get_paginator
+from .utils import get_paginator
 
 
 class TrackType(DjangoObjectType):
@@ -38,12 +38,12 @@ class SubcommentType(DjangoObjectType):
         model = Subcomment
 
 
-class CommentPaginatedType(graphene.ObjectType):
+class TrackPaginatedType(graphene.ObjectType):
     page = graphene.Int()
     pages = graphene.Int()
     has_next = graphene.Boolean()
     has_prev = graphene.Boolean()
-    objects = graphene.List(CommentType)
+    objects = graphene.List(TrackType)
 
 
 class Query(graphene.ObjectType):
@@ -54,6 +54,7 @@ class Query(graphene.ObjectType):
     comments = graphene.List(
         CommentType, trackId=graphene.Int(), page=graphene.Int(), offset=graphene.Int(), limit=graphene.Int())
     subcomments = graphene.List(SubcommentType, commentId=graphene.Int())
+    pagination = graphene.Field(TrackPaginatedType, page=graphene.Int())
 
     def resolve_tracks(self, info, search=None, first=None, skip=None):
         if search:
@@ -67,6 +68,12 @@ class Query(graphene.ObjectType):
             return Track.objects.filter(filter).order_by('created_at').reverse()
 
         return Track.objects.all().order_by('created_at').reverse()
+    
+    def resolve_pagination(self, info, page):
+        page_size = 4
+        qs = Track.objects.all().order_by('created_at').reverse()
+        return get_paginator(qs, page_size, page, TrackPaginatedType)
+
 
     def resolve_likes(self, info):
         return Like.objects.all()

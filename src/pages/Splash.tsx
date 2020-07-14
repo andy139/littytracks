@@ -38,27 +38,7 @@ export const GET_TRACKS_QUERY = gql`
 			}
 			comments {
 				id
-				comment
-				createdAt
-				subcomments {
-					subcomment
-					id
-					createdAt
-					postedBy {
-						username
-						id
-						userprofile {
-							avatarUrl
-						}
-					}
-				}
-				postedBy {
-					username
-					id
-					userprofile {
-						avatarUrl
-					}
-				}
+			
 			}
 		}
 	}

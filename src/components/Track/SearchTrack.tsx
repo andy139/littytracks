@@ -30,33 +30,7 @@ const SEARCH_TRACKS_QUERY = gql`
                     avatarUrl
                 }
             }
-            comments {
-                id
-                comment
-                createdAt
-                subcomments{
-                    subcomment
-                    id
-                    createdAt
-                    postedBy {
-                        username
-                        id
-                        userprofile{
-                            avatarUrl
-                        }
-                    }
-                }
-                postedBy{
-                    username
-                    id
-                    userprofile{
-                        avatarUrl
-                    }
-                }
-                
-                
-
-            }
+     
         }
     }
 
