@@ -58,7 +58,7 @@ const TrackList: React.FC<any> = ({ classes, tracks }) => {
 				return (
 					<List.Item style={{ borderRadius: '4px' }}> 
 				
-						<AudioPlayer tracks={tracks} currentUser={currentUser} gifNum={gifNum} setGifNum={setGifNum} streamUrl={item.url} trackTitle={item.title} imgUrl={item.imgUrl} track={item} clientId={'xxx'} preloadType="metadata"  />
+						<AudioPlayer tracks={tracks} currentUser={currentUser} gifNum={gifNum} setGifNum={setGifNum} streamUrl={item.url} trackTitle={item.title} imgUrl={item.imgUrl} track={item} clientId={'xxx'}   />
 				
 					</List.Item>
 				);
