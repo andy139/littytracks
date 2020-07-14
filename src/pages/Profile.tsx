@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { useQuery } from '@apollo/react-hooks';
 import { gql } from 'apollo-boost';
@@ -133,6 +133,12 @@ const Profile: React.FC<any> = ({ match, history, currentUser }) => {
 		variables: { id: match.params.id }
 	});
 
+
+	
+	useEffect(() => {
+		window.scrollTo(0, 0)
+	}, [])
+	
 	const [open, openTrack] = useState(false);
 
 	if (loading) return <Loading />;

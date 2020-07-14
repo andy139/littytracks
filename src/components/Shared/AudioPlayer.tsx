@@ -266,6 +266,62 @@ const AudioPlayer: React.FC<any> = withCustomAudio((props) => {
 				
 
 					<CommentList trackId={track.id} comments={track.comments} />
+
+					{/* <div className="player-modal over">
+
+						<Row align="middle" justify="center" gutter={[24, 16]}>
+							<Col flex="0 1 400px" style={{ justifyContent: 'center', display: 'flex' }}>
+								<img
+
+									width={300}
+									className="imgTrack"
+									alt="logo"
+									src={imgUrl ? imgUrl : 'http://res.cloudinary.com/andytran/raw/upload/v1592239178/ksa9qczmaoicuqcgdo10'}
+								/>
+
+							</Col>
+
+
+							<Col flex="1 1 200px">
+								<h2>Track</h2>
+
+								<h1 style={{ fontSize: 40 }}>{trackTitle}</h1>
+								<h2>By {track.artistName}</h2>
+								&nbsp;
+								<Timer {...props} className="timer" />
+
+								<span className="playButton2" onClick={() => play()}>
+									{playing ? (
+										<span>
+											{' '}
+											<PauseIconSVG />&nbsp;&nbsp; PAUSE
+										</span>
+									) : (
+											<span>
+												<PlayIconSVG />&nbsp;&nbsp;PLAY
+											</span>
+										)}
+								</span>
+
+								<div className="music-settings">
+									<VolumeControl
+										className="music-settings"
+										buttonClassName="volume-button"
+										rangeClassName="range-volume"
+										{...props}
+									/>
+									<Progress {...props} className="bar-radius" innerClassName="bar-color" />
+								</div>
+
+								<h1>{track.plays.length} Plays</h1>
+
+							</Col>
+
+
+						</Row>
+
+
+					</div> */}
 				</Col>
 			</Row>
 		</Modal>
