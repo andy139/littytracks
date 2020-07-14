@@ -241,7 +241,7 @@ const CreateTrack: React.FC<any> = ({classes, userId, isNavbar, isProfile}) => {
 
         onSuccess("Successfully uploaded to server");
         console.log("server res: ", res);
-        setImgUrl(res.data.url);
+        setImgUrl(res.data.secure_url);
         setLoading(false);
         setSubmitting(false);
       } catch (err) {
