@@ -325,8 +325,9 @@ class UpdateProfile(graphene.Mutation):
 
     class Arguments:
         avatar_url = graphene.String()
+        background_url = graphene.String()
 
-    def mutate(self, info, avatar_url):
+    def mutate(self, info, avatar_url, background_url):
         user = info.context.user
 
         if user.is_anonymous:
@@ -334,6 +335,31 @@ class UpdateProfile(graphene.Mutation):
 
         user_profile = UserProfile.objects.get(user_id=user.id)
         user_profile.avatar_url = avatar_url
+        user_profile.background_url = background_url
+
+        user_profile.save()
+        # import pdb; pdb.set_trace()
+
+        return UpdateProfile(user_profile=user_profile)
+
+
+class UpdateBackground(graphene.Mutation):
+    user_profile = graphene.Field(UserProfileType)
+
+    class Arguments:
+
+        background_url = graphene.String()
+
+    def mutate(self, info, background_url):
+        user = info.context.user
+
+        if user.is_anonymous:
+            raise GraphQLError('Cannot edit profile')
+
+        user_profile = UserProfile.objects.get(user_id=user.id)
+      
+        user_profile.background_url = background_url
+
         user_profile.save()
         # import pdb; pdb.set_trace()
 
@@ -352,3 +378,4 @@ class Mutation(graphene.ObjectType):
     create_subcomment = CreateSubcomment.Field()
     delete_subcomment = DeleteSubcomment.Field()
     create_play = CreatePlay.Field()
+    update_background = UpdateBackground.Field()

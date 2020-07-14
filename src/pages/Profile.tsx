@@ -204,7 +204,7 @@ const Profile: React.FC<any> = ({ match, history, currentUser }) => {
 			renderItem={(track: any) => (
 				<List.Item>
 					
-					<AudioPlayer clientId={'xxx'} streamUrl={track.url} match={match} trackTitle={track.title} imgUrl={track.imgUrl} track={track} preloadType="metadata" />
+					<AudioPlayer clientId={'xxx'} currentUser={currentUser} streamUrl={track.url} match={match} trackTitle={track.title} imgUrl={track.imgUrl} track={track} preloadType="metadata" />
 					
 				
 				</List.Item>
@@ -233,7 +233,7 @@ const Profile: React.FC<any> = ({ match, history, currentUser }) => {
 			renderItem={({ track }: any) => (
 			
 				<List.Item>
-					<AudioPlayer streamUrl={track.url} match={match} trackTitle={track.title} imgUrl={track.imgUrl} track={track} preloadType="metadata" />
+					<AudioPlayer streamUrl={track.url} currentUser={currentUser} match={match} trackTitle={track.title} imgUrl={track.imgUrl} track={track} preloadType="metadata" />
 					
 				</List.Item>
 			)}

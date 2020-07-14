@@ -44,4 +44,5 @@ class Play(models.Model):
 class UserProfile(models.Model):
     avatar_url = models.URLField(default='')
     user = models.OneToOneField(User, on_delete=models.CASCADE,  null=True)
-    background_url = models.URLField(default='')
+    background_url = models.URLField(
+        default='https://66.media.tumblr.com/900d93b71b6061e043a0aaa2f91a025e/fcf075c8db503555-f4/s540x810/ea7b280580ad959eac6e3d81304bc55b0d34d726.gif')

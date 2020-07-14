@@ -173,7 +173,7 @@ const CreateTrack: React.FC<any> = ({classes, userId, isNavbar, isProfile}) => {
         createTrack({
             variables:{ title, description, url: url, imgUrl:imgUrl, artistName: artistName}
         }).then((data)=>{
-            console.log({ data });
+           
             setSubmitting(false);
             setModal(false);
             setTitle("");
