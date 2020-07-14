@@ -132,14 +132,18 @@ const AudioPlayer: React.FC<any> = withCustomAudio((props) => {
 						<img src="https://django-app-images.s3-us-west-1.amazonaws.com/logo.png" style={{ width: 150 }} />
 					</Link>
 
-					<Button
+					<i className="fas fa-times-circle"
+						style={{ fontSize: 45, cursor:'pointer' }}
+						onClick={() => disableTrackModal()}/>
+						
+					{/* <Button
 						style={{
 							margin: '15px'
 						}}
 						type="text"
 						onClick={() => disableTrackModal()}
-						icon={<i className="fas fa-times-circle" style={{ fontSize: 45, paddingBottom: '15px' }} />}
-					/>
+						}
+					/> */}
 				</div>
 		
 
@@ -156,7 +160,7 @@ const AudioPlayer: React.FC<any> = withCustomAudio((props) => {
 			}}
 			closable={false}
 			footer={null}
-			bodyStyle={{ height: '100vh', overflowY: 'auto' }}
+			bodyStyle={{ height: '100vh', overflowY: 'auto', padding:'0px' }}
 			
 			
 		>
@@ -196,7 +200,9 @@ const AudioPlayer: React.FC<any> = withCustomAudio((props) => {
 									alt="logo"
 									src={imgUrl ? imgUrl : 'http://res.cloudinary.com/andytran/raw/upload/v1592239178/ksa9qczmaoicuqcgdo10'}
 								/>
+								
 							</Col>
+						
 
 							<Col flex="1 1 200px">
 								<h2>Track</h2>

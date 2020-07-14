@@ -3,6 +3,7 @@
   /* background-color: pink; */
   display: flex;
   flex-direction: column;
+  padding: 15px;
 }
 
 .comment-container {
@@ -10,7 +11,7 @@
   border-radius: 4px;
   overflow: auto;
   padding: 8px 24px;
-  height: 76%;
+  max-height: 80%;
   /* width: 90%; */
 }
 .demo-loading-container {

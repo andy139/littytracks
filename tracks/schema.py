@@ -64,9 +64,9 @@ class Query(graphene.ObjectType):
                 Q(posted_by__username__icontains=search)
             )
             # starts with the texts starting with the search arg
-            return Track.objects.filter(filter)
+            return Track.objects.filter(filter).order_by('created_at').reverse()
 
-        return Track.objects.all()
+        return Track.objects.all().order_by('created_at').reverse()
 
     def resolve_likes(self, info):
         return Like.objects.all()
@@ -357,7 +357,7 @@ class UpdateBackground(graphene.Mutation):
             raise GraphQLError('Cannot edit profile')
 
         user_profile = UserProfile.objects.get(user_id=user.id)
-      
+
         user_profile.background_url = background_url
 
         user_profile.save()
