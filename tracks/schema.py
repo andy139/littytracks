@@ -129,7 +129,7 @@ class UpdateTrack(graphene.Mutation):
         img_url = graphene.String()
         artist_name = graphene.String()
 
-    def mutate(self, info, track_id, title, url, description, image_url, artist_name):
+    def mutate(self, info, track_id, title, url, description, img_url, artist_name):
         user = info.context.user
         track = Track.objects.get(id=track_id)
 
@@ -139,8 +139,8 @@ class UpdateTrack(graphene.Mutation):
         track.title = title
         track.description = description
         track.url = url
-        track.image_url = image_url
-        artist_name = artist_name
+        track.img_url = img_url
+        track.artist_name = artist_name
 
         track.save()
 

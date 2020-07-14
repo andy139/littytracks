@@ -52,7 +52,7 @@ const CreateTrack: React.FC<any> = ({classes, userId, isNavbar, isProfile}) => {
     const [url, setUrl] = useState(null);
     const [fileError, setFileError] = useState("");
     const [imageLoading, setLoading] = useState(false);
-    const [imgUrl, setImgUrl] = useState("http://res.cloudinary.com/andytran/raw/upload/v1592239178/ksa9qczmaoicuqcgdo10");
+    const [imgUrl, setImgUrl] = useState("https://res.cloudinary.com/andytran/raw/upload/v1592239178/ksa9qczmaoicuqcgdo10");
     const [createTrack, {loading, error}] = useMutation(
       CREATE_TRACK_MUTATION, 
       {
@@ -112,7 +112,7 @@ const CreateTrack: React.FC<any> = ({classes, userId, isNavbar, isProfile}) => {
   
           onSuccess("Successfully uploaded to server");
           console.log("server res: ", res);
-          setUrl(res.data.url);
+          setUrl(res.data.secure_url);
           setSubmitting(false);
         } catch (err) {
            console.error("Error uploading file", err);

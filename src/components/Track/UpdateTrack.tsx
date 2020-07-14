@@ -13,12 +13,15 @@ import './track.css';
 
 
 const UPDATE_TRACK_MUTATION = gql`
-      mutation ($trackId: Int!, $title: String!, $description: String!, $url: String!){
+      mutation ($trackId: Int!, $title: String!, $description: String!, $url: String!, $imgUrl: String!, $artistName: String!){
         updateTrack(
             trackId: $trackId,
             title: $title,
             url: $url,
-            description: $description
+            imgUrl: $imgUrl, 
+            artistName:$artistName
+            description:$description
+
         )
         {
         track {
@@ -52,9 +55,11 @@ const UpdateTrack: React.FC<any> = ({classes, track}) => {
     const [url, setUrl] = useState(track.url);
     const [fileError, setFileError] = useState("")
     const [updateTrack, {loading, error}] = useMutation(UPDATE_TRACK_MUTATION)
-
+    const [artistName, setArtistName] = useState(track.artistName);
+    const [imgUrl, setImgUrl] = useState(track.imageUrl);
 
     
+  debugger
 
 
     const uploadAudio = async (options) => {
@@ -98,7 +103,7 @@ const UpdateTrack: React.FC<any> = ({classes, track}) => {
   
           onSuccess("Successfully uploaded to server");
           console.log("server res: ", res);
-          setUrl(res.data.url);
+          setUrl(res.data.secure_url);
           setSubmitting(false);
         } catch (err) {
            console.error("Error uploading file", err);
@@ -172,7 +177,7 @@ const UpdateTrack: React.FC<any> = ({classes, track}) => {
     
          
         updateTrack({
-            variables:{trackId:track.id, title, description, url: url}
+          variables: { trackId: track.id, title, description, url: url, imgUrl: track.imgUrl, artistName: track.artistName}
         }).then((data)=>{
             console.log({ data });
             setSubmitting(false);
@@ -180,6 +185,8 @@ const UpdateTrack: React.FC<any> = ({classes, track}) => {
             setTitle(title);
             setDescription(description);
             setUrl(url);
+            setImgUrl(imgUrl)
+            setArtistName(artistName)
             setFile([]);
         })
 

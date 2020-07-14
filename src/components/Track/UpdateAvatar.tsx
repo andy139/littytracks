@@ -101,9 +101,9 @@ const UpdateAvatar: React.FC<any> = ({classes, userId, profileId}) => {
 
       onSuccess("Successfully uploaded to server");
       console.log("server res: ", res);
-      setImgUrl(res.data.url);
+      setImgUrl(res.data.secure_url);
       updateAvatar({
-        variables:{avatarUrl: res.data.url}
+        variables:{avatarUrl: res.data.secure_url}
       }).then(() => {
         setLoading(false);
       })
