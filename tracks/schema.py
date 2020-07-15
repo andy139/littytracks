@@ -119,13 +119,15 @@ class CreateTrack(graphene.Mutation):
         track = Track(title=title, description=description, artist_name=artist_name,
                       url=url, posted_by=user, img_url=img_url)
 
+        track.save()
+        
         playcount = PlayCount.objects.create(
-            user=user,
+            track=track,
             play_count=0
         )
 
         playcount.save()
-        track.save()
+    
         return CreateTrack(track=track)
 
 
