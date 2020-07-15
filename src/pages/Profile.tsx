@@ -115,9 +115,10 @@ export const PROFILE_QUERY = gql`
 						avatarUrl
 					}
 				}
-				plays {
-					id
+				playcount {
+					playCount
 				}
+			
 				likes {
 					id
 				}
