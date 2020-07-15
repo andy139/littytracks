@@ -37,9 +37,10 @@ import './shared.css';
 const { Paragraph } = Typography;
 const CREATE_PLAY_MUTATION = gql`
 	mutation($trackId: Int!) {
-		createPlay(trackId: $trackId) {
+		addPlaycount(trackId: $trackId) {
 			track {
 				id
+			
 			}
 		}
 	}
@@ -257,7 +258,7 @@ const AudioPlayer: React.FC<any> = withCustomAudio((props) => {
 										/>
 										<Progress {...props} className="bar-radius" innerClassName="bar-color" />
 									</div>
-									<h1>{track.plays.length} Plays</h1>
+									<h1>{track.playcount.playCount} Plays</h1>
 								</Col>
 							</Row>
 						</div>
@@ -433,7 +434,7 @@ const AudioPlayer: React.FC<any> = withCustomAudio((props) => {
 							<LikeTrack trackId={track.id} likeCount={track.likes.length} />
 
 							<CommentTrack track={track} commentCount={track.comments.length} setModal={setTrackModal} />
-							<span style={{ float: 'right' }}>{track.plays.length} Plays</span>
+							<span style={{ float: 'right' }}>{track.playcount.playCount} Plays</span>
 						</Space>
 					</Row>
 				</Col>

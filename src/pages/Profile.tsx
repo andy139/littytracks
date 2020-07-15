@@ -65,8 +65,8 @@ export const PROFILE_QUERY = gql`
 							}
 						}
 					}
-					plays {
-						id
+					playcount {
+						playCount
 					}
 					postedBy {
 						id

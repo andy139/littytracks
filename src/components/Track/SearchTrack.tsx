@@ -16,8 +16,8 @@ const SEARCH_TRACKS_QUERY = gql`
             url
             imgUrl
             artistName
-            plays {
-                id
+            playcount {
+                playcount
             }
             likes {
                 id

@@ -7,7 +7,7 @@ import { ME_QUERY } from '../../App';
 
 const CREATE_PLAY_MUTATION = gql`
 	mutation($trackId: Int!) {
-		createPlay(trackId: $trackId) {
+		addPlaycount(trackId: $trackId) {
 			track {
 				id
 			

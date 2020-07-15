@@ -2,7 +2,7 @@ import graphene
 
 from graphene_django import DjangoObjectType
 from graphql import GraphQLError
-from .models import Track, Like, Play, UserProfile, Comment, Subcomment
+from .models import Track, Like, Play, UserProfile, Comment, Subcomment, PlayCount
 from users.schema import UserType
 from django.db.models import Q
 from .utils import get_paginator
@@ -21,6 +21,10 @@ class UserProfileType(DjangoObjectType):
 class LikeType(DjangoObjectType):
     class Meta:
         model = Like
+
+class PlayCountType(DjangoObjectType):
+    class Meta:
+        model = PlayCount
 
 
 class PlayType(DjangoObjectType):
@@ -114,6 +118,13 @@ class CreateTrack(graphene.Mutation):
 
         track = Track(title=title, description=description, artist_name=artist_name,
                       url=url, posted_by=user, img_url=img_url)
+
+        playcount = PlayCount.objects.create(
+            user=user,
+            play_count=0
+        )
+
+        playcount.save()
         track.save()
         return CreateTrack(track=track)
 
@@ -212,6 +223,41 @@ class CreateLike(graphene.Mutation):
         )
 
         return CreateLike(user=user, track=track)
+
+class AddPlayCount(graphene.Mutation):
+    track = graphene.Field(TrackType)
+
+    class Arguments:
+        track_id = graphene.Int(required=True)
+
+    def mutate(self, info, track_id):
+        user = info.context.user
+        if user.is_anonymous:
+            raise GraphQLError('Login to play')
+
+        track = Track.objects.get(id=track_id)
+        if not track:
+            raise GraphQLError('Cannot find track with given track id')
+        
+        if not PlayCount.objects.filter(track=track).exists():
+            PlayCount.objects.create(
+                track=track,
+                play_count=0
+            )
+        else:
+            # This will increase playcount by one
+            import pdb
+            
+            PlayCountObj = PlayCount.objects.get(track=track)
+            playcount = PlayCountObj.play_count
+            PlayCountObj.play_count = playcount + 1
+            
+            # pdb.set_trace()
+
+            PlayCountObj.save()
+      
+        # import pdb; pdb.set_trace()
+        return AddPlayCount(track=track)
 
 
 class DeleteLike(graphene.Mutation):
@@ -386,3 +432,4 @@ class Mutation(graphene.ObjectType):
     delete_subcomment = DeleteSubcomment.Field()
     create_play = CreatePlay.Field()
     update_background = UpdateBackground.Field()
+    add_playcount = AddPlayCount.Field()

@@ -40,6 +40,14 @@ class Play(models.Model):
     track = models.ForeignKey(
         'tracks.Track', related_name='plays', on_delete=models.CASCADE)
 
+class PlayCount(models.Model):
+    track = models.OneToOneField(
+        'tracks.Track', on_delete=models.CASCADE, primary_key=True)
+    play_count = models.IntegerField(default=0)
+
+
+        
+
     ## REFERENCES THE USER FOR A GIVEN TRACK
 class UserProfile(models.Model):
     avatar_url = models.URLField(default='')
