@@ -19,14 +19,13 @@ const { SubMenu } = Menu;
 const MenuItem = Menu.Item;
 
 const Navbar: React.FC<any> = ({ currentUser }) => {
-	const { loading, data, error } = useQuery(GET_TRACKS_QUERY);
+	
 
-	const [ searchResults, setSearchResults ] = useState([]);
+	
 
 	const history = useHistory();
 
-	if (!data) return null;
-	const tracks = searchResults.length > 0 ? searchResults : data.tracks;
+
 
 	const menu = (
 		<Menu style={{ borderRadius: 5 }} mode="inline">
