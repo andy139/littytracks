@@ -49,7 +49,7 @@ const GET_SUBCOMMENTS_QUERY = gql`
 	}
 `;
 
-const TrackComment: React.FC<any> = ({ comment, trackId }) => {
+const TrackComment: React.FC<any> = ({ comment, trackId, disableTrackModal }) => {
     const currentUser: any = useContext(UserContext);
 
 	const [ deleteComment, { loading: deleteLoading } ] = useMutation(DELETE_COMMENT_MUTATION, {
@@ -122,7 +122,7 @@ const TrackComment: React.FC<any> = ({ comment, trackId }) => {
 		<Spin tip="...deleting comment" spinning={deleteLoading}>
 			<Comment
 				author={
-					<Link style={{ color: '#8dcff8' }} to={`/profile/${comment.postedBy.id}`}>
+					<Link style={{ color: '#8dcff8' }} onClick={() => disableTrackModal()} to={`/profile/${comment.postedBy.id}`}>
 						{comment.postedBy.username}
 					</Link>
 				}
@@ -140,7 +140,7 @@ const TrackComment: React.FC<any> = ({ comment, trackId }) => {
 				content={<p>{comment.comment}</p>}
             >
       
-                <SubcommentList comments={subcomments} updateMethod={updateMethod} commentId={comment.id} />
+				<SubcommentList comments={subcomments} disableTrackModal={disableTrackModal} updateMethod={updateMethod} commentId={comment.id} />
 			</Comment>
 		</Spin>
 	);

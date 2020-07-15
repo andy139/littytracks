@@ -138,7 +138,7 @@ const Profile: React.FC<any> = ({ match, history, currentUser }) => {
 		window.scrollTo(0, 0);
 	}, []);
 
-	const [ open, openTrack ] = useState(false);
+	const [open, openTrack] = useState(false);
 
 	if (loading) return <Loading />;
 
@@ -167,8 +167,8 @@ const Profile: React.FC<any> = ({ match, history, currentUser }) => {
 							</Row>
 						</span>
 					) : (
-						'This user has no music yet'
-					)}
+							'This user has no music yet'
+						)}
 				</span>
 			}
 		>
@@ -197,7 +197,7 @@ const Profile: React.FC<any> = ({ match, history, currentUser }) => {
 			locale={{ emptyText: emptyList }}
 			loading={false}
 			pagination={{
-				onChange: (page) => {},
+				onChange: (page) => { },
 				pageSize: 4
 			}}
 			style={{ paddingBottom: 15 }}
@@ -225,7 +225,7 @@ const Profile: React.FC<any> = ({ match, history, currentUser }) => {
 			size="large"
 			locale={{ emptyText: emptyLikes }}
 			pagination={{
-				onChange: (page) => {},
+				onChange: (page) => { },
 				pageSize: 4
 			}}
 			loading={false}

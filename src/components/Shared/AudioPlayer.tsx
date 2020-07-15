@@ -306,7 +306,7 @@ const AudioPlayer: React.FC<any> = withCustomAudio((props) => {
 					&nbsp;
 					<CommentTrack track={track} commentCount={track.comments.length} setModal={setTrackModal} />
 					<Divider />
-					<CommentList trackId={track.id} comments={track.comments} />
+					<CommentList trackId={track.id} comments={track.comments} disableTrackModal={disableTrackModal}/>
 					{/* <div className="player-modal over">
 
 						<Row align="middle" justify="center" gutter={[24, 16]}>

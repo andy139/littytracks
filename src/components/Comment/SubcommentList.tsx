@@ -63,7 +63,7 @@ const UseFocus = () => {
     return [htmlElRef, setFocus]
 }
 
-const SubcommentComp = ({ comment, commentId }) => {
+const SubcommentComp = ({ comment, commentId, disableTrackModal }) => {
     const currentUser: any = useContext(UserContext);
     const [inputRef, setInputFocus] = UseFocus()
     const [deleteComment] = useMutation(DELETE_SUBCOMMENT_MUTATION, {
@@ -108,7 +108,7 @@ const SubcommentComp = ({ comment, commentId }) => {
 
     return (<Comment
         author={
-            <Link style={{ color: "#8dcff8" }} to={`/profile/${comment.postedBy.id}`}>{comment.postedBy.username}</Link>
+            <Link style={{ color: "#8dcff8" }} onClick={() => disableTrackModal()} to={`/profile/${comment.postedBy.id}`}>{comment.postedBy.username}</Link>
 
         }
         datetime={
@@ -156,7 +156,7 @@ const Editor = ({ onChange, handleSubmit, submitting, value }) => (
 
 
 
-const SubcommentList: React.FC<any> = ({ commentId, updateMethod}) => {
+const SubcommentList: React.FC<any> = ({ commentId, updateMethod, disableTrackModal}) => {
     const currentUser: any = useContext(UserContext);
 
     const [submitting, changeSubmit] = useState(false);
@@ -187,14 +187,19 @@ const SubcommentList: React.FC<any> = ({ commentId, updateMethod}) => {
 
 
     const handleSubmit = (commentId) => {
+        
+        if (value.length >= 1) {
+            changeSubmit(true);
+            createComment({
+                variables: { commentId: commentId, subcomment: value }
+            }).then(() => {
+                changeSubmit(false)
+                changeValue('')
+            })
 
-        changeSubmit(true);
-        createComment({
-            variables: { commentId: commentId, subcomment: value }
-        }).then(() => {
-            changeSubmit(false)
-            changeValue('')
-        })
+        } 
+
+     
     };
 
 
@@ -217,7 +222,7 @@ const SubcommentList: React.FC<any> = ({ commentId, updateMethod}) => {
            
                 renderItem={(comment: any) => {
 
-                    return <SubcommentComp comment={comment} commentId={commentId}/>
+                    return <SubcommentComp comment={comment} disableTrackModal={disableTrackModal} commentId={commentId}/>
 
                     
                 }

@@ -115,7 +115,7 @@ const GET_SUBCOMMENTS_QUERY = gql`
 `
 
 
-const CommentList: React.FC < any > = ({ trackId }) => {
+const CommentList: React.FC < any > = ({ trackId, disableTrackModal }) => {
     const currentUser: any = useContext(UserContext);
 
 
@@ -190,14 +190,20 @@ const CommentList: React.FC < any > = ({ trackId }) => {
 
     const handleSubmit = (trackId) => {
 
-        changeSubmit(true);
-        createComment({
-            variables: { trackId: trackId, comment: value }
-        }).then(() => {
-            changeSubmit(false)
-            changeValue('')
-      
-        })
+        if (value.length >= 1) {
+            changeSubmit(true);
+            createComment({
+                variables: { trackId: trackId, comment: value }
+            }).then(() => {
+                changeSubmit(false)
+                changeValue('')
+
+            })
+
+
+        } 
+
+    
     }
     
     const emptyLikes = (
@@ -267,9 +273,9 @@ const CommentList: React.FC < any > = ({ trackId }) => {
                     dataSource={data.comments}
                     // className='comment-container'
                     locale={{ emptyText: emptyLikes }}
-                    renderItem={(comment: any) => {
+                        renderItem={(comment: any) => {
 
-                        return <TrackComment comment={comment} trackId={trackId}>
+                            return <TrackComment disableTrackModal={disableTrackModal} comment={comment} trackId={trackId}>
                         </TrackComment>
                     
                     }
