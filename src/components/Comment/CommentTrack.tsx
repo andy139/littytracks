@@ -59,39 +59,7 @@ const CommentTrack: React.FC<any> = ({ track, commentCount, setModal}) => {
 
 
             </IconText>
-            {/* <Modal
-                title={
-                    <div>
-                        <h2>{track.title}</h2>
-                    </div>
-                }
-                onCancel={() => setModal(false)}
-                style={{ top: 120 }}
-                width={700}
-                visible={modalState}>
-                
-                <Row>
-                    <Col flex={3}>3 / 5</Col>
-                    <Col flex={2}>3 / 5
-                     
-                     <img
-                            width={225}
-                            alt="logo"
-                            style={{
-                                float: "right"
-                            }}
-                            src={
-                                track.imgUrl ? (
-                                    track.imgUrl
-                                ) : (
-                                        'http://res.cloudinary.com/andytran/raw/upload/v1592239178/ksa9qczmaoicuqcgdo10'
-                                    )
-                            }
-                        />
-                    </Col>
-                </Row>
 
-            </Modal> */}
         </>
      
 	);
