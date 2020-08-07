@@ -52,8 +52,7 @@ const Login: React.FC<Props> = ({ classes, setNewUser }) => {
             console.log({ res });
         } catch (e) {
 
-              
-            // console.log(e)
+
         }
 	
 	};
@@ -61,13 +60,12 @@ const Login: React.FC<Props> = ({ classes, setNewUser }) => {
 	const FormItem = Form.Item;
 
 	const onFinish = (values) => {
-        // console.log("Received values of form: TEST ", values);
         console.log('Success:', values);
 		handleSubmit(tokenAuth, client);
     };
     
     const onFinishFailed = errorInfo => {
-        // console.log('Failed:', errorInfo);
+
 	};
 
 
@@ -92,27 +90,8 @@ const Login: React.FC<Props> = ({ classes, setNewUser }) => {
 
 
 	const loginDemoUser = async (tokenAuth, client) => {
-		// e.preventDefault();
-
-		// setUsername("")
-		// setPassword("")
-
-		// const user = 'testuser';
-		// const pass = 'password';
-
-		// handleUsername(user)
-
-		// setTimeout(() => {
-		// 	handlePassword(pass)
-		// }, 1000)
-
-		// setTimeout(() => {
-		// 	  
-		// 	handleSubmit(tokenAuth, client)
-		// }, 1500)
 
 	
-
 		try {
 			const res = await tokenAuth({
 				variables: {
@@ -127,8 +106,7 @@ const Login: React.FC<Props> = ({ classes, setNewUser }) => {
 			console.log({ res });
 		} catch (e) {
 
-			  
-			// console.log(e)
+		
 		}
 
 		

@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, {createContext, useState } from 'react';
 import { Row, Col } from 'antd';
-import { Query } from 'react-apollo';
+
 import { gql } from 'apollo-boost';
 import { useQuery } from '@apollo/react-hooks';
 import _ from 'lodash';
@@ -11,7 +11,6 @@ import CreateTrack from '../components/Track/CreateTrack';
 import Loading from '../components/Shared/Loading';
 import Error from '../components/Shared/Error';
 
-import ReactJkMusicPlayer from 'react-jinke-music-player';
 import 'react-jinke-music-player/assets/index.css';
 
 export const GET_TRACKS_QUERY = gql`
@@ -44,45 +43,25 @@ export const GET_TRACKS_QUERY = gql`
 	}
 `;
 
-const Splash: React.FC<any> = ({ classes }) => {
+
+
+const Splash: React.FC<any> = ({ classes, searchResults }) => {
 	const { loading, data, error } = useQuery(GET_TRACKS_QUERY);
-	const [ searchResults, setSearchResults ] = useState([]);
+	// const [searchResults, setSearchResults] = useState([]);
+	
+
+	debugger
 
 	if (!data) return null;
 
-	//map objects to correct keys
-	const replacements = {
-		title: 'name',
-		imgUrl: 'cover',
-		url: 'musicSrc'
-	};
-
-	let newSearchList = searchResults.map((track) => {
-		return Object.keys(track)
-			.map((key) => {
-				const newKey = replacements[key] || key;
-				return { [newKey]: track[key] };
-			})
-			.reduce((a, b) => Object.assign({}, a, b));
-	});
-
-	let newTrackList = data.tracks.map((track) => {
-		return Object.keys(track)
-			.map((key) => {
-				const newKey = replacements[key] || key;
-				return { [newKey]: track[key] };
-			})
-			.reduce((a, b) => Object.assign({}, a, b));
-	});
-
 	const tracks = searchResults.length > 0 ? searchResults : data.tracks;
-	const newTracks = searchResults.length > 0 ? newSearchList : newTrackList;
 
+	debugger
 	return (
 		<div>
-			<Row align={'middle'} justify="center">
+			{/* <Row align={'middle'} justify="center">
 				<SearchTrack setSearchResults={setSearchResults} />
-			</Row>
+			</Row> */}
 
 			           
             <CreateTrack/>

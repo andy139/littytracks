@@ -10,41 +10,14 @@ import SearchTrack from '../Track/SearchTrack';
 import Signout from '../Session/Signout';
 import CreateTrack from '../Track/CreateTrack';
 
-import { GET_TRACKS_QUERY } from '../../pages/Splash';
 import './shared.css';
 
 const { Title } = Typography;
-const { Header, Content, Footer } = Layout;
-const { SubMenu } = Menu;
-const MenuItem = Menu.Item;
+const { Header } = Layout;
 
-const Navbar: React.FC<any> = ({ currentUser }) => {
-	
-
-	
-
+const Navbar: React.FC<any> = ({ currentUser, setSearchResults }) => {
 	const history = useHistory();
 
-
-
-	const menu = (
-		<Menu style={{ borderRadius: 5 }} mode="inline">
-			<Menu.Item style={{ fontSize: 20 }}>
-				{currentUser ? (
-					<a
-						className="ant-dropdown-link"
-						onClick={(e) => {
-							e.preventDefault();
-							history.push(`/profile/${currentUser.id}`);
-						}}
-					/>
-				) : null}
-			</Menu.Item>
-			<Menu.Item style={{ fontSize: 20, color: '#b7e3fa' }}>
-				<Signout />
-			</Menu.Item>
-		</Menu>
-	);
 
 	return (
 		<Header className="header" style={{ zIndex: 90, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
@@ -54,39 +27,19 @@ const Navbar: React.FC<any> = ({ currentUser }) => {
 					<img src="https://django-app-images.s3-us-west-1.amazonaws.com/logo.png" style={{ width: 150 }} />
 				</Link>
 			</div>
+
+
+
 			<Menu
 				mode="horizontal"
-				style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'left' }}
+				style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
 				selectable={false}
 				theme="dark"
 			>
-				{/* <SubMenu
-					style={{ float: 'right' }}
-					key="sub4"
-					title={
-						<Avatar shape="circle" size="large" src={currentUser.userprofile.avatarUrl} style={{ cursor: 'pointer' }} />
-					}
-				>
-					<Menu.Item style={{ fontSize: 20 }}>
-						<a className="ant-dropdown-link" onClick={(e) => e.preventDefault()}>
-							{currentUser && (
-								<Link to={`/profile/${currentUser.id}`} style={{}}>
-									View Profile
-								</Link>
-							)}
-						</a>
-					</Menu.Item>
-					<Menu.Divider />
-					<Menu.Item style={{ fontSize: 20, color: '#b7e3fa' }}>
-						<Signout />
-					</Menu.Item>
-				</SubMenu>
-				<SubMenu style={{ float: 'right' }} title={<CloudUploadOutlined style={{ fontSize: 30, marginTop: '16px' }} />}>
-					<Menu.Item style={{ fontSize: 20, borderRadius: '30%' }}>
-						<CreateTrack isNavbar={true} />
-					</Menu.Item>
-				</SubMenu> */}
-			</Menu>
+				
+				<SearchTrack setSearchResults={setSearchResults} />
+
+			</Menu>	
 
 			<Dropdown
 				overlay={

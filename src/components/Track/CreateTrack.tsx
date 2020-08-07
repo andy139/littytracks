@@ -6,7 +6,7 @@ import { Button, Affix, Modal, Input, Upload, message, Row, Col} from 'antd';
 import axios from 'axios';
 import { Query } from "react-apollo";
 import { gql } from "apollo-boost";
-import { FileAddOutlined, FileAddFilled,UploadOutlined, LoadingOutlined, PlusOutlined} from '@ant-design/icons';
+import { UploadOutlined, LoadingOutlined, PlusOutlined} from '@ant-design/icons';
 import ImgCrop from 'antd-img-crop';
 import Error from '../Shared/Error';
 import './track.css';

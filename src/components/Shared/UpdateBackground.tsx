@@ -67,7 +67,6 @@ const UpdateBackground: React.FC<any> = ({ currentUser }) => {
 
             <Button style={{
                 margin: '10px',
-                // opacity:'0.6'
 
             }}type="primary" shape="round" onClick={(e) => handleSubmit(e, updateBackground)}>
                 Change Background

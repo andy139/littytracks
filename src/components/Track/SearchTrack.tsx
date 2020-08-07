@@ -2,8 +2,8 @@ import React, { useState, useRef } from "react";
 import { Input } from 'antd';
 import {ApolloConsumer} from 'react-apollo';
 import { Button } from 'antd';
-import { Query } from "react-apollo";
 import { gql } from "apollo-boost";
+import { SearchOutlined } from '@ant-design/icons'
 import "./track.css";
 const { Search } = Input;
 
@@ -48,7 +48,6 @@ const SearchTrack: React.FC<any> = ({setSearchResults }) => {
     const [loading, setLoading] = useState(false);
 
  
-
     const clearSearchInput = () => {
         setSearchResults([]);
         setSearch("");
@@ -62,6 +61,7 @@ const SearchTrack: React.FC<any> = ({setSearchResults }) => {
         })
 
         setSearchResults(res.data.tracks);
+        debugger
         setLoading(false);
 
         console.log({res})
@@ -76,7 +76,7 @@ const SearchTrack: React.FC<any> = ({setSearchResults }) => {
 
                     <Search
                         placeholder="Search All Tracks"
-                        enterButton="Search"
+                        enterButton={<SearchOutlined/>}
                         onSearch={() => {
                             setLoading(true);
                             handleSubmit(client)}
@@ -86,27 +86,11 @@ const SearchTrack: React.FC<any> = ({setSearchResults }) => {
                         value={search}
                         addonBefore={<Button type="primary" shape="circle" onClick={clearSearchInput}><i className="fas fa-times"></i></Button>}
                         size="large"
-                        style={{ width:"80%", marginTop: "40px", marginBottom:"20px"}}
+                        style={{ minWidth: '300px', maxWidth:"30%"}}
                         
                     />
                    
-                    // <Search placeholder="Search All Tracks" 
-                    //     size="large" 
-                    //     // allowClear
-                   
-                    //     onSearch={() => {
-                    //         setLoading(true);
-                    //         handleSubmit(client)}
-                    //     }
-                    //     loading={loading} 
-                    //     enterButton 
-                    //     style={{ marginTop:"20px", backgroundColor:"#8dcff8"}}
-                    //     onChange={event => setSearch(event.target.value)}
-                    //     value={search}
-                    //     addonBefore={<Button type="primary" shape="circle" onClick={clearSearchInput}><i className="fas fa-times"></i></Button>}
-                        
-                    // />
-                    
+                 
 
 
                 )}

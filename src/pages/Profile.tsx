@@ -20,112 +20,6 @@ import client from 'apollo-client';
 import './profile.css';
 import UpdateAvatar from '../components/Track/UpdateAvatar';
 
-export const PROFILE_QUERY = gql`
-	query($id: Int!) {
-		user(id: $id) {
-			id
-			username
-			dateJoined
-			userprofile {
-				avatarUrl
-			}
-			likeSet {
-				id
-				track {
-					id
-					title
-					url
-					description
-					artistName
-					imgUrl
-					likes {
-						id
-					}
-					comments {
-						id
-						comment
-						createdAt
-						postedBy {
-							username
-							id
-							userprofile {
-								avatarUrl
-							}
-						}
-						subcomments {
-							subcomment
-							id
-							createdAt
-							postedBy {
-								username
-								id
-								userprofile {
-									avatarUrl
-								}
-							}
-						}
-					}
-					playcount {
-						playCount
-					}
-					postedBy {
-						id
-						username
-						userprofile {
-							avatarUrl
-						}
-					}
-				}
-			}
-			trackSet {
-				id
-				title
-				url
-				description
-				artistName
-				imgUrl
-				comments {
-					id
-					comment
-					createdAt
-					postedBy {
-						username
-						id
-						userprofile {
-							avatarUrl
-						}
-					}
-					subcomments {
-						subcomment
-						id
-						createdAt
-						postedBy {
-							username
-							id
-							userprofile {
-								avatarUrl
-							}
-						}
-					}
-				}
-				postedBy {
-					id
-					username
-					userprofile {
-						avatarUrl
-					}
-				}
-				playcount {
-					playCount
-				}
-			
-				likes {
-					id
-				}
-			}
-		}
-	}
-`;
 
 const { TabPane } = Tabs;
 
@@ -307,3 +201,111 @@ const Profile: React.FC<any> = ({ match, history, currentUser }) => {
 };
 
 export default Profile;
+
+
+export const PROFILE_QUERY = gql`
+	query($id: Int!) {
+		user(id: $id) {
+			id
+			username
+			dateJoined
+			userprofile {
+				avatarUrl
+			}
+			likeSet {
+				id
+				track {
+					id
+					title
+					url
+					description
+					artistName
+					imgUrl
+					likes {
+						id
+					}
+					comments {
+						id
+						comment
+						createdAt
+						postedBy {
+							username
+							id
+							userprofile {
+								avatarUrl
+							}
+						}
+						subcomments {
+							subcomment
+							id
+							createdAt
+							postedBy {
+								username
+								id
+								userprofile {
+									avatarUrl
+								}
+							}
+						}
+					}
+					playcount {
+						playCount
+					}
+					postedBy {
+						id
+						username
+						userprofile {
+							avatarUrl
+						}
+					}
+				}
+			}
+			trackSet {
+				id
+				title
+				url
+				description
+				artistName
+				imgUrl
+				comments {
+					id
+					comment
+					createdAt
+					postedBy {
+						username
+						id
+						userprofile {
+							avatarUrl
+						}
+					}
+					subcomments {
+						subcomment
+						id
+						createdAt
+						postedBy {
+							username
+							id
+							userprofile {
+								avatarUrl
+							}
+						}
+					}
+				}
+				postedBy {
+					id
+					username
+					userprofile {
+						avatarUrl
+					}
+				}
+				playcount {
+					playCount
+				}
+			
+				likes {
+					id
+				}
+			}
+		}
+	}
+`;

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 // import {Query} from 'react-apollo';
 import $ from 'jquery';
 import { useQuery } from "@apollo/react-hooks";
@@ -11,8 +11,7 @@ import Profile from './pages/Profile';
 import Navbar from './components/Shared/Navbar';
 import Loading from './components/Shared/Loading';
 
-import ReactJkMusicPlayer from "react-jinke-music-player";
-import "react-jinke-music-player/assets/index.css";
+
 
 import "./App.less";
 
@@ -58,12 +57,15 @@ const App: React.FC<any> = () => {
     }
   )
 
+  const [searchResults, setSearchResults] = useState([]);
+
   if (loading) return <Loading/>
   if (error) return <div>Error</div>
 
+  debugger
+
   const currentUser = data.me;
 
-  // return <div>{JSON.stringify(data)}</div>
 
   return (
 
@@ -73,13 +75,12 @@ const App: React.FC<any> = () => {
 
           <Layout >
               
-                <Navbar currentUser={currentUser}  />
+          <Navbar currentUser={currentUser} setSearchResults={setSearchResults}  />
               
           <Content className="site-layout" style={{ padding: '0 50px', marginTop: 64, background: "#001934", width: "75%", minHeight: '100vh', marginLeft: "auto", marginRight: "auto" }}>
                 <Switch >
-                  <Route exact path="/" component={Splash} ></Route>
+                  <Route exact path="/" component={() => <Splash searchResults={searchResults} />} ></Route>
                   
-                  {/* <Route path="/profile/:id" component={() => <Profile currentUser={currentUser}/>}></Route> */}
                   <Route path="/profile/:id" render={(props) => <Profile {...props} currentUser={currentUser} />}></Route>
                 </Switch>
           </Content>

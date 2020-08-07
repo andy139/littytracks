@@ -21,9 +21,7 @@ const DeleteTrack:React.FC<any> = ({track,userId}) => {
 
     const currentUser:any = useContext(UserContext);
     const isCurrentUser = currentUser.id === track.postedBy.id;
-
     let id = userId;
-
     if (!id) id = 1;
     
 

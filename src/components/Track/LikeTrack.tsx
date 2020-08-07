@@ -1,7 +1,7 @@
-import React, { useState, useContext } from 'react';
+import React, { useContext } from 'react';
 
 import { useMutation } from '@apollo/react-hooks';
-import { MessageOutlined, LikeOutlined, StarOutlined, LikeFilled } from '@ant-design/icons';
+import {  LikeOutlined, LikeFilled } from '@ant-design/icons';
 import { Button, Space } from 'antd';
 import { UserContext } from '../../App';
 import { gql } from 'apollo-boost';
