@@ -59,9 +59,9 @@ const Splash: React.FC<any> = ({ classes, searchResults }) => {
 	
 	return (
 		<div>
-			{/* <Row align={'middle'} justify="center">
-				<SearchTrack setSearchResults={setSearchResults} />
-			</Row> */}
+			<Row align={'middle'} style={{marginTop:'30px'}}justify="center">
+				{/* <SearchTrack setSearchResults={setSearchResults} /> */}
+			</Row>
 
 			           
             <CreateTrack/>

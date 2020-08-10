@@ -63,7 +63,7 @@ const UpdateTrack: React.FC<any> = ({classes, track}) => {
 
 
     const uploadAudio = async (options) => {
-        setSubmitting(true);
+      setSubmitting(true);
       const { onSuccess, onError, file, onProgress } = options;
       const fmData = new FormData();
       const config = {
