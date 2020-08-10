@@ -114,7 +114,7 @@ const SearchTrack: React.FC<any> = ({setSearchResults }) => {
                 {client => (
                     <AutoComplete
                         // dropdownStyle={{ backgroundColor: 'white', color: 'black' }}
-                     
+                        
                         onChange={onChange}
                         value={value}
                         options={options}
@@ -130,13 +130,13 @@ const SearchTrack: React.FC<any> = ({setSearchResults }) => {
                         <Search
                             placeholder="Search All Tracks"
                             enterButton={<SearchOutlined />}
+                            onPressEnter={() => {
+                                setLoading(true);
+                                handleSubmit(value,client)
+                            }}
                           
-                            // loading={loading}
-                            // onChange={event => setSearch(event.target.value)}
-                            // value={search}
-                            // addonBefore={<Button type="primary" shape="circle" onClick={clearSearchInput}><i className="fas fa-times"></i></Button>}
                             size="large"
-                            // style={{ minWidth: '300px', maxWidth: "30%" }}
+  
 
                         >
 
