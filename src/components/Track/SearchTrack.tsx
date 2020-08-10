@@ -1,11 +1,25 @@
 import React, { useState, useRef } from "react";
-import { Input } from 'antd';
-import {ApolloConsumer} from 'react-apollo';
+import { Input, AutoComplete } from 'antd';
+import { ApolloConsumer } from 'react-apollo';
+import { useQuery } from '@apollo/react-hooks';
 import { Button } from 'antd';
 import { gql } from "apollo-boost";
-import { SearchOutlined } from '@ant-design/icons'
+
+import Trie from "../../assets/trie"
+import { SearchOutlined, UserOutlined } from '@ant-design/icons'
 import "./track.css";
 const { Search } = Input;
+
+
+const SEARCH_TERMS_QUERY = gql`
+    query getCorpusQuery{
+        corpus {
+            corpus
+        }
+    }
+
+`
+
 
 const SEARCH_TRACKS_QUERY = gql`
     query($search: String){
@@ -43,56 +57,102 @@ const SEARCH_TRACKS_QUERY = gql`
 
 const SearchTrack: React.FC<any> = ({setSearchResults }) => {
 
- 
-    const [search, setSearch] = useState("");
+    const {loading:loadingTerms, data, error} = useQuery(SEARCH_TERMS_QUERY);
+    const [value, setValue] = useState("");
     const [loading, setLoading] = useState(false);
+    const [options, setOptions] = useState([])
 
- 
+    if (!data) return null;
+
+    const newTrie = new Trie(data.corpus.corpus)
     const clearSearchInput = () => {
         setSearchResults([]);
-        setSearch("");
+        setValue("");
     }
 
-    const handleSubmit = async (client) => {
+    const onChange = data => {
+        setValue(data);
+    };
+
+    const onSearch = searchVal => {
+        let trieArray = newTrie.showWords(searchVal.toLowerCase())
+        let autoOptions: any = trieArray.map(word => {
+            return {
+                value: word
+            }
+        })
+        setOptions(autoOptions);
+
+    }
+
+
+
+
+    const handleSubmit = async (searchTerm, client) => {
         
         const res = await client.query({
             query: SEARCH_TRACKS_QUERY,
-            variables: { search }
+            variables: { search: searchTerm }
         })
 
-        setSearchResults(res.data.tracks);
         debugger
+        setSearchResults(res.data.tracks);
         setLoading(false);
 
-        console.log({res})
+
 
     }
+
+ 
 
 
     return (
         <>  
-            <ApolloConsumer>
+            <ApolloConsumer
+                
+            >
                 {client => (
-
-                    <Search
-                        placeholder="Search All Tracks"
-                        enterButton={<SearchOutlined/>}
-                        onSearch={() => {
+                    <AutoComplete
+                        // dropdownStyle={{ backgroundColor: 'white', color: 'black' }}
+                     
+                        onChange={onChange}
+                        value={value}
+                        options={options}
+                        onSearch={onSearch}
+                        onSelect={(data, option) => {
                             setLoading(true);
-                            handleSubmit(client)}
-                        }
-                        loading={loading} 
-                        onChange={event => setSearch(event.target.value)}
-                        value={search}
-                        addonBefore={<Button type="primary" shape="circle" onClick={clearSearchInput}><i className="fas fa-times"></i></Button>}
-                        size="large"
-                        style={{ minWidth: '300px', maxWidth:"30%"}}
-                        
-                    />
+                            handleSubmit(data, client)
+                            debugger
+                        }}
+                        style={{ minWidth: '300px', width: "35%" }}
+                    >
+
+                        <Search
+                            placeholder="Search All Tracks"
+                            enterButton={<SearchOutlined />}
+                          
+                            // loading={loading}
+                            // onChange={event => setSearch(event.target.value)}
+                            // value={search}
+                            // addonBefore={<Button type="primary" shape="circle" onClick={clearSearchInput}><i className="fas fa-times"></i></Button>}
+                            size="large"
+                            // style={{ minWidth: '300px', maxWidth: "30%" }}
+
+                        >
+
+
+                        </Search>
+
+
+                    </AutoComplete>
+                
+                      
+               
+               
+        
+             
+           
                    
-                 
-
-
                 )}
                 
              

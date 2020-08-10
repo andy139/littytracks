@@ -1,11 +1,12 @@
 import graphene
-
+from django.contrib.auth.models import User
 from graphene_django import DjangoObjectType
 from graphql import GraphQLError
 from .models import Track, Like, Play, UserProfile, Comment, Subcomment, PlayCount
 from users.schema import UserType
 from django.db.models import Q
 from .utils import get_paginator
+from itertools import chain
 
 
 class TrackType(DjangoObjectType):
@@ -22,14 +23,15 @@ class LikeType(DjangoObjectType):
     class Meta:
         model = Like
 
+
 class PlayCountType(DjangoObjectType):
     class Meta:
         model = PlayCount
 
 
-class PlayType(DjangoObjectType):
-    class Meta:
-        model = Play
+# class PlayType(DjangoObjectType):
+#     class Meta:
+#         model = Play
 
 
 class CommentType(DjangoObjectType):
@@ -40,6 +42,12 @@ class CommentType(DjangoObjectType):
 class SubcommentType(DjangoObjectType):
     class Meta:
         model = Subcomment
+
+
+class CorpusType(graphene.ObjectType):
+    # List type that returns list of strings
+    corpus = graphene.List(graphene.String)
+    
 
 
 class TrackPaginatedType(graphene.ObjectType):
@@ -54,7 +62,11 @@ class Query(graphene.ObjectType):
     tracks = graphene.List(TrackType, search=graphene.String(
     ), first=graphene.Int(), skip=graphene.Int())
     likes = graphene.List(LikeType)
-    plays = graphene.List(PlayType)
+
+    # Return a list of search terms
+    corpus = graphene.Field(CorpusType)
+
+    # plays = graphene.List(PlayType)
     comments = graphene.List(
         CommentType, trackId=graphene.Int(), page=graphene.Int(), offset=graphene.Int(), limit=graphene.Int())
     subcomments = graphene.List(SubcommentType, commentId=graphene.Int())
@@ -64,26 +76,36 @@ class Query(graphene.ObjectType):
         if search:
             filter = (
                 Q(title__icontains=search) |
-                Q(description__icontains=search) |
-                Q(url__icontains=search) |
-                Q(posted_by__username__icontains=search)
+                Q(posted_by__username__icontains=search) |
+                Q(artist_name__icontains=search)
             )
-            # starts with the texts starting with the search arg
             return Track.objects.filter(filter).order_by('created_at').reverse()
 
         return Track.objects.all().order_by('created_at').reverse()
+
+    def resolve_corpus(self, info):
     
+        tracks = Track.objects.all()
+        users = User.objects.all()
+        titles = tracks.values_list('title', flat=True)
+        artist_names = tracks.values_list('artist_name', flat=True)
+        user_names = users.values_list('username', flat=True)
+
+        result_list = list(chain(titles, artist_names, user_names))
+
+
+        return CorpusType(corpus = result_list)
+
     def resolve_pagination(self, info, page):
         page_size = 4
         qs = Track.objects.all().order_by('created_at').reverse()
         return get_paginator(qs, page_size, page, TrackPaginatedType)
 
-
     def resolve_likes(self, info):
         return Like.objects.all()
 
-    def resolve_plays(self, info):
-        return Play.objects.all()
+    # def resolve_plays(self, info):
+    #     return Play.objects.all()
 
     def resolve_comments(self, info, trackId, limit, offset):
         qs = Track.objects.get(
@@ -120,14 +142,14 @@ class CreateTrack(graphene.Mutation):
                       url=url, posted_by=user, img_url=img_url)
 
         track.save()
-        
+
         playcount = PlayCount.objects.create(
             track=track,
             play_count=0
         )
 
         playcount.save()
-    
+
         return CreateTrack(track=track)
 
 
@@ -226,6 +248,7 @@ class CreateLike(graphene.Mutation):
 
         return CreateLike(user=user, track=track)
 
+
 class AddPlayCount(graphene.Mutation):
     track = graphene.Field(TrackType)
 
@@ -240,7 +263,7 @@ class AddPlayCount(graphene.Mutation):
         track = Track.objects.get(id=track_id)
         if not track:
             raise GraphQLError('Cannot find track with given track id')
-        
+
         if not PlayCount.objects.filter(track=track).exists():
             PlayCount.objects.create(
                 track=track,
@@ -249,16 +272,15 @@ class AddPlayCount(graphene.Mutation):
         else:
             # This will increase playcount by one
             import pdb
-            
+
             PlayCountObj = PlayCount.objects.get(track=track)
             playcount = PlayCountObj.play_count
             PlayCountObj.play_count = playcount + 1
-            
+
             # pdb.set_trace()
 
             PlayCountObj.save()
-      
-        # import pdb; pdb.set_trace()
+
         return AddPlayCount(track=track)
 
 
@@ -380,7 +402,6 @@ class UpdateProfile(graphene.Mutation):
 
     class Arguments:
         avatar_url = graphene.String()
-        
 
     def mutate(self, info, avatar_url):
         user = info.context.user
@@ -390,7 +411,6 @@ class UpdateProfile(graphene.Mutation):
 
         user_profile = UserProfile.objects.get(user_id=user.id)
         user_profile.avatar_url = avatar_url
-    
 
         user_profile.save()
         # import pdb; pdb.set_trace()

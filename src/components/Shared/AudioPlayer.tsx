@@ -40,7 +40,6 @@ const CREATE_PLAY_MUTATION = gql`
 		addPlaycount(trackId: $trackId) {
 			track {
 				id
-			
 			}
 		}
 	}
@@ -94,8 +93,6 @@ const AudioPlayer: React.FC<any> = withCustomAudio((props) => {
 	const [ minimizePlayer, setMinimize ] = useState(true);
 
 	const [ modal, setModal ] = useState(false);
-
-	debugger;
 
 	const setTrackModal = () => {
 		setScroll(false);
@@ -213,9 +210,7 @@ const AudioPlayer: React.FC<any> = withCustomAudio((props) => {
 							justifyContent: 'space-between',
 							backgroundImage: `url(${currentUser.userprofile.backgroundUrl})`
 						}}
-					>
-		
-					</div>
+					/>
 
 					{minimizePlayer ? (
 						<div className="player-modal over">
@@ -267,16 +262,20 @@ const AudioPlayer: React.FC<any> = withCustomAudio((props) => {
 					{/* Music Player */}
 				</Col>
 				<Col span={8} className="col-modal-right">
-					<Row style={{
-						display: 'flex',
-						justifyContent: 'space-between',
-						marginBottom: '10px'
-					}}>
-						<h2 style={{
-							marginBottom: 0,
+					<Row
+						style={{
+							display: 'flex',
+							justifyContent: 'space-between',
+							marginBottom: '10px'
+						}}
+					>
+						<h2
+							style={{
+								marginBottom: 0,
 								display: 'flex',
-							alignItems: 'center'
-						}}>
+								alignItems: 'center'
+							}}
+						>
 							<Link to={`/profile/${track.postedBy.id}`}>
 								<Avatar size="large" icon={<img src={track.postedBy.userprofile.avatarUrl} />} />
 								&nbsp; {track.postedBy.username}
@@ -287,7 +286,7 @@ const AudioPlayer: React.FC<any> = withCustomAudio((props) => {
 							<Button
 								onClick={() => setMinimize(!minimizePlayer)}
 								style={{
-									margin: '10px',
+									margin: '10px'
 									// opacity: '0.6'
 								}}
 								type="primary"
@@ -297,16 +296,14 @@ const AudioPlayer: React.FC<any> = withCustomAudio((props) => {
 							</Button>
 
 							<UpdateBackground />
-
 						</span>
-					
 					</Row>
 					<Paragraph>{track.description}</Paragraph>
 					<LikeTrack trackId={track.id} likeCount={track.likes.length} />
 					&nbsp;
 					<CommentTrack track={track} commentCount={track.comments.length} setModal={setTrackModal} />
 					<Divider />
-					<CommentList trackId={track.id} comments={track.comments} disableTrackModal={disableTrackModal}/>
+					<CommentList trackId={track.id} comments={track.comments} disableTrackModal={disableTrackModal} />
 					{/* <div className="player-modal over">
 
 						<Row align="middle" justify="center" gutter={[24, 16]}>

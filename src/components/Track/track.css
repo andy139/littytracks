@@ -10,7 +10,9 @@
 
 }
 
-
+.certain-category-search-dropdown {
+  background-color: white;
+}
 
 .ant-carousel .slick-slide {
   text-align: center;
@@ -392,4 +394,9 @@
 
 .full-row {
   height: 93%;
+}
+
+
+..certain-category-search-dropdown {
+  background-color: white;
 }

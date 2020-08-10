@@ -50,11 +50,10 @@ const GET_SUBCOMMENTS_QUERY = gql`
 `;
 
 const TrackComment: React.FC<any> = ({ comment, trackId, disableTrackModal }) => {
-    const currentUser: any = useContext(UserContext);
+	const currentUser: any = useContext(UserContext);
 
 	const [ deleteComment, { loading: deleteLoading } ] = useMutation(DELETE_COMMENT_MUTATION, {
 		update(cache, { data: { deleteComment } }) {
-			debugger;
 			const cacheData: any = cache.readQuery({
 				query: GET_COMMENTS_QUERY,
 				variables: {
@@ -64,15 +63,12 @@ const TrackComment: React.FC<any> = ({ comment, trackId, disableTrackModal }) =>
 				}
 			});
 
-		
-
 			const commentId = deleteComment.commentId;
 
 			const index = cacheData.comments.findIndex((comment) => Number(comment.id) === commentId);
 
 			const comments = [ ...cacheData.comments.slice(0, index), ...cacheData.comments.slice(index + 1) ];
 
-			debugger;
 			cache.writeQuery({
 				query: GET_COMMENTS_QUERY,
 				variables: {
@@ -94,9 +90,9 @@ const TrackComment: React.FC<any> = ({ comment, trackId, disableTrackModal }) =>
 	const isUser = userId === currentUser.id;
 	const subcomments = comment.subcomments;
 
-    let deleteCommentDiv;
-    
-    const [updateMethod, callMethod] = useState(true);
+	let deleteCommentDiv;
+
+	const [ updateMethod, callMethod ] = useState(true);
 
 	if (isUser) {
 		deleteCommentDiv = (
@@ -131,16 +127,26 @@ const TrackComment: React.FC<any> = ({ comment, trackId, disableTrackModal }) =>
 						<span>{date}</span>
 					</Tooltip>
 				}
-				
-                actions={[deleteCommentDiv, <span key="comment-basic-reply-to" onClick={() => {
-
-                    callMethod(false)
-                }}>Reply</span>]}
+				actions={[
+					deleteCommentDiv,
+					<span
+						key="comment-basic-reply-to"
+						onClick={() => {
+							callMethod(false);
+						}}
+					>
+						Reply
+					</span>
+				]}
 				avatar={<Avatar src={comment.postedBy.userprofile.avatarUrl} alt="Han Solo" />}
 				content={<p>{comment.comment}</p>}
-            >
-      
-				<SubcommentList comments={subcomments} disableTrackModal={disableTrackModal} updateMethod={updateMethod} commentId={comment.id} />
+			>
+				<SubcommentList
+					comments={subcomments}
+					disableTrackModal={disableTrackModal}
+					updateMethod={updateMethod}
+					commentId={comment.id}
+				/>
 			</Comment>
 		</Spin>
 	);

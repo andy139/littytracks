@@ -4,7 +4,7 @@ import { UserOutlined, LockOutlined, MailOutlined, SmileOutlined, PoweroffOutlin
 import { gql } from 'apollo-boost';
 import { useMutation } from '@apollo/react-hooks';
 import Error from '../Shared/Error';
-import { LOGIN_MUTATION } from '../Session/Login';
+import { LOGIN_MUTATION } from './Login';
 import './session.css';
 
 interface Props {

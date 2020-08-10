@@ -59,7 +59,7 @@ const UpdateTrack: React.FC<any> = ({classes, track}) => {
     const [imgUrl, setImgUrl] = useState(track.imageUrl);
 
     
-  debugger
+   
 
 
     const uploadAudio = async (options) => {

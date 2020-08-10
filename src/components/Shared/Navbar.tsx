@@ -21,10 +21,11 @@ const Navbar: React.FC<any> = ({ currentUser, setSearchResults }) => {
 
 	return (
 		<Header className="header" style={{ zIndex: 90, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-			<div className="logo">
+			<div className="logo" onClick={() => setSearchResults([])}>
 				<Link to="/" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
 					{/* <Title level={4} className='logo-font' style={{ color: "#d2e0fa" }}>LittyTracks</Title> */}
 					<img src="https://django-app-images.s3-us-west-1.amazonaws.com/logo.png" style={{ width: 150 }} />
+					
 				</Link>
 			</div>
 

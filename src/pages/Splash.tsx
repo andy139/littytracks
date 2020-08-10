@@ -50,13 +50,13 @@ const Splash: React.FC<any> = ({ classes, searchResults }) => {
 	// const [searchResults, setSearchResults] = useState([]);
 	
 
-	debugger
+
 
 	if (!data) return null;
 
 	const tracks = searchResults.length > 0 ? searchResults : data.tracks;
 
-	debugger
+	
 	return (
 		<div>
 			{/* <Row align={'middle'} justify="center">
