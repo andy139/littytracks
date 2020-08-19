@@ -44,12 +44,9 @@ const CommentTrack: React.FC<any> = ({ track, commentCount, setModal}) => {
                         type="text"
                         shape="circle"
                         onClick={() => setModal(true)}
-
                     >
                         <MessageOutlined
-
                             style={{ fontSize: '20px', color: '#08c' }}
-
                         />
                     </Button>
                 }

@@ -172,11 +172,7 @@ const CommentList: React.FC < any > = ({ trackId, disableTrackModal }) => {
 
   
     
-
-
-
     const messagesEndRef:any = useRef(null)
-
 
 
     const scrollToBottom = () => {
@@ -200,10 +196,8 @@ const CommentList: React.FC < any > = ({ trackId, disableTrackModal }) => {
 
             })
 
-
         } 
 
-    
     }
     
     const emptyLikes = (
