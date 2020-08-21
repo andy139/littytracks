@@ -1,31 +1,24 @@
-# LittyTracks
+<img src="https://django-app-images.s3-us-west-1.amazonaws.com/littytracks.png"> 
 
-<img src="screenshot.png"> 
+# littytracks 🎧 😇
 
-[littytracks](https://littytracks.herokuapp.com/) is a music sharing application built with Django/GraphQL & React/AntDesign
+[littytracks](https://littytracks.herokuapp.com/) **is a music sharing application built with Django/GraphQL & React/AntDesign**
 
 ## Technologies
-- GraphQL
-- Javascript
-- Django
-- AntDesign
-- Cloudinary API
-- react-sound-player
+- **Backend** Built with Django (Postgres), GraphQL (Graphene)
+- **Frontend** Built with React and Apollo Client for data management / AntDesign for UI Components
+- Usage of Poetry and Node package manager
+- ES6 Javascript Syntax, using Babel/Webpack
 
-
-## Roadmap
-1. Deploy backend and frontend 
-2. Website and App Create Track 
-3. Website and App Rate Track 
-4. Website and App User session auth 
-
-## Current Features
-- Upload Tracks
-- Like/Dislike Tracks
-- Comment Tracks
-- Play Tracks
-- Create Account
-- Search Tracks
+## Features
+- Users authentication with GraphQL API / Web Token
+- Custom music players with background choice for awesome experience
+- Autocomplete Feature built with Trie & AntD UI Component
+- GraphQL Schema with associations
+- Music and Image upload feature using Cloudinary API / File Handling
+- Utilize React Hooks / Apollo Client Hooks for API request
+- Quick search function 
+- Comments with unlimited scrolling using pagination technique
 
 ## Future Features
 - Share Music
@@ -33,3 +26,7 @@
 - Unlimited scrolling for comments
 - Follow Other Users
 - Global Music Player
+
+
+## Author
+- Andy Tran - [GitHub](https://github.com/andy139) · [LinkedIn](https://www.linkedin.com/in/andy139/)
