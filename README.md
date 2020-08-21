@@ -23,7 +23,6 @@
 ## Future Features
 - Share Music
 - Make Playlist
-- Unlimited scrolling for comments
 - Follow Other Users
 - Global Music Player
 
