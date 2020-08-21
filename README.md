@@ -1,4 +1,4 @@
-# <img src="https://django-app-images.s3-us-west-1.amazonaws.com/logoicon.png" width="50" height="50"> &nbsp; littytracks
+# <img src="https://django-app-images.s3-us-west-1.amazonaws.com/largelogo.png"> 
 
 <img src="screenshot.png"> 
 
