@@ -6,12 +6,18 @@
   padding: 15px;
 }
 
+.fixed-comments {
+    width: 30%;
+    position: fixed;
+}
+     
+
 .comment-container {
   /* border: 1px solid #e8e8e8; */
   border-radius: 4px;
   overflow: auto;
   padding: 8px 24px;
-  max-height: 72%;
+  max-height: 65%;
   /* width: 90%; */
 }
 .demo-loading-container {
@@ -25,10 +31,6 @@
     /* height: 40px; */
 }
 
-.row-one {
-  /* height: 76%; */
-
-}
 
 .full-comment-container {
   flex-grow: 1;

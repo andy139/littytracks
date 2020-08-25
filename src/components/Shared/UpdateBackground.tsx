@@ -1,12 +1,42 @@
-import React, {useState} from 'react';
-import { UserContext } from '../../App';
+import React from 'react';
+
 import { gql } from 'apollo-boost';
 import { useMutation } from '@apollo/react-hooks';
 import {
     Button
 } from 'antd'
 
-import { ME_QUERY } from '../../App';
+
+const UpdateBackground: React.FC<any> = ({ currentUser, backgroundNum, setBackgroundNum}) => {
+    const [updateBackground, { data, loading }] = useMutation(UPDATE_BACKGROUND_MUTATION);
+
+
+
+    const handleSubmit = (event, updateBackground) => {
+        event.preventDefault()
+        const currBackground = backgroundGifs[backgroundNum]
+
+        updateBackground({
+            variables:{backgroundUrl: currBackground}
+        }).then(() => {
+            if (backgroundNum === backgroundGifs.length - 1) {
+                setBackgroundNum(0)
+            } else {
+                setBackgroundNum(backgroundNum + 1)
+            }
+        })
+    }
+
+    return (
+        <div>
+            <Button style={{
+                margin: '10px',
+            }}type="primary" shape="round" onClick={(e) => handleSubmit(e, updateBackground)}>
+                Change Background
+            </Button>
+        </div>
+    )
+}
 
 const UPDATE_BACKGROUND_MUTATION = gql`
   mutation($backgroundUrl: String!) {
@@ -20,7 +50,7 @@ const UPDATE_BACKGROUND_MUTATION = gql`
     }
   }
 `
-const backgroundGifs = [
+export const backgroundGifs = [
     'https://66.media.tumblr.com/900d93b71b6061e043a0aaa2f91a025e/fcf075c8db503555-f4/s540x810/ea7b280580ad959eac6e3d81304bc55b0d34d726.gif',
     'https://66.media.tumblr.com/1b9859af9aecd7ca666df0015aa1cb10/tumblr_oras0eWIDg1vhvnzyo1_500.gif',
     'https://66.media.tumblr.com/d90f205bed27f5a7480616237e93143a/tumblr_ovtfzbaGUR1vu5dwpo1_500.gif',
@@ -37,45 +67,5 @@ const backgroundGifs = [
     'https://66.media.tumblr.com/e111098a9b4e59aa6d9ffda5770f3444/tumblr_oy7m9lNGxR1wd3n3jo1_500.gif',
     'https://66.media.tumblr.com/fc5c77a25c284b8f06dd5ef877cc032a/9e5df7d0382bfe2e-ae/s540x810/f65338b55162867e9801a67bd3b2f392fd9501bf.gifv',
 ]
-
-const UpdateBackground: React.FC<any> = ({ currentUser }) => {
-    const [updateBackground, { data, loading }] = useMutation(UPDATE_BACKGROUND_MUTATION, {
-        refetchQueries: [{ query: ME_QUERY }]
-    });
-
-    const [backgroundNum, setBackgroundNum] = useState(1)
-
-
-    const handleSubmit = (event, updateBackground) => {
-        event.preventDefault()
-
-        const currBackground = backgroundGifs[backgroundNum]
-
-        updateBackground({
-            variables:{backgroundUrl: currBackground}
-        }).then(() => {
-            if (backgroundNum === backgroundGifs.length - 1) {
-                setBackgroundNum(0)
-            } else {
-                setBackgroundNum(backgroundNum + 1)
-            }
-        })
-    }
-
-    return (
-        <div>
-
-            <Button style={{
-                margin: '10px',
-
-            }}type="primary" shape="round" onClick={(e) => handleSubmit(e, updateBackground)}>
-                Change Background
-            </Button>
-           
-        </div>
-    )
-
-
-}
 
 export default UpdateBackground;

@@ -2,13 +2,10 @@ import React, { useState, createElement, useContext, useEffect, useRef } from 'r
 import { gql } from 'apollo-boost';
 import { useMutation } from '@apollo/react-hooks';
 import { Comment, Avatar, Form, Button, List, Empty, Input, Tooltip, Row, Col, Spin } from 'antd';
-import { DeleteFilled } from '@ant-design/icons';
 import { useQuery } from '@apollo/react-hooks';
-import moment from 'moment';
-import { Link } from 'react-router-dom';
 import InfiniteScroll from 'react-infinite-scroller';
 import { UserContext } from '../../App';
-
+import { animateScroll } from 'react-scroll'
 import TrackComment from './Comment'
 // import './track.css'
 import './comment.css'
@@ -125,47 +122,51 @@ const CommentList: React.FC < any > = ({ trackId, disableTrackModal }) => {
     const [hasMore, setHasMore] = useState(true);
     const [submitting, changeSubmit] = useState(false);
     const [value, changeValue] = useState('');
-    const [page, changePage] = useState(1)
+    const [page, changePage] = useState(1);
+
+
+    const scrollToBottom = () => {
+        animateScroll.scrollToTop({
+            containerId: 'scrollTop',
+        })
+    }
+
 
 
     const { data, loading, fetchMore} = useQuery(GET_COMMENTS_QUERY, {
         variables: {
             trackId: Number(trackId),
             offset: 0,
-            limit: 5
+            limit: 3
         },
         fetchPolicy: "cache-and-network"
     });
-
     
 
-    // remake comments query
+    
     const [createComment] = useMutation(CREATE_COMMENT_MUTATION, {
-
         update(cache, { data: { createComment } }) {
             const cacheData: any = cache.readQuery({
                 query: GET_COMMENTS_QUERY,
                 variables: {
                     trackId: Number(trackId),
-                    limit: 5,
+                    limit: 1,
                     offset: 0
                 }
                 
             })
             
-    
             const comments = [createComment.comment].concat(cacheData.comments)
 
             cache.writeQuery({
                 query: GET_COMMENTS_QUERY, variables: {
                     trackId: Number(trackId),
-                    limit: 5,
+                    limit: 1,
                     offset: 0
                 },
                 data: { comments }
             })
            
-            
         }
 
     });
@@ -174,14 +175,6 @@ const CommentList: React.FC < any > = ({ trackId, disableTrackModal }) => {
     
     const messagesEndRef:any = useRef(null)
 
-
-    const scrollToBottom = () => {
-        messagesEndRef.current.scrollIntoView({
-            behavior: "smooth",
-            block: "nearest"
-        })
-        
-    }
 
 
     const handleSubmit = (trackId) => {
@@ -193,6 +186,7 @@ const CommentList: React.FC < any > = ({ trackId, disableTrackModal }) => {
             }).then(() => {
                 changeSubmit(false)
                 changeValue('')
+                scrollToBottom()
 
             })
 
@@ -216,12 +210,8 @@ const CommentList: React.FC < any > = ({ trackId, disableTrackModal }) => {
 
 
 
-    // if (loading) return <Spin size="large" />
-   
     if (!data) return null;
 
-    
-    
     
 
     function onLoadMore() {
@@ -252,19 +242,27 @@ const CommentList: React.FC < any > = ({ trackId, disableTrackModal }) => {
 
     return (
         <>
-            <div className='row-one comment-container' >
+            <div className='comment-container'  id="scrollTop">
 
                 <InfiniteScroll
                     pageStart={0}
                     loadMore={() => onLoadMore()}
                     loader={<Spin size="large" />}
                     hasMore={!loader && hasMore}
+                    height={400}
+                    endMessage={
+                        <p style={{ textAlign: "center" }}>
+                            <b>Yay! You have seen it all</b>
+                        </p>
+                    }
                     useWindow={false}
+
                 >
 
-                <List
+                    <List
                     itemLayout="horizontal"
                     dataSource={data.comments}
+                    
                     // className='comment-container'
                     locale={{ emptyText: emptyLikes }}
                         renderItem={(comment: any) => {
@@ -278,12 +276,12 @@ const CommentList: React.FC < any > = ({ trackId, disableTrackModal }) => {
                     </List> 
                 </InfiniteScroll>
                 
-                </div>
+            </div>
 
+            <div className='fixed-comments'>
                 <Comment
                     avatar={
                         <Avatar
-                            // style={{ marginTop: '5px'}}
                             src={currentUser.userprofile.avatarUrl}
                             alt="User photo"
                             size='large'
@@ -297,8 +295,9 @@ const CommentList: React.FC < any > = ({ trackId, disableTrackModal }) => {
                             value={value}
                         />
                     }
-            />
-            {/* <Button onClick={() => onLoadMore()}>Load More</Button> */}
+                />
+            </div>
+
             </>
        
 

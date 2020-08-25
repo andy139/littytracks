@@ -43,6 +43,7 @@
 		"react-player": "^2.2.0",
 		"react-router-dom": "^5.2.0",
 		"react-scripts": "3.4.1",
+		"react-scroll": "^1.8.1",
 		"react-soundplayer": "^1.0.5",
 		"react-virtualized": "^9.21.2",
 		"reaudio": "^0.1.8",

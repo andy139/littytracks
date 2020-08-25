@@ -1,9 +1,5 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
-	Collapse,
-	Select,
-	List,
-	Card,
 	Button,
 	Avatar,
 	Space,
@@ -11,17 +7,15 @@ import {
 	Col,
 	Modal,
 	Divider,
-	Layout,
 	Typography
 } from 'antd';
-import { MessageOutlined, LikeOutlined, StarOutlined, SettingOutlined, CaretRightOutlined } from '@ant-design/icons';
 
 import { Query } from 'react-apollo';
 import { gql } from 'apollo-boost';
 import $ from 'jquery';
 import { useMutation } from '@apollo/react-hooks';
 import { Link } from 'react-router-dom';
-import { PlayButton, Timer, Progress, Icons, VolumeControl, Cover } from 'react-soundplayer/components';
+import {Timer, Progress, Icons, VolumeControl, Cover } from 'react-soundplayer/components';
 import { withCustomAudio } from 'react-soundplayer/addons';
 import LikeTrack from '../Track/LikeTrack';
 import CommentTrack from '../Comment/CommentTrack';
@@ -29,9 +23,8 @@ import UpdateTrack from '../Track/UpdateTrack';
 import DeleteTrack from '../Track/DeleteTrack';
 import CommentList from '../Comment/CommentList';
 import { ME_QUERY } from '../../App';
-
-import { UserContext } from '../../App';
 import UpdateBackground from './UpdateBackground';
+import { backgroundGifs } from './UpdateBackground';
 import './shared.css';
 
 const { Paragraph } = Typography;
@@ -65,47 +58,46 @@ export const GET_COMMENTS_QUERY = gql`
 	}
 `;
 
-const { SoundCloudLogoSVG, PlayIconSVG, PauseIconSVG, NextIconSVG, PrevIconSVG } = Icons;
+const {PlayIconSVG, PauseIconSVG } = Icons;
 
-const { Header, Footer, Sider, Content } = Layout;
 
 const AudioPlayer: React.FC<any> = withCustomAudio((props) => {
 	const {
 		soundCloudAudio,
 		trackTitle,
-		tracks,
 		match,
-		currentUser,
+		backgroundUrl,
 		imgUrl,
 		playing,
 		track,
 		currentTime,
 		duration,
-		gifNum,
-		setGifNum
 	} = props;
 	const [ createPlay, { data, loading } ] = useMutation(CREATE_PLAY_MUTATION, {
 		refetchQueries: [ { query: ME_QUERY } ]
 	});
 
+
 	const [ scrolling, setScroll ] = useState(true);
-
 	const [ minimizePlayer, setMinimize ] = useState(true);
+	const [modal, setModal] = useState(false);
+	const [backgroundNum, setBackgroundNum] = useState(1)
 
-	const [ modal, setModal ] = useState(false);
+
 
 	const setTrackModal = () => {
 		setScroll(false);
 		$('body').addClass('modal-open');
-		// document.body.style.overflow = 'hidden';
+		document.body.style.overflow = 'hidden';
 		setModal(true);
 	};
 
 	const disableTrackModal = () => {
 		setScroll(true);
 		$('body').removeClass('modal-open');
-		// document.body.style.overflow = 'unset';
+		document.body.style.overflow = 'unset';
 		setModal(false);
+
 	};
 
 	const play = () => {
@@ -160,25 +152,15 @@ const AudioPlayer: React.FC<any> = withCustomAudio((props) => {
 									{...props}
 								/>
 								<Progress {...props} className="bar-radius2" innerClassName="bar-color2" />
-								{/* <Timer {...props} className="timer-top" /> */}
 							</div>
 						</span>
 					) : null}
 
 					<i
 						className="fas fa-times-circle"
-						style={{ fontSize: 45, cursor: 'pointer' }}
+						style={{ fontSize: 30, cursor: 'pointer' }}
 						onClick={() => disableTrackModal()}
 					/>
-
-					{/* <Button
-						style={{
-							margin: '15px'
-						}}
-						type="text"
-						onClick={() => disableTrackModal()}
-						}
-					/> */}
 				</div>
 			}
 			visible={modal}
@@ -191,15 +173,8 @@ const AudioPlayer: React.FC<any> = withCustomAudio((props) => {
 			}}
 			closable={false}
 			footer={null}
-			bodyStyle={{ height: '100vh', overflowY: 'auto', padding: '0px' }}
+			bodyStyle={{ height: '100vh',  padding: '0px' }}
 		>
-			{/* <Row className="player-background">
-				<Button
-					type="text"
-					onClick={() => disableTrackModal()}
-					icon={<i className="fas fa-times-circle" style={{ fontSize: 45, paddingBottom: '15px' }} />}
-				/>
-			</Row> */}
 
 			<Row justify={'center'} align={'middle'} className="full-row">
 				<Col span={16} className="col-padding col-blurry center-col row-modal">
@@ -208,7 +183,7 @@ const AudioPlayer: React.FC<any> = withCustomAudio((props) => {
 						style={{
 							display: 'flex',
 							justifyContent: 'space-between',
-							backgroundImage: `url(${currentUser.userprofile.backgroundUrl})`
+							backgroundImage: `url(${backgroundGifs[backgroundNum]})`
 						}}
 					/>
 
@@ -294,8 +269,7 @@ const AudioPlayer: React.FC<any> = withCustomAudio((props) => {
 							>
 								{minimizePlayer ? 'Minimize Player' : 'Maximize Player'}
 							</Button>
-
-							<UpdateBackground />
+							<UpdateBackground setBackgroundNum={setBackgroundNum} backgroundNum={backgroundNum}/>
 						</span>
 					</Row>
 					<Paragraph>{track.description}</Paragraph>
@@ -304,65 +278,12 @@ const AudioPlayer: React.FC<any> = withCustomAudio((props) => {
 					<CommentTrack track={track} commentCount={track.comments.length} setModal={setTrackModal} />
 					<Divider />
 					<CommentList trackId={track.id} comments={track.comments} disableTrackModal={disableTrackModal} />
-					{/* <div className="player-modal over">
-
-						<Row align="middle" justify="center" gutter={[24, 16]}>
-							<Col flex="0 1 400px" style={{ justifyContent: 'center', display: 'flex' }}>
-								<img
-
-									width={300}
-									className="imgTrack"
-									alt="logo"
-									src={imgUrl ? imgUrl : 'http://res.cloudinary.com/andytran/raw/upload/v1592239178/ksa9qczmaoicuqcgdo10'}
-								/>
-
-							</Col>
-
-
-							<Col flex="1 1 200px">
-								<h2>Track</h2>
-
-								<h1 style={{ fontSize: 40 }}>{trackTitle}</h1>
-								<h2>By {track.artistName}</h2>
-								&nbsp;
-								<Timer {...props} className="timer" />
-
-								<span className="playButton2" onClick={() => play()}>
-									{playing ? (
-										<span>
-											{' '}
-											<PauseIconSVG />&nbsp;&nbsp; PAUSE
-										</span>
-									) : (
-											<span>
-												<PlayIconSVG />&nbsp;&nbsp;PLAY
-											</span>
-										)}
-								</span>
-
-								<div className="music-settings">
-									<VolumeControl
-										className="music-settings"
-										buttonClassName="volume-button"
-										rangeClassName="range-volume"
-										{...props}
-									/>
-									<Progress {...props} className="bar-radius" innerClassName="bar-color" />
-								</div>
-
-								<h1>{track.plays.length} Plays</h1>
-
-							</Col>
-
-
-						</Row>
-
-
-					</div> */}
 				</Col>
 			</Row>
 		</Modal>
 	);
+
+	debugger
 
 	return (
 		<div className="trackBox">

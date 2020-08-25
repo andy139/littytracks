@@ -33,8 +33,6 @@ const CommentTrack: React.FC<any> = ({ track, commentCount, setModal}) => {
 	const [ createComment, { data, loading } ] = useMutation(CREATE_COMMENT_MUTATION, {
         refetchQueries: [{ query: GET_TRACKS_QUERY } ]
     });
-    
-
 
     return (
         <>
@@ -53,8 +51,6 @@ const CommentTrack: React.FC<any> = ({ track, commentCount, setModal}) => {
 
                 text={commentCount}
             >
-
-
             </IconText>
 
         </>
