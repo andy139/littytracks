@@ -137,7 +137,7 @@ const CommentList: React.FC < any > = ({ trackId, disableTrackModal }) => {
         variables: {
             trackId: Number(trackId),
             offset: 0,
-            limit: 3
+            limit: 5
         },
         fetchPolicy: "cache-and-network"
     });
@@ -150,7 +150,7 @@ const CommentList: React.FC < any > = ({ trackId, disableTrackModal }) => {
                 query: GET_COMMENTS_QUERY,
                 variables: {
                     trackId: Number(trackId),
-                    limit: 1,
+                    limit: 5,
                     offset: 0
                 }
                 
@@ -161,7 +161,7 @@ const CommentList: React.FC < any > = ({ trackId, disableTrackModal }) => {
             cache.writeQuery({
                 query: GET_COMMENTS_QUERY, variables: {
                     trackId: Number(trackId),
-                    limit: 1,
+                    limit: 5,
                     offset: 0
                 },
                 data: { comments }
@@ -249,7 +249,6 @@ const CommentList: React.FC < any > = ({ trackId, disableTrackModal }) => {
                     loadMore={() => onLoadMore()}
                     loader={<Spin size="large" />}
                     hasMore={!loader && hasMore}
-                    height={400}
                     endMessage={
                         <p style={{ textAlign: "center" }}>
                             <b>Yay! You have seen it all</b>
