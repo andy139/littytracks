@@ -88,7 +88,7 @@ const AudioPlayer: React.FC<any> = withCustomAudio((props) => {
 	const setTrackModal = () => {
 		setScroll(false);
 		$('body').addClass('modal-open');
-		document.body.style.overflow = 'hidden';
+		// document.body.style.overflow = 'hidden';
 		setModal(true);
 	};
 
