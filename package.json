@@ -23,7 +23,7 @@
 		"apollo-link-error": "^1.1.13",
 		"apollo-link-http": "^1.5.17",
 		"apollo-link-state": "^0.4.2",
-		"axios": "^0.19.2",
+		"axios": "^0.21.1",
 		"basscss": "^8.0.2",
 		"craco-less": "^1.17.0",
 		"css-loader": "^3.6.0",
